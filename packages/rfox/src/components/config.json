@@ -1,0 +1,28 @@
+{
+  "components": [
+    "Button",
+    "ButtonGroup",
+    "Icon",
+    "Image",
+    "Group",
+    "Row",
+    "Col",
+    "CircleProgress",
+    "ActivityIndicator",
+    "LoadingIcon",
+    "Cell",
+    "BackTop",
+    "TimeAgo",
+    "ConfigProvider",
+    "Toast",
+    "NoticeBar",
+    "Notify",
+    "Modal",
+    "Fixed",
+    "NavBar"
+  ],
+  "apis": [
+    ["Notify", "showNotify", "hideNotify"],
+    ["Toast", "showLoading", "showToast", "hideLoading", "hideToast"]
+  ]
+}

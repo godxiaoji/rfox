@@ -1,0 +1,114 @@
+{
+  "name": "rfox",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Vue components include form, toast, modal, etc.",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "style": "es/style/index.css",
+  "typings": "es/index.d.ts",
+  "scripts": {
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix && stylelint packages/**/*.scss --fix",
+    "build": "node build/build.mjs",
+    "build:src": "node build/build.src.mjs",
+    "build:site": "node build/build.site.mjs",
+    "semantic-release": "semantic-release",
+    "prepare": "husky install",
+    "prettier": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/godxiaoji/rfox.git"
+  },
+  "keywords": [
+    "react",
+    "components",
+    "API",
+    "UI"
+  ],
+  "author": "Travis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/godxiaoji/rfox/issues"
+  },
+  "files": [
+    "dist",
+    "lib",
+    "es",
+    "global.d.ts"
+  ],
+  "homepage": "https://github.com/godxiaoji/rfox#readme",
+  "dependencies": {
+    "classnames": "^2.3.1",
+    "colorfuls": "^1.0.2",
+    "csstype": "^3.0.11",
+    "dayjs": "^1.10.4",
+    "safe-area-insets": "^1.4.1",
+    "timeago.js": "^4.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/runtime-corejs3": "^7.12.5",
+    "@commitlint/cli": "^16.0.1",
+    "@commitlint/config-conventional": "^16.0.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-typescript": "^8.3.1",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^8.0.2",
+    "@semantic-release/npm": "^8.0.3",
+    "@semantic-release/release-notes-generator": "^10.0.2",
+    "@types/md5": "^2.3.1",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.11.0",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "@vue/eslint-config-typescript": "^9.0.1",
+    "babel-jest": "^27.0.0",
+    "commander": "^9.0.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "esbuild": "^0.14.11",
+    "eslint": "^8.2.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "execa": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-replace": "^1.1.3",
+    "gulp-sass": "^5.0.0",
+    "husky": "^7.0.4",
+    "jsdom": "^19.0.0",
+    "lint-staged": "^12.3.4",
+    "md5": "^2.3.0",
+    "ora": "^6.0.1",
+    "prettier": "^2.4.1",
+    "rollup": "^2.59.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "sass": "^1.44.0",
+    "semantic-release": "^18.0.1",
+    "stylelint": "^14.5.1",
+    "stylelint-config-prettier-scss": "^0.0.1",
+    "stylelint-config-standard-scss": "^3.0.0",
+    "through2": "^4.0.2",
+    "ts-node": "^10.5.0",
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.5",
+    "vite": "^2.8.6"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "lint-staged": {
+    "*.{md,js,ts,tsx,vue,scss}": "prettier --write",
+    "*.{vue,js,jsx,cjs,mjs,ts,tsx,cts,mts}": "eslint --fix",
+    "*.{css,scss}": "stylelint --fix"
+  }
+}
