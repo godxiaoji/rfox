@@ -25,12 +25,8 @@ export default function ExpModal() {
   const callbackEvent = useRef(false)
   const visibleEvent = useRef(false)
 
-  function onShow(
-    args: showArgs = {
-      showClose: true
-    }
-  ) {
-    setShowClose(!!args.showClose)
+  function onShow(args: showArgs = {}) {
+    setShowClose(args.showClose !== false)
     setMaskClosable(!!args.maskClosable)
     setVisible(true)
   }

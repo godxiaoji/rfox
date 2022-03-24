@@ -8,16 +8,16 @@ export const getCellClasses = (props: CellProps) => {
     'fx-cell',
     'fx-horizontal-hairline',
     {
-      clickable: props.clickable || props.isLink,
+      clickable: !!(props.clickable || props.isLink),
       'has--icon': props.icon,
       disabled: props.disabled
     }
   ]
 }
 
-export const getCellArrowClasses = (props: CellProps) => {
+export const getCellArrowClasses = (arrowDirection?: ArrowDirection) => {
   return [
     'fx-cell_link-icon',
-    'arrow--' + getEnumsValue(LINK_ICON_NAMES, props.arrowDirection)
+    'arrow--' + getEnumsValue(LINK_ICON_NAMES, arrowDirection)
   ]
 }

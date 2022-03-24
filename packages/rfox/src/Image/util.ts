@@ -1,7 +1,7 @@
 import type { CSSProperties } from '../helpers/types'
 import { camelCase2KebabCase, getNumber } from '../helpers/util'
 import { getEnumsValue } from '../helpers/validator'
-import type { ImageProps, Mode } from './types'
+import type { Mode } from './types'
 
 export const MODE_NAMES: Mode[] = [
   'scaleToFill',
@@ -25,8 +25,8 @@ export const getModeClassName = (mode?: Mode) => {
   )
 }
 
-export const getImageRatioStyles = (props: ImageProps) => {
+export const getImageRatioStyles = (aspectRatio?: number | string) => {
   return {
-    paddingTop: getNumber(props.aspectRatio) * 100 + '%'
+    paddingTop: getNumber(aspectRatio) * 100 + '%'
   } as CSSProperties
 }

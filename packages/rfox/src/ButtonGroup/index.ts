@@ -1,4 +1,4 @@
-import { ButtonGroup } from '../Button/'
+import { ButtonGroup } from '../Button'
 
 export { ButtonGroup }
 

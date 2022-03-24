@@ -1,18 +1,19 @@
 import { createPortal } from 'react-dom'
 import classNames from 'classnames'
 import type { ModalEmits, ModalProps } from './types'
-import type { FC } from '../helpers/types'
+import type { FRFC } from '../helpers/types'
 import { usePopup } from '../popup/use-popup'
-import { popupDefaultProps } from '../popup/props'
 import CloseCircleFilled from '../Icon/icons/CloseCircleFilled'
 import { getModalBoxStyles } from './util'
 import { Icon } from '../Icon'
+import type { PopupRef } from '../popup/types'
+import { forwardRef } from 'react'
 
-const FxModal: FC<ModalProps & ModalEmits> = props => {
+const FxModal: FRFC<PopupRef, ModalProps & ModalEmits> = (props, ref) => {
   const { popupStyles, popupClasses, customCancel, onMaskClick, onCloseClick } =
-    usePopup(props, {})
+    usePopup(props, ref, {})
 
-  const classes = classNames(['fx-modal', popupClasses])
+  const classes = classNames(['fx-modal', popupClasses, props.className])
   const boxStyles = getModalBoxStyles(props)
 
   return createPortal(
@@ -20,7 +21,7 @@ const FxModal: FC<ModalProps & ModalEmits> = props => {
       <div className="fx-mask" onClick={onMaskClick}></div>
       <div className="fx-modal_box" style={boxStyles}>
         <div className="fx-modal_box-inner">{props.children}</div>
-        {props.showClose ? (
+        {props.showClose !== false ? (
           <i className="fx-modal_close" onClick={onCloseClick}>
             <Icon icon={CloseCircleFilled} />
           </i>
@@ -33,9 +34,4 @@ const FxModal: FC<ModalProps & ModalEmits> = props => {
   )
 }
 
-FxModal.defaultProps = {
-  ...popupDefaultProps,
-  showClose: true
-}
-
-export default FxModal
+export default forwardRef(FxModal)

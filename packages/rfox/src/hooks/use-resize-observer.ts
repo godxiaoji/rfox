@@ -1,34 +1,43 @@
 import { noop } from '../helpers/util'
 import { MutableRefObject, useEffect, useRef } from 'react'
 
+type Callback = (rect: DOMRectReadOnly, resizeCount: number) => void
+
 export function useResizeObserver(
-  container: MutableRefObject<HTMLElement | null | undefined>,
-  callback: (rect: DOMRect) => void
+  elRef: MutableRefObject<HTMLElement | null | undefined>,
+  callback: Callback
 ) {
   if (typeof ResizeObserver === 'undefined') {
     return noop
   }
 
+  const count = useRef(0)
+  const callbackRef = useRef<Callback>(callback)
+  callbackRef.current = callback
+
   const ro = useRef(
     new ResizeObserver(entries => {
       entries.forEach(entry => {
-        callback(entry.contentRect)
+        count.current++
+
+        callbackRef.current(entry.contentRect, count.current)
       })
     })
   )
 
-  useEffect(() => {
-    off()
-    on()
-  }, [container])
-
   function on() {
-    container.current && ro.current.observe(container.current)
+    elRef.current && ro.current.observe(elRef.current)
   }
 
   function off() {
     ro.current.disconnect()
+    count.current = 0
   }
+
+  useEffect(() => {
+    off()
+    on()
+  }, [elRef.current])
 
   useEffect(() => off, [])
 

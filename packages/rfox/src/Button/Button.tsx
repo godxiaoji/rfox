@@ -1,42 +1,79 @@
-import React, { useContext } from 'react'
+import { useCallback, useContext } from 'react'
 import classNames from 'classnames'
 import type { ButtonEmits, ButtonProps } from './types'
 import { FORM_TYPES, getButtonClasses, getButtonStyles } from './util'
 import { getEnumsValue } from '../helpers/validator'
-import { createDefaultProps, GroupContext } from './common'
+import { GroupContext } from './context'
+import { createDefaultProps } from './props'
 import { useChildCountConsumer } from '../hooks/use-child-count'
 import { Icon } from '../Icon'
 import LoadingOutlined from '../Icon/icons/LoadingOutlined'
 import type { FC } from '../helpers/types'
 
-const FxButton: FC<ButtonProps & ButtonEmits> = props => {
+const FxButton: FC<ButtonProps & ButtonEmits> = ({
+  size,
+  pattern,
+  shape,
+  type,
+  icon,
+  loading,
+  ghost,
+  transparent,
+  color,
+  formType,
+  disabled,
+  className,
+  children,
+  onClick,
+  ...attrs
+}) => {
   useChildCountConsumer()
   const consumer = useContext(GroupContext)
 
   const classes = classNames(
-    getButtonClasses(props, consumer.hasGroup ? consumer : undefined),
-    props.className
+    getButtonClasses(
+      {
+        loading,
+        icon,
+        ghost,
+        transparent,
+        color,
+        type,
+        size,
+        pattern,
+        shape
+      },
+      consumer.hasGroup ? consumer : undefined
+    ),
+    className
   )
-  const styles = getButtonStyles(props)
+  const styles = getButtonStyles(color)
 
-  const formType = getEnumsValue(FORM_TYPES, props.formType)
+  const formType2 = formType ? getEnumsValue(FORM_TYPES, formType) : undefined
+
+  const renderIcon = useCallback(
+    () =>
+      loading ? (
+        <Icon icon={LoadingOutlined} spin={true} />
+      ) : icon ? (
+        <Icon icon={icon} />
+      ) : (
+        <></>
+      ),
+    [loading, icon]
+  )
 
   return (
     <button
+      {...attrs}
       className={classes}
       style={styles}
-      disabled={props.disabled}
-      type={formType}
-      onClick={props.onClick}
+      disabled={disabled}
+      type={formType2}
+      onClick={onClick}
     >
-      {props.loading ? (
-        <Icon icon={LoadingOutlined} spin={true} />
-      ) : props.icon ? (
-        <Icon icon={props.icon} />
-      ) : (
-        <></>
-      )}
-      <span>{props.children}</span>
+      {renderIcon()}
+      <span>{children}</span>
     </button>
   )
 }

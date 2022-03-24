@@ -38,10 +38,6 @@ export function addEvent(
   callback: FxEventCallback,
   $el: FxEventElement = document
 ) {
-  if (!(typeof callback === 'function') || !type) {
-    return
-  }
-
   const target = (
     $el === document.documentElement ? document : $el
   ) as EventTargetWithUID
@@ -60,6 +56,8 @@ export function addEvent(
   }
 
   callbacks[type][uid].push(callback)
+
+  return () => removeEvent(type, callback, $el)
 }
 
 export function removeEvent(

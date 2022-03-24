@@ -1,4 +1,4 @@
-import type { AnyObject } from './types'
+import type { AnyObject, EmptyObject } from './types'
 
 /**
  * 将字段名转为驼峰式格式
@@ -37,6 +37,24 @@ export function camelCase2KebabCase(name: string) {
 }
 
 /**
+ * 是否字符串
+ * @param object 值
+ * @returns boolean
+ */
+export function isString(object: unknown): object is string {
+  return typeof object === 'string'
+}
+
+/**
+ * 是否布尔
+ * @param object 值
+ * @returns boolean
+ */
+export function isBoolean(object: unknown): object is boolean {
+  return typeof object === 'boolean'
+}
+
+/**
  * 是否对象，包含常见的{}/[]，不含null
  * @param object 值
  * @returns boolean
@@ -71,7 +89,7 @@ export function isNumeric(object: unknown): object is number | string {
  * @param object 值
  * @returns boolean
  */
-export function isInteger(object: unknown) {
+export function isInteger(object: unknown): object is number {
   return isNumber(object) && (object as number) % 1 === 0
 }
 
@@ -80,7 +98,7 @@ export function isInteger(object: unknown) {
  * @param object 值
  * @returns boolean
  */
-export function isSymbol(object: unknown) {
+export function isSymbol(object: unknown): object is symbol {
   return (
     typeof object === 'symbol' ||
     (isObject(object) &&
@@ -93,7 +111,7 @@ export function isSymbol(object: unknown) {
  * @param object 值
  * @returns boolean
  */
-export const isEmptyObject = (object: unknown) => {
+export function isEmptyObject(object: unknown): object is EmptyObject {
   return typeof object === 'object' && JSON.stringify(object) === '{}'
 }
 
@@ -102,7 +120,7 @@ export const isEmptyObject = (object: unknown) => {
  * @param object 值
  * @returns boolean
  */
-export const isStringNumberMix = (object: unknown) => {
+export function isStringNumberMix(object: unknown): object is string | number {
   return typeof object === 'string' || typeof object === 'number'
 }
 
@@ -423,4 +441,17 @@ export const isURL = (object: unknown) => {
       object as string
     )
   )
+}
+
+export const getSameValueArray: <T>(value: T, len: number) => T[] = (
+  value,
+  len
+) => {
+  const newArr = []
+
+  for (let i = 0; i < len; i++) {
+    newArr.push(value)
+  }
+
+  return newArr
 }

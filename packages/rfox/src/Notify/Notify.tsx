@@ -1,25 +1,29 @@
 import { createPortal } from 'react-dom'
 import classNames from 'classnames'
 import type { NotifyEmits, NotifyProps } from './types'
-import type { FC } from '../helpers/types'
+import type { FRFC } from '../helpers/types'
 import { usePopup } from '../popup/use-popup'
 import { useDelay } from '../hooks/use-delay'
-import { popupDefaultProps } from '../popup/props'
 import { NoticeBar } from '../NoticeBar'
+import type { PopupRef } from '../popup/types'
+import { forwardRef } from 'react'
 
-const FxNotify: FC<NotifyProps & NotifyEmits> = props => {
+const FxNotify: FRFC<PopupRef, NotifyProps & NotifyEmits> = (props, ref) => {
   const { addDelayTask, removeDelayTask } = useDelay(() => {
     customCancel('auto', true)
   }, props.duration)
 
-  const { popupStyles, popupClasses, customCancel, onCloseClick } = usePopup(
-    props,
-    {
-      forbidScroll: false,
-      afterCancel: removeDelayTask,
-      afterShow: addDelayTask
-    }
-  )
+  const {
+    popupStyles,
+    popupClasses,
+    customCancel,
+    onCloseClick,
+    setForbidScroll
+  } = usePopup(props, ref, {
+    afterHide: removeDelayTask,
+    afterShow: addDelayTask
+  })
+  setForbidScroll(false)
 
   const classes = classNames(['fx-notify', popupClasses])
 
@@ -27,7 +31,7 @@ const FxNotify: FC<NotifyProps & NotifyEmits> = props => {
     <div className={classes} style={popupStyles}>
       <NoticeBar
         className="fx-notify_inner"
-        type={props.type}
+        type={props.type ?? 'primary'}
         leftIcon={props.icon}
         title={props.title}
         color={props.color}
@@ -39,11 +43,4 @@ const FxNotify: FC<NotifyProps & NotifyEmits> = props => {
   )
 }
 
-FxNotify.defaultProps = {
-  ...popupDefaultProps,
-  type: 'primary',
-  closable: false,
-  duration: 0
-}
-
-export default FxNotify
+export default forwardRef(FxNotify)

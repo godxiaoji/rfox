@@ -1,15 +1,12 @@
-import React, { useState } from 'react'
 import type { ButtonGroupProps } from './types'
-import { createDefaultProps, GroupContext } from './common'
-import { getButtonGroupClasses, getCommonClasses } from './util'
+import { GroupContext } from './context'
+import { createDefaultProps } from './props'
+import { getButtonGroupClasses } from './util'
 import classNames from 'classnames'
 import { useChildCountProvider } from '../hooks/use-child-count'
+import type { FC } from '../helpers/types'
 
-const FxButtonGroup: React.FC<
-  ButtonGroupProps & {
-    className?: string
-  }
-> = props => {
+const FxButtonGroup: FC<ButtonGroupProps> = props => {
   const { ChildCountProvider, childCount } = useChildCountProvider()
   const classes = classNames(
     getButtonGroupClasses(props, childCount),

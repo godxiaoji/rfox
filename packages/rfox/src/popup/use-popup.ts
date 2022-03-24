@@ -1,74 +1,64 @@
 import { addClassName, getScrollTop, removeClassName } from '../helpers/dom'
-import { useBlur } from '../hooks/use-blur'
 import type {
   VisibleState,
   PopupCustomCancel,
   PopupCustomConfirm,
   PopupProps,
-  PopupEmits
+  PopupEmits,
+  PopupRef
 } from './types'
-import { useContext, useEffect, useRef, useState } from 'react'
+import {
+  ForwardedRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState
+} from 'react'
 import { getNewZIndex, getPopupStyles } from './util'
 import type { Noop } from '../helpers/types'
-import { UseEmitFn } from '../hooks/types'
-import { ApiContext } from './api'
+import { useBlur } from '../hooks/use-event'
+import { capitalize } from '../helpers/util'
 
-type LifeName = 'afterConfirm' | 'afterCancel' | 'afterShow' | 'afterHidden'
+type LifeName =
+  | 'afterConfirm'
+  | 'afterCancel'
+  | 'afterShow'
+  | 'afterShown'
+  | 'afterHide'
+  | 'afterHidden'
 
-type UseOptions = Partial<
-  Record<LifeName, Noop> & {
-    forbidScroll: boolean
-    enableUseBlur: boolean
-  }
->
-
-function useApiHook(emits: PopupEmits) {
-  const api = useContext(ApiContext)
-
-  const emitHook: UseEmitFn<Required<typeof emits>> = (event, res) => {
-    const emit = emits[event]
-
-    if (api.in) {
-      api.in(event, res)
-    } else if (emit) {
-      emit(res as any)
-    }
-  }
-
-  function cancelHook(customCancel: PopupCustomCancel) {
-    api.out && api.out('customCancel', customCancel)
-  }
-
-  return {
-    emitHook,
-    cancelHook
-  }
-}
+type UseOptions = Partial<Record<LifeName, Noop>>
 
 export function usePopup(
   props: PopupProps & PopupEmits,
+  ref: ForwardedRef<PopupRef>,
   useOptions: UseOptions
 ) {
-  const { emitHook, cancelHook } = useApiHook(props)
-  // const isParent = inject<boolean>('fxPopupExtend', false)
   const [isShow, setIsShow] = useState(false)
   const [visible2, setVisible2] = useState(false)
   const [zIndex, setZIndex] = useState(0)
   const [absTop, setAbsTop] = useState<number | null>(null)
 
+  const forbidScroll = useRef(true)
+  const enableBlurCancel = useRef(false)
   const showing = useRef(false)
   const hiding = useRef(true)
   const visibleTimer = useRef<number>()
-
-  const visibleBlur = useBlur(() => {
-    customCancel('blur')
-  })
 
   function clearVisibleTimer() {
     clearTimeout(visibleTimer.current)
   }
 
-  function doShow(callback: () => void) {
+  function setForbidScroll(isForbid: boolean) {
+    forbidScroll.current = isForbid
+  }
+
+  function setEnableBlurCancel(enable: boolean) {
+    enableBlurCancel.current = enable
+  }
+
+  function doShow() {
     if (showing.current) {
       return false
     }
@@ -78,47 +68,33 @@ export function usePopup(
     clearVisibleTimer()
 
     // 如果禁止滚动
-    if (useOptions.forbidScroll !== false) {
+    if (forbidScroll.current) {
       addClassName(document.body, 'fx-overflow-hidden')
     } else {
       setAbsTop(getScrollTop())
     }
 
-    if (useOptions.enableUseBlur) {
-      visibleBlur.addEvent()
-    }
+    // if (useOptions.enableUseBlur) {
+    //   visibleBlur.addEvent()
+    // }
 
     setZIndex(getNewZIndex())
     setIsShow(true)
 
     visibleTimer.current = window.setTimeout(() => {
       setVisible2(true)
+      emitVisibleState('show')
 
       visibleTimer.current = window.setTimeout(() => {
         showing.current = false
-        callback()
+        emitVisibleState('shown')
       }, 210)
     }, 17)
-
-    if (!props.visible) {
-      emitHook('onUpdateVisible', true)
-    }
 
     return true
   }
 
-  function show() {
-    const isSuccess = doShow(() => {
-      emitVisibleState('shown')
-    })
-
-    if (isSuccess) {
-      emitVisibleState('show')
-      afterCall('afterShow')
-    }
-  }
-
-  function _doHide(callback?: Noop) {
+  function doHide() {
     if (hiding.current) {
       return false
     }
@@ -131,89 +107,107 @@ export function usePopup(
     visibleTimer.current = window.setTimeout(() => {
       setIsShow(false)
       setAbsTop(null)
-      hiding.current = false
 
-      callback && callback()
+      visibleTimer.current = window.setTimeout(() => {
+        hiding.current = false
+        emitVisibleState('hidden')
+      }, 17)
     }, 210)
 
-    if (props.visible) {
-      emitHook('onUpdateVisible', false)
-    }
+    emitVisibleState('hide')
 
     return true
   }
 
-  function hide(lifeName?: LifeName) {
-    const isSuccess = _doHide(() => {
-      emitVisibleState('hidden')
-      afterCall('afterHidden')
-    })
-
-    if (isSuccess) {
-      lifeName && afterCall(lifeName)
-      emitVisibleState('hide')
-    }
-
-    visibleBlur.removeEvent()
-  }
-
-  function afterCall(lifeName: LifeName) {
-    if (typeof useOptions[lifeName] === 'function') {
-      ;(useOptions[lifeName] as () => void)()
-    }
-  }
-
   function emitVisibleState(state: VisibleState) {
-    emitHook('onVisibleStateChange', {
-      state
-    })
+    props.onVisibleStateChange && props.onVisibleStateChange({ state })
+
+    const lifeName = `after${capitalize(state)}` as LifeName
+
+    if (typeof useOptions[lifeName] === 'function') {
+      ;(useOptions[lifeName] as Noop)()
+    }
   }
 
   const customCancel: PopupCustomCancel = (key, focus = false) => {
     if (showing.current && !focus) {
       return
     }
-    emitHook('onCancel', { source: key })
-    hide('afterCancel')
+    props.onCancel && props.onCancel({ source: key })
+    updateVisible(false)
   }
 
   const customConfirm: PopupCustomConfirm = detail => {
-    // emitHook('confirm', detail)
-    hide('afterConfirm')
+    props.onConfirm && props.onConfirm(detail)
+    updateVisible(false)
   }
 
-  const popupStyles = getPopupStyles(zIndex, absTop, isShow)
+  function onMaskClick() {
+    if (props.maskClosable === false) {
+      return
+    }
+    customCancel('maskClick')
+  }
 
-  const popupClasses = ['fx-popup', { visible: visible2 }]
+  function onCancelClick() {
+    customCancel('cancelClick')
+  }
+
+  function onCloseClick() {
+    customCancel('closeClick', true)
+  }
+
+  function updateVisible(visible: boolean) {
+    props.onUpdateVisible && props.onUpdateVisible(visible)
+  }
+
+  const popupStyles = useMemo(
+    () => getPopupStyles(zIndex, absTop, isShow),
+    [zIndex, absTop, isShow]
+  )
+  const popupClasses = useMemo(
+    () => ['fx-popup', { visible: visible2 }],
+    [visible2]
+  )
 
   useEffect(() => {
-    props.visible ? show() : hide()
+    props.visible ? doShow() : doHide()
   }, [props.visible])
 
-  useEffect(() => {
-    return clearVisibleTimer
-  }, [])
+  useEffect(() => clearVisibleTimer, [])
 
-  cancelHook(customCancel)
+  useBlur(() => {
+    if (enableBlurCancel.current) {
+      customCancel('blur')
+    }
+  })
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      customCancel,
+      customConfirm,
+      onCancelClick
+    }),
+    []
+  )
 
   return {
     popupStyles,
     popupClasses,
-    show,
-    hide,
     customConfirm,
     customCancel,
-    onMaskClick() {
-      if (!props.maskClosable) {
-        return
-      }
-      customCancel('maskClick')
-    },
-    onCloseClick() {
-      customCancel('closeClick', true)
-    },
-    onCancelClick() {
-      customCancel('cancelClick')
-    }
+    onMaskClick,
+    onCloseClick,
+    onCancelClick,
+    setForbidScroll,
+    setEnableBlurCancel
   }
+}
+
+export function usePopupRef(ref: ForwardedRef<PopupRef>) {
+  const popupRef =
+    ref && typeof ref !== 'function' ? ref : useRef<PopupRef>(null)
+
+  return { popupRef }
 }

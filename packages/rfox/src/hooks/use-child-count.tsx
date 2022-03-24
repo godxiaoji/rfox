@@ -1,17 +1,11 @@
 import type { Noop } from '../helpers/types'
 import { useState, createContext, useContext, useEffect } from 'react'
-import type { Context, ReactNode } from 'react'
+import { withProvider } from './with'
 
 const ParentContext = createContext<{
   addCount?: Noop
   minusCount?: Noop
 }>({})
-
-function withProvider<T>(Ctx: Context<T>, value: T) {
-  return function Provider(props: { children?: ReactNode }) {
-    return <Ctx.Provider value={value} {...props} />
-  }
-}
 
 export function useChildCountProvider() {
   const [count, setCount] = useState(0)

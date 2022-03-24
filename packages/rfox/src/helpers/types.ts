@@ -9,11 +9,26 @@ interface FxCSS {
   '--fx-front-color'?: string
   '--fx-icon-color'?: string
   '--fx-icon-size'?: string
+  '--fx-white-color'?: string
+  '--fx-black-color'?: string
+  '--fx-active-color'?: string
+  '--fx-size'?: string
 }
 
 export type FC<T = Record<string, unknown>> = React.FC<
   T & {
     className?: string
+  }
+>
+
+export type FRFC<
+  T,
+  P = Record<string, unknown>
+> = React.ForwardRefRenderFunction<
+  T,
+  P & {
+    className?: string
+    children?: React.ReactNode | undefined
   }
 >
 
@@ -32,7 +47,9 @@ export interface Validator<T = unknown> {
   (value: T): boolean
 }
 
-export type DomSelector = HTMLElement | string | Document
+export type Selector = HTMLElement | string
+
+export type DomSelector = Selector | Document
 
 /**
  * 事件
@@ -71,4 +88,9 @@ export type VoidFnToBooleanFn<VoidFn> = VoidFn extends (
 export type FnArgs<Fn> = Fn extends (...any: infer Args) => any ? Args : never
 
 export type OnError = (e: TypeException) => void
-export type OnClick = React.MouseEventHandler<HTMLElement>
+export type OnClick<T extends HTMLElement = HTMLElement> =
+  React.MouseEventHandler<T>
+export type OnSVGClick = React.MouseEventHandler<SVGSVGElement>
+export type OnFocus = React.FocusEventHandler<
+  HTMLInputElement | HTMLTextAreaElement
+>

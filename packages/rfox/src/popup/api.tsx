@@ -1,36 +1,37 @@
-import { createContext, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { isObject, objectForEach } from '../helpers/util'
 import { getCallbackFns } from '../apis/callback'
-import type { AnyObject, EmptyObject, FC } from '../helpers/types'
-import type { PopupCustomCancel } from './types'
+import type { AnyObject, EmptyObject, FC, FRFC } from '../helpers/types'
+import type {
+  OnVisibleStateChange,
+  PopupCustomConfirm,
+  PopupRef
+} from './types'
 import type { ApiOptionsComplete, ApiOptionsFail } from '../apis/types'
 import Exception from '../helpers/exception'
+import { PopupOnCancel } from '..'
 
-type ApiFC = FC<any>
+type ApiFC = any
 
-type CreatePopupHook = (
-  done: (res: any) => void
-) => (hookEvent: string, args: any) => void
+type PopupHook = (hookEvent: string, args: any) => void
 
-interface PopupBridge {
-  in?: (key: string, value?: any) => void
-  out?: (key: 'customCancel', value: PopupCustomCancel) => void
-}
+type CreatePopupHook = (done: (res: any) => void) => PopupHook
 
-interface ComponentRef {
+type ComponentRef = {
   uid: HTMLDivElement
-  fns: {
-    customCancel?: PopupCustomCancel
-  }
+  ref?: React.RefObject<PopupRef>
 }
 
-export const ApiContext = createContext<PopupBridge>({})
+const $refs: {
+  [propName: string]: ComponentRef[]
+} = {}
 
 function withComponent(
   WrappedComponent: ApiFC,
   options: AnyObject,
-  bridge: PopupBridge
+  hook: PopupHook,
+  ref: ComponentRef
 ): FC {
   return function () {
     const props: AnyObject = {}
@@ -47,19 +48,36 @@ function withComponent(
       }
     })
 
-    const [visible] = useState(true)
+    const [visible, setVisible] = useState(true)
+    const popupRef = useRef<PopupRef>(null)
+
+    const onVisibleStateChange: OnVisibleStateChange = res => {
+      hook('onVisibleStateChange', res)
+    }
+
+    const onConfirm: PopupCustomConfirm = res => {
+      hook('onConfirm', res)
+    }
+
+    const onCancel: PopupOnCancel = res => {
+      hook('onCancel', res)
+    }
+
+    ref.ref = popupRef
 
     return (
-      <ApiContext.Provider value={bridge}>
-        <WrappedComponent {...props} visible={visible} />
-      </ApiContext.Provider>
+      <WrappedComponent
+        {...props}
+        ref={popupRef}
+        visible={visible}
+        onUpdateVisible={(v: boolean) => setVisible(v)}
+        onVisibleStateChange={onVisibleStateChange}
+        onConfirm={onConfirm}
+        onCancel={onCancel}
+      />
     )
   }
 }
-
-const $refs: {
-  [propName: string]: ComponentRef
-} = {}
 
 export function createShowPopup<T, E = EmptyObject>({
   apiName,
@@ -104,44 +122,45 @@ export function createShowPopup<T, E = EmptyObject>({
       try {
         const key = apiName.replace('show', '')
 
+        // 单例就清除之前的
+        singleMode && clear(key)
+
+        // 组件hook
         const hook = createHook(function (res) {
           success(res)
           complete()
           resolve(res)
         })
 
-        singleMode && clear(key)
-
         const wrapper = document.createElement('div')
 
-        const $ref: ComponentRef = {
-          uid: wrapper,
-          fns: {}
+        // 缓存起来方便实时关闭
+        let refs = $refs[key]
+        if (!refs) {
+          refs = $refs[key] = []
         }
+        const ref: ComponentRef = { uid: wrapper }
+        refs.push(ref)
 
-        const bridge: PopupBridge = {
-          in(hookEvent, res) {
+        const ApiComponent = withComponent(
+          component,
+          options,
+          (hookEvent, args) => {
+            // 全局关闭hook
             if (
               hookEvent === 'onVisibleStateChange' &&
-              res.state === 'hidden'
+              args.state === 'hidden'
             ) {
               ReactDOM.unmountComponentAtNode(wrapper)
-              singleMode && remove(key, $ref.uid)
+              remove(key, ref)
             }
 
-            hook && hook(hookEvent, res)
+            hook(hookEvent, args)
           },
-          out(key, value) {
-            $ref.fns[key] = value
-          }
-        }
-
-        const ApiComponent = withComponent(component, options, bridge)
+          ref
+        )
 
         ReactDOM.render(<ApiComponent />, wrapper)
-
-        // 单例：如Toast
-        singleMode && ($refs[key] = $ref)
       } catch (e) {
         fail(new Exception(e))
         complete()
@@ -151,18 +170,27 @@ export function createShowPopup<T, E = EmptyObject>({
   }
 }
 
+/**
+ * 清除所有未销毁组件
+ * @param key 方法名
+ */
 function clear(key: string) {
   if ($refs[key]) {
-    const fns = $refs[key].fns
-    fns.customCancel && fns.customCancel('clear', true)
-
-    delete $refs[key]
+    $refs[key].forEach(v => {
+      // 调用未销毁的每个组件取消方法
+      v.ref?.current?.customCancel('clear', true)
+    })
   }
 }
 
-function remove(key: string, uid: HTMLDivElement) {
-  if ($refs[key] && $refs[key].uid === uid) {
-    delete $refs[key]
+/**
+ * 把组件ref从缓存清理掉
+ * @param key 方法名
+ * @param ref 组件ref
+ */
+function remove(key: string, ref: ComponentRef) {
+  if ($refs[key]) {
+    $refs[key].splice($refs[key].indexOf(ref), 1)
   }
 }
 

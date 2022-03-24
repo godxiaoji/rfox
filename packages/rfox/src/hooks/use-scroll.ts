@@ -1,88 +1,73 @@
-import { addEvent, removeEvent } from '../helpers/events'
-import type { FxEventElement, FxEventCallback } from '../helpers/types'
-import type { ScrollToOffsetOptions } from './types'
-import { useEffect } from 'react'
+import type { FxEventCallback } from '../helpers/types'
+import type { ScrollToEnd, ScrollToOffset } from './types'
 import type { MutableRefObject } from 'react'
+import { isNumber } from '../helpers/util'
+import { useEvent } from './use-event'
 
 /**
  * 绑定 scroll 事件
- * @param container scroll element
+ * @param elRef scroll element
  * @param callback onScroll
  * @returns off fn
  */
 export function useScroll(
-  container: MutableRefObject<FxEventElement | null | undefined>,
+  elRef: MutableRefObject<HTMLElement | null | undefined>,
   callback: FxEventCallback
 ) {
-  function on() {
-    container.current && addEvent('scroll', callback, container.current)
-  }
-
-  function off() {
-    if (container.current) {
-      removeEvent('scroll', callback, container.current)
-    }
-  }
-
-  useEffect(() => {
-    on()
-    return off
-  }, [])
-
-  return off
+  return useEvent(elRef, 'scroll', callback)
 }
 
-// export function useScrollTo(
-//   container: Ref<HTMLElement | undefined>,
-//   horizontal: Ref<boolean>
-// ) {
-//   /**
-//    * 滚动列表到指定的偏移（以像素为单位）
-//    * @param options 配置
-//    */
-//   function scrollToOffset(options: number | ScrollToOffsetOptions) {
-//     let behavior: 'auto' | 'smooth' = 'smooth'
-//     let top = 0
-//     let left = 0
+export function useScrollTo(
+  elRef: MutableRefObject<HTMLElement | null | undefined>
+) {
+  /**
+   * 滚动列表到指定的偏移（以像素为单位）
+   * @param args 配置
+   */
+  const scrollToOffset: ScrollToOffset = (...args) => {
+    let behavior: 'auto' | 'smooth' = 'smooth'
+    let top = 0
+    let left = 0
 
-//     if (typeof options === 'number') {
-//       top = options
-//       behavior = 'auto'
-//     } else if (options && typeof options.offset === 'number') {
-//       top = options.offset
-//       if (options.animated === false) behavior = 'auto'
-//     }
+    if (isNumber(args[0])) {
+      // x y
+      left = args[0]
+      isNumber(args[1]) && (top = args[1])
+      behavior = 'auto'
+    } else if (args[0]) {
+      isNumber(args[0].x) && (left = args[0].x)
+      isNumber(args[0].y) && (top = args[0].y)
+      args[0].animated === false && (behavior = 'auto')
+    }
 
-//     if (horizontal.value) {
-//       // 如果是水平的，数值换一下
-//       top = [left, (left = top)][0]
-//     }
+    elRef.current?.scrollTo({
+      top,
+      left,
+      behavior
+    })
+  }
 
-//     container.value?.scrollTo({
-//       top,
-//       left,
-//       behavior
-//     })
-//   }
+  /**
+   * 滚动到底部
+   * @param param0 {x = true, y = true, animated = true }
+   * @returns void
+   */
+  const scrollToEnd: ScrollToEnd = ({ x, y, animated } = {}) => {
+    const $root = elRef.current
 
-//   /**
-//    * 滚动到底部
-//    */
-//   function scrollToEnd(animated = false) {
-//     const $root = container.value
+    if (!$root) {
+      return
+    }
 
-//     if (!$root) {
-//       return
-//     }
+    scrollToOffset({
+      x: x !== false ? $root.scrollWidth : undefined,
+      y: y !== false ? $root.scrollHeight : undefined,
+      animated
+    })
+  }
 
-//     scrollToOffset({
-//       offset: scrollX ? $root.scrollWidth : $root.scrollHeight,
-//       animated
-//     })
-//   }
-
-//   return {
-//     scrollToOffset,
-//     scrollToEnd
-//   }
-// }
+  return {
+    scrollToOffset,
+    scrollToEnd
+  }
+}

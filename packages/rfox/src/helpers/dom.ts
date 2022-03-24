@@ -1,5 +1,5 @@
 import { camelCase2KebabCase, isNumber, objectForEach } from '../helpers/util'
-import type { ViewPosition } from './types'
+import type { CSSProperties, ViewPosition } from './types'
 
 export function appendToBody($el: Element) {
   document.body.appendChild($el)
@@ -165,15 +165,13 @@ export function scrollTo(
   }
 }
 
-interface StyleObject {
-  [propName: string]: string
-}
-
-export function styleObject2CssText(object: StyleObject) {
+export function CSSProperties2CssText(object: CSSProperties) {
   const arr: string[] = []
 
   objectForEach(object, (v, k) => {
-    arr.push(`${camelCase2KebabCase(k)}: ${v}`)
+    const key = camelCase2KebabCase(k)
+
+    arr.push(`${key.indexOf('webkit') === 0 ? `--${key}` : key}: ${v}`)
   })
 
   return arr.join('; ')

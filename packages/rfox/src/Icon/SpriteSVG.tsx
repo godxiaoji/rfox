@@ -1,13 +1,9 @@
-import { CSSProperties } from '../helpers/types'
+import type { SpriteSVGProps } from './types'
 
-const FxSpriteSVG: React.FC<{
-  iconName: string
-  style: CSSProperties
-  className: string
-}> = props => {
+const FxSpriteSVG: React.FC<SpriteSVGProps> = ({ iconName, ...props }) => {
   return (
-    <svg style={props.style} className={props.className}>
-      <use xlinkHref={'#' + props.iconName}></use>
+    <svg {...props}>
+      <use xlinkHref={'#' + iconName}></use>
     </svg>
   )
 }

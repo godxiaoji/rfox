@@ -2,7 +2,7 @@ import safeAreaInsets from 'safe-area-insets'
 import { useEffect, useState } from 'react'
 import type { SafeAreaInsets } from './types'
 
-export function useSafeAreaInsets(enable?: boolean) {
+export function useSafeAreaInsets(enable = true) {
   const [data, setData] = useState<SafeAreaInsets>({
     support: safeAreaInsets.support,
     top: 0,

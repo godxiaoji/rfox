@@ -1,8 +1,9 @@
+import type { HTMLAttributes } from 'react'
 import type { IconData } from '../Icon/types'
 
 export type ArrowDirection = 'right' | 'up' | 'down' | 'left'
 
-export interface CellProps {
+export interface CellProps extends HTMLAttributes<HTMLDivElement> {
   icon?: IconData
   label?: string
   description?: string

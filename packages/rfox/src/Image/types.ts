@@ -1,5 +1,6 @@
 import type { IconData } from '../Icon/types'
 import type { OnError } from '../helpers/types'
+import { HTMLAttributes } from 'react'
 
 export type Mode =
   | 'scaleToFill'
@@ -21,7 +22,7 @@ export type OnLoad = (payload: {
   src: string
 }) => void
 
-export interface ImageProps {
+export interface ImageProps extends HTMLAttributes<HTMLDivElement> {
   src?: string
   mode?: Mode
   lazyLoad?: boolean
@@ -32,9 +33,9 @@ export interface ImageProps {
   iconSize?: number | string
 }
 
-export interface ImageEvents {
-  onLoad?: OnLoad
-  onError?: OnError
+export interface ImageEmits {
+  onLoaded?: OnLoad
+  onLoadError?: OnError
 }
 
 export interface LoadedResource {

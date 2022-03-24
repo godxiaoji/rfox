@@ -2,29 +2,34 @@ import { createPortal } from 'react-dom'
 import classNames from 'classnames'
 import type { ToastEmits, ToastProps } from './types'
 import { hasIcon } from './util'
-import type { FC } from '../helpers/types'
+import type { FRFC } from '../helpers/types'
 import { usePopup } from '../popup/use-popup'
 import { ActivityIndicator } from '../ActivityIndicator'
 import { Icon } from '../Icon'
 import CheckOutlined from '../Icon/icons/CheckOutlined'
 import CloseOutlined from '../Icon/icons/CloseOutlined'
 import { useDelay } from '../hooks/use-delay'
-import { popupDefaultProps } from '../popup/props'
+import type { PopupRef } from '../popup/types'
+import { forwardRef } from 'react'
 
-const FxToast: FC<ToastProps & ToastEmits> = props => {
+const FxToast: FRFC<PopupRef, ToastProps & ToastEmits> = (props, ref) => {
   const { addDelayTask, removeDelayTask } = useDelay(() => {
     customCancel('auto', true)
   }, props.duration)
 
-  const { popupStyles, popupClasses, customCancel } = usePopup(props, {
-    forbidScroll: false,
-    afterCancel: removeDelayTask,
-    afterShow: addDelayTask
-  })
+  const { popupStyles, popupClasses, customCancel, setForbidScroll } = usePopup(
+    props,
+    ref,
+    {
+      afterHide: removeDelayTask,
+      afterShow: addDelayTask
+    }
+  )
+  setForbidScroll(false)
 
   const classes = classNames([
     'fx-toast',
-    { 'forbid-click': props.showMask },
+    { 'forbid-click': !!props.showMask },
     popupClasses
   ])
 
@@ -73,10 +78,4 @@ const FxToast: FC<ToastProps & ToastEmits> = props => {
   )
 }
 
-FxToast.defaultProps = {
-  ...popupDefaultProps,
-  showMask: false,
-  duration: 0
-}
-
-export default FxToast
+export default forwardRef(FxToast)

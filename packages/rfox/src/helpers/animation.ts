@@ -17,7 +17,7 @@ const Easing = {
 
 let uid = 0
 
-export class AnimationFrameTask {
+export class FrameTask {
   stop: () => boolean
   id: number
 
@@ -37,20 +37,20 @@ export class AnimationFrameTask {
   }
 }
 
-interface OptionsProgress {
+interface FrameProgressOption {
   (res: { current: number; frameIndex: number; id: number }): void
 }
 
-interface OptionsComplete {
+interface FrameCompleteOption {
   (res: { current: number; id: number }): void
 }
 
-interface Options {
+export interface FrameOption {
   from: number
   to: number
   duration: number
-  progress: OptionsProgress
-  complete?: OptionsComplete
+  progress: FrameProgressOption
+  complete?: FrameCompleteOption
   easing?: EasingType
 }
 
@@ -58,7 +58,7 @@ interface Options {
  * 变化解帧
  * @param options 设置项
  */
-export function frameTo(options: Options) {
+export function frameTo(options: FrameOption) {
   const { from, to, duration, progress, complete, easing } = options
 
   const start = Date.now()
@@ -110,7 +110,7 @@ export function frameTo(options: Options) {
 
   step()
 
-  return new AnimationFrameTask(ref, id)
+  return new FrameTask(ref, id)
 }
 
 export function getStretchOffset(offset: number) {

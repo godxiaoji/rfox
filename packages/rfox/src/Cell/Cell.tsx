@@ -11,54 +11,69 @@ const FxCell: FC<
     renderIcon?: () => ReactNode
     onClick?: OnClick
   }
-> = props => {
-  const classes = classNames(getCellClasses(props), props.className)
-  const arrowClasses = classNames(getCellArrowClasses(props))
+> = ({
+  icon,
+  label,
+  description,
+  content,
+  clickable,
+  required,
+  isLink,
+  disabled,
+  arrowDirection,
+  className,
+  renderIcon,
+  onClick,
+  children,
+  ...attrs
+}) => {
+  const classes = classNames(
+    getCellClasses({
+      clickable,
+      isLink,
+      icon,
+      disabled
+    }),
+    className
+  )
+  const arrowClasses = classNames(getCellArrowClasses(arrowDirection))
 
-  const onClick: OnClick = e => {
-    if (!props.disabled && props.onClick) {
-      props.onClick(e)
+  const handleClick: OnClick = e => {
+    if (!disabled && onClick) {
+      onClick(e)
     }
   }
 
   return (
-    <div className={classes} onClick={onClick}>
+    <div {...attrs} className={classes} onClick={handleClick}>
       <div className="fx-cell_header">
-        {props.renderIcon ? (
-          <div className="fx-cell_icon">{props.renderIcon()}</div>
-        ) : props.icon ? (
+        {renderIcon ? (
+          <div className="fx-cell_icon">{renderIcon()}</div>
+        ) : icon ? (
           <div className="fx-cell_icon">
-            <Icon icon={props.icon} />
+            <Icon icon={icon} />
           </div>
         ) : (
           <></>
         )}
 
-        {props.label ? (
+        {label ? (
           <div className="fx-cell_label">
-            {props.label}
-            {props.required ? (
-              <span className="fx-cell_required"> *</span>
-            ) : (
-              <></>
-            )}
+            {label}
+            {required ? <span className="fx-cell_required"> *</span> : <></>}
           </div>
         ) : (
           <></>
         )}
-        <div className="fx-cell_content">{props.children || props.content}</div>
+        <div className="fx-cell_content">{children || content}</div>
 
-        {props.isLink ? (
+        {isLink ? (
           <Icon className={arrowClasses} icon={RightOutlined} />
         ) : (
           <></>
         )}
       </div>
-      {props.description ? (
-        <div className="fx-cell_body">{props.description}</div>
-      ) : (
-        <></>
-      )}
+      {description ? <div className="fx-cell_body">{description}</div> : <></>}
     </div>
   )
 }

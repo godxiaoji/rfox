@@ -57,12 +57,12 @@ export const getButtonGroupClasses = (
   count: number
 ) => ['fx-button-group', getCommonClasses(props), 'count--' + (count || 1)]
 
-export const getButtonStyles = (props: ButtonProps) => {
+export const getButtonStyles = (color?: string) => {
   const obj: CSSProperties = {}
 
-  if (props.color && isColorValue(props.color as string)) {
-    const colors = getColorGroups(props.color as string)
-    const isDark = isDarkColor(props.color as string)
+  if (color && isColorValue(color)) {
+    const colors = getColorGroups(color)
+    const isDark = isDarkColor(color)
     const pattern = getEnumsValue(BUTTON_PATTERN_TYPES)
 
     obj[`--fx-color`] = colors[5]

@@ -1,4 +1,4 @@
-import type { AnyObject, EmptyObject } from '../helpers/types'
+import type { AnyObject, EmptyObject, Noop } from '../helpers/types'
 
 export interface PopupProps {
   visible?: boolean
@@ -9,12 +9,13 @@ export interface PopupEmits {
   onUpdateVisible?: (visible: boolean) => void
   onVisibleStateChange?: OnVisibleStateChange
   onCancel?: OnCancel
+  onConfirm?: (payload: any) => void
 }
 
 export interface PopupCustomCancel {
   (key: string, focus?: boolean): void
 }
-export interface PopupCustomConfirm<T = AnyObject> {
+export interface PopupCustomConfirm<T = any> {
   (detail: T): void
 }
 export type PopupStyles = Partial<{
@@ -35,3 +36,9 @@ export interface PopupSuccessConfirmArgs<T = AnyObject> {
 }
 
 export type PopupSuccessAlertArgs = EmptyObject
+
+export interface PopupRef {
+  customConfirm: PopupCustomConfirm
+  customCancel: PopupCustomCancel
+  onCancelClick: Noop
+}

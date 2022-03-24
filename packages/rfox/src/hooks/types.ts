@@ -1,4 +1,5 @@
-import type { UnionToIntersection } from '../helpers/types'
+import React from 'react'
+import type { Noop, UnionToIntersection } from '../helpers/types'
 
 export type UseEmitFn<
   Options,
@@ -12,8 +13,24 @@ export type UseEmitFn<
 >
 
 export interface ScrollToOffsetOptions {
-  offset: number
+  x?: number
+  y?: number
   animated?: boolean
+}
+
+export interface ScrollToOffset {
+  (xpos: number, ypos?: number): void
+  (options: ScrollToOffsetOptions): void
+}
+
+export interface ScrollToEndOptions {
+  x?: boolean
+  y?: boolean
+  animated?: boolean
+}
+
+export interface ScrollToEnd {
+  (options: ScrollToEndOptions): void
 }
 
 export interface SafeAreaInsets {
@@ -23,3 +40,32 @@ export interface SafeAreaInsets {
   right: number
   bottom: number
 }
+
+export type GroupContextValue = {
+  hasGroup: boolean
+}
+
+export type GroupContextItemRef = {
+  uid: symbol
+}
+
+export type GroupContext<
+  T extends GroupContextValue,
+  P extends GroupContextItemRef
+> = React.Context<
+  T & {
+    addItem?: (ref: React.MutableRefObject<P>) => void
+    removeItem?: (ref: React.MutableRefObject<P>) => void
+  }
+>
+
+export type ListContextValue = {
+  hasGroup: boolean
+}
+
+export type ListContext<T extends ListContextValue = ListContextValue> =
+  React.Context<
+    T & {
+      update?: Noop
+    }
+  >

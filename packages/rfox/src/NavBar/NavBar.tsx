@@ -12,7 +12,7 @@ import LeftOutlined from '../Icon/icons/LeftOutlined'
 import HomeOutlined from '../Icon/icons/HomeOutlined'
 import { useRef } from 'react'
 import type { MouseEvent } from 'react'
-import { useDbClick } from '../hooks/use-db-click'
+import { useDbclick } from '../hooks/use-event'
 
 type ButtonMouseEvent = MouseEvent<HTMLButtonElement>
 
@@ -193,7 +193,7 @@ const FxNavBar: FC<
     return <></>
   }
 
-  useDbClick(titleEl, ($el, event) => {
+  useDbclick(titleEl, ($el, event) => {
     if (event === 'dbclick') {
       props.onTitleDbclick && props.onTitleDbclick($el)
     }

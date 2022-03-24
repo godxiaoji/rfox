@@ -1,3 +1,4 @@
+import type { HTMLAttributes } from 'react'
 import type { OnClick, SizeType, StateType } from '../helpers/types'
 import type { IconData } from '../Icon/types'
 
@@ -18,7 +19,9 @@ export interface ButtonGroupProps {
   pattern?: PatternType
 }
 
-export interface ButtonProps extends ButtonGroupProps {
+export interface ButtonProps
+  extends ButtonGroupProps,
+    HTMLAttributes<HTMLButtonElement> {
   type?: StateType
   icon?: IconData
   loading?: boolean
@@ -29,6 +32,8 @@ export interface ButtonProps extends ButtonGroupProps {
   formType?: FormType
 }
 
+export type OnButtonClick = OnClick<HTMLButtonElement>
+
 export interface ButtonEmits {
-  onClick?: OnClick
+  onClick?: OnButtonClick
 }

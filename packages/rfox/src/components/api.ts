@@ -1,2 +1,8 @@
+export { showImagePreview } from '../ImagePreview'
+export { showPopover } from '../Popover'
+export { showPopDialog } from '../PopDialog'
+export { showPopMenu } from '../PopMenu'
+export { showDialog } from '../Dialog'
+export { showActionSheet } from '../ActionSheet'
 export { showNotify, hideNotify } from '../Notify'
 export { showLoading, showToast, hideLoading, hideToast } from '../Toast'

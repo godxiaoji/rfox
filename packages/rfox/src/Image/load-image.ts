@@ -8,6 +8,7 @@ type LoadObject = {
   checkInView: () => boolean
   onLoad: (res: LoadedResource) => void
   onError: (e: TypeException) => void
+  done?: boolean
 }
 
 const DEFAULT_EVENTS = [
@@ -39,10 +40,16 @@ export function loadNow(vm: LoadObject) {
   loadImageAsync(
     vm,
     res => {
-      vm.onLoad(res)
+      if (!vm.done) {
+        vm.done = true
+        vm.onLoad(res)
+      }
     },
     e => {
-      vm.onError(e)
+      if (!vm.done) {
+        vm.done = true
+        vm.onError(e)
+      }
     }
   )
 }
@@ -91,12 +98,16 @@ function lazyCheck(vm: LoadObject) {
     loadImageAsync(
       vm,
       res => {
-        removeComponentFromLazy(vm.uid)
-        vm.onLoad(res)
+        if (!vm.done) {
+          removeComponentFromLazy(vm.uid)
+          vm.onLoad(res)
+        }
       },
       e => {
-        removeComponentFromLazy(vm.uid)
-        vm.onError(e)
+        if (!vm.done) {
+          removeComponentFromLazy(vm.uid)
+          vm.onError(e)
+        }
       }
     )
   }
@@ -106,7 +117,9 @@ export function removeComponentFromLazy(uid: number | symbol) {
   const index = lazyQueueIndexOf(uid)
 
   if (index > -1) {
-    ListenerQueue.splice(index, 1)
+    const [vm] = ListenerQueue.splice(index, 1)
+    console.log(vm)
+    vm.done = true
   }
 
   if (ListenerQueue.length === 0) {
