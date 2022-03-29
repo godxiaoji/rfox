@@ -1,6 +1,6 @@
-import React, { HTMLAttributes } from 'react'
+import { HTMLAttributes, FC, SVGAttributes } from 'react'
 
-export type SVGComponent = React.FC<React.SVGAttributes<SVGSVGElement>>
+export type SVGComponent = FC<SVGAttributes<SVGSVGElement>>
 
 export type IconData = string | SVGComponent
 

@@ -21,7 +21,6 @@ export function getRangeNumber(
   },
   value: string | number
 ) {
-  console.log(props, formateNumber(value, props.decimalLength))
   value = formateNumber(value, props.decimalLength)
 
   if (value === '') {

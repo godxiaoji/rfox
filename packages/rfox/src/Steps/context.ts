@@ -4,6 +4,5 @@ import { createContext } from 'react'
 
 export const StepListContext: ListContext<StepContextValue> =
   createContext<StepContextValue>({
-    hasGroup: false,
     activeIndex: -1
   })

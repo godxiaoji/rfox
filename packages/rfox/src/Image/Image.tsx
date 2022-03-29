@@ -1,4 +1,5 @@
-import React, { useRef, useEffect, useState } from 'react'
+import type { DragEventHandler } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import type { ImageEmits, ImageProps, LoadedResource } from './types'
 import { getImageRatioStyles, getModeClassName } from './util'
@@ -13,23 +14,20 @@ import ImageOutlined from '../Icon/icons/ImageOutlined'
 import ImageBreakOutlined from '../Icon/icons/ImageBreakOutlined'
 import { Icon } from '../Icon'
 
-const FxImage: FC<ImageProps & ImageEmits> = (
-  {
-    loadingIcon = ImageOutlined,
-    errorIcon = ImageBreakOutlined,
-    lazyLoad = false,
-    draggable = true,
-    src,
-    className,
-    mode,
-    aspectRatio,
-    iconSize,
-    onLoaded,
-    onLoadError,
-    ...attrs
-  },
-  elRef
-) => {
+const FxImage: FC<ImageProps & ImageEmits> = ({
+  loadingIcon = ImageOutlined,
+  errorIcon = ImageBreakOutlined,
+  lazyLoad = false,
+  draggable = true,
+  src,
+  className,
+  mode,
+  aspectRatio,
+  iconSize,
+  onLoaded,
+  onLoadError,
+  ...attrs
+}) => {
   const root = useRef<HTMLDivElement | null>(null)
   const classes = classNames('fx-image', className)
   const imgClasses = classNames('fx-image_img', getModeClassName(mode))
@@ -83,7 +81,7 @@ const FxImage: FC<ImageProps & ImageEmits> = (
     onLoadError && onLoadError(e)
   }
 
-  const onDrag: React.DragEventHandler<HTMLImageElement> = e => {
+  const onDrag: DragEventHandler<HTMLImageElement> = e => {
     if (!draggable) {
       e.preventDefault()
     }

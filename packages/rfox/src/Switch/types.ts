@@ -1,6 +1,6 @@
-import type { FormProps } from '../Form/types'
+import type { FormItemCommonProps } from '../Form/types'
 
-export interface SwitchProps extends FormProps {
+export interface SwitchProps extends FormItemCommonProps {
   value?: boolean
   color?: string
   activeColor?: string

@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import type { ProgressProps } from './types'
-import type { FC, RenderProp } from '../helpers/types'
+import type { RenderChildren, VFC } from '../helpers/types'
 import {
   getProgress,
   getProgressClasses,
@@ -9,9 +9,9 @@ import {
   getProgressTrackStyles
 } from './util'
 
-const FxProgress: FC<
+const FxProgress: VFC<
   ProgressProps & {
-    render?: RenderProp<{
+    children?: RenderChildren<{
       progress: string
     }>
   }
@@ -23,19 +23,18 @@ const FxProgress: FC<
   const styles = getProgressStyles(props)
   const trackStyles = getProgressTrackStyles(progress)
 
+  const children =
+    typeof props.children === 'function'
+      ? props.children({ progress })
+      : props.children
+
   return (
     <div className={classes} style={styles}>
       <div className="fx-progress_bar">
         <div className={trackClasses} style={trackStyles}></div>
       </div>
-      {props.render || props.showText ? (
-        <div className="fx-progress_text">
-          {props.render
-            ? props.render({
-                progress
-              })
-            : progress}
-        </div>
+      {children || props.showText ? (
+        <div className="fx-progress_text">{children || progress}</div>
       ) : (
         <></>
       )}

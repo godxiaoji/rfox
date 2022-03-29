@@ -28,7 +28,7 @@ export default function ExpDropdown() {
 
   const onVisibleStateChange: PopupOnVisibleStateChange = res => {
     if (visibleEvent.current) {
-      console.log('visible-state-change', res)
+      console.log('onVisibleStateChange', res)
       showToast(`${res.state} 事件触发`)
     }
 
@@ -49,7 +49,7 @@ export default function ExpDropdown() {
       </FxGroup>
       <FxGroup title="事件监听">
         <FxCell
-          label="visible-state-change"
+          label="onVisibleStateChange"
           id="dropdownCellEvent"
           onClick={() =>
             onShow({ selector: '#dropdownCellEvent', visibleEvent: true })

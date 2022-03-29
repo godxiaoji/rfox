@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import { useInput } from '../Form/use-form'
 
 const FxSwitch: FC<SwitchProps & SwitchEmits> = props => {
-  const [checked, setChecked] = useState(false)
+  const [checked, setChecked] = useState<boolean | null>(null)
 
   const { inputEl, setInputChecked, getInputChecked } = useInput()
 
@@ -26,8 +26,13 @@ const FxSwitch: FC<SwitchProps & SwitchEmits> = props => {
     const newVal = props.value
 
     if (isBoolean(newVal) && newVal !== checked) {
-      setChecked(newVal)
+      // 如果设置了value，优先判断value
       setInputChecked(newVal)
+      onChange()
+    } else if (checked == null) {
+      // 如果首次都没值，做一次change false
+      setInputChecked(false)
+      onChange()
     }
   }, [props.value])
 
@@ -39,7 +44,7 @@ const FxSwitch: FC<SwitchProps & SwitchEmits> = props => {
         type="checkbox"
         disabled={props.disabled}
         name={props.name}
-        value={checked.toString()}
+        value={checked != null ? checked.toString() : 'false'}
         onChange={onChange}
       />
     </label>

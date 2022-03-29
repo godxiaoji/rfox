@@ -28,10 +28,15 @@ function useFn(
     }
   }
 
-  useEffect(() => {
+  const _elRef = useRef<HTMLElement | null>(null)
+
+  if (_elRef.current == null && elRef.current == null) {
+    //
+  } else if (elRef.current !== _elRef.current) {
+    _elRef.current = elRef.current ?? null
     off()
     on()
-  }, [elRef.current])
+  }
 
   useEffect(() => off, [])
 

@@ -2,7 +2,7 @@ export type AvatarShape = 'default' | 'circle'
 
 export type ButtonShape = 'default' | 'round'
 
-interface SkeletonCommonProps {
+export interface SkeletonCommonProps {
   animated?: boolean
 }
 

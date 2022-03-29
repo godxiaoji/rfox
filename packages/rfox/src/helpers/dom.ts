@@ -128,7 +128,9 @@ export function querySelector(selector: unknown) {
   return $el ?? null
 }
 
-function isPage($el: HTMLElement | Document | Window) {
+function isPage(
+  $el: HTMLElement | Document | Window
+): $el is Document | Window {
   return (
     $el === document ||
     $el === document.documentElement ||
@@ -161,7 +163,7 @@ export function scrollTo(
   if (isPage($el)) {
     window.scrollTo(options)
   } else {
-    ;($el as HTMLElement).scrollTo(options)
+    $el.scrollTo(options)
   }
 }
 

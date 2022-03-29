@@ -1,4 +1,4 @@
-import type { FormProps } from '../Form/types'
+import type { FormItemCommonProps } from '../Form/types'
 import type { EmptyObject } from '../helpers/types'
 import type { IconData } from '../Icon/types'
 import type { PopupEmits, PopupProps } from '../popup/types'
@@ -16,7 +16,7 @@ export interface NumberKeyboardItem {
 
 export type KeyboardType = 'default' | 'rightColumn'
 
-export interface NumberKeyboardProps extends FormProps, PopupProps {
+export interface NumberKeyboardProps extends FormItemCommonProps, PopupProps {
   value?: string
   title?: string
   type?: KeyboardType

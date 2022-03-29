@@ -49,23 +49,19 @@ export type GroupContextItemRef = {
   uid: symbol
 }
 
-export type GroupContext<
-  T extends GroupContextValue,
-  P extends GroupContextItemRef
-> = React.Context<
+export type GroupContext<T, P extends GroupContextItemRef> = React.Context<
   T & {
+    hasGroup?: boolean
     addItem?: (ref: React.MutableRefObject<P>) => void
     removeItem?: (ref: React.MutableRefObject<P>) => void
   }
 >
 
 export type ListContextValue = {
-  hasGroup: boolean
+  update?: Noop
 }
 
 export type ListContext<T extends ListContextValue = ListContextValue> =
-  React.Context<
-    T & {
-      update?: Noop
-    }
-  >
+  React.Context<T>
+
+export type ListUpdateCallback = ($items: HTMLElement[]) => void

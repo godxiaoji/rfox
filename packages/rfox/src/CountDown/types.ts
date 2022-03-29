@@ -1,4 +1,4 @@
-import type { Noop } from './../helpers/types'
+import type { Noop } from '../helpers/types'
 
 export interface CountTime {
   time: number

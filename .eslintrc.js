@@ -1,28 +1,12 @@
 module.exports = {
   root: true,
-  env: {
-    browser: true,
-    es6: true,
-    node: true,
-    'vue/setup-compiler-macros': true
-  },
+  parser: '@typescript-eslint/parser',
   extends: [
-    'plugin:vue/vue3-essential',
-    'eslint:recommended',
-    '@vue/eslint-config-typescript/recommended',
-    '@vue/eslint-config-prettier'
+    'plugin:@typescript-eslint/recommended',
+    // 'react-app',
+    'plugin:prettier/recommended'
   ],
-  overrides: [
-    {
-      files: [
-        '**/__tests__/*.{j,t}s?(x)',
-        '**/tests/unit/**/*.spec.{j,t}s?(x)'
-      ],
-      env: {
-        jest: true
-      }
-    }
-  ],
+  plugins: ['@typescript-eslint', 'react'],
   rules: {
     '@typescript-eslint/no-extra-semi': 'off'
   }

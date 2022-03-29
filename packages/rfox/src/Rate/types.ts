@@ -1,7 +1,7 @@
-import type { FormProps } from '../Form/types'
+import type { FormItemCommonProps } from '../Form/types'
 import type { IconData } from '../Icon/types'
 
-export interface RateProps extends FormProps {
+export interface RateProps extends FormItemCommonProps {
   value?: number | string
   count?: number | string
   allowHalf?: boolean

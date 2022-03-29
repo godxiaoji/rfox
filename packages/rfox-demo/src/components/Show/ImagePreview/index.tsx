@@ -53,10 +53,10 @@ export default function ExpImagePreview() {
     }
   }
 
-  const onChange = (res: number) => {
+  const onChange = (url: string, index: number) => {
     if (callbackEvent.current) {
-      console.log('change', res)
-      showToast(`切换到第 ${res + 1} 张`)
+      console.log('change', index)
+      showToast(`切换到第 ${index + 1} 张`)
     }
   }
 
@@ -104,7 +104,7 @@ export default function ExpImagePreview() {
           onClick={() => onShow({ showClose: true, callbackEvent: true })}
         ></FxCell>
         <FxCell
-          label="visible-state-change"
+          label="onVisibleStateChange"
           isLink
           onClick={() => onShow({ visibleEvent: true })}
         ></FxCell>

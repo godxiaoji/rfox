@@ -20,34 +20,32 @@ const FxStepper: FC<StepperProps & StepperEmits> = ({
   const step = getNumber(props.step, 1)
   const min = getNumber(props.min, 1)
   const max = getNumber(props.max, Infinity)
-  const [valueCache, setValueCache] = useState(min.toString())
+  const [formValue, setFormValue] = useState('')
 
   const { inputEl, setInputValue, getInputValue } = useInput()
 
   const classes = classNames(getStepperClasses(disabled), props.className)
 
-  function updateValue(value: number | string) {
-    const newValue = getRangeNumber(
+  function updateValue(val: number | string) {
+    const newVal = getRangeNumber(
       {
         min,
         max,
         allowDecimal,
         decimalLength
       },
-      value
+      val
     )
 
-    console.log(newValue)
+    if (newVal !== formValue) {
+      setFormValue(newVal)
 
-    if (newValue !== valueCache) {
-      setValueCache(newValue)
-
-      props.onChange && props.onChange(newValue)
+      props.onChange && props.onChange(newVal)
     }
 
-    setInputValue(newValue)
+    setInputValue(newVal)
 
-    return newValue
+    return newVal
   }
 
   function onChange() {
@@ -55,21 +53,19 @@ const FxStepper: FC<StepperProps & StepperEmits> = ({
   }
 
   function onInput() {
-    const value = formateNumber(getInputValue(), decimalLength)
-    console.log(value)
-    setInputValue(value)
+    const val = formateNumber(getInputValue(), decimalLength)
 
-    // emit('input', value)
+    setInputValue(val)
   }
 
   const onMinusClick: OnButtonClick = e => {
-    updateValue(parseFloat(valueCache) - step)
+    updateValue(parseFloat(formValue) - step)
 
     props.onMinusClick && props.onMinusClick(e)
   }
 
   const onPlusClick: OnButtonClick = e => {
-    updateValue(parseFloat(valueCache) + step)
+    updateValue(parseFloat(formValue) + step)
 
     props.onPlusClick && props.onPlusClick(e)
   }
@@ -77,15 +73,14 @@ const FxStepper: FC<StepperProps & StepperEmits> = ({
   useEffect(() => {
     if (
       value != null &&
-      parseFloat(value.toString()) !== parseFloat(valueCache)
+      parseFloat(value.toString()) !== parseFloat(formValue)
     ) {
       updateValue(value)
+    } else if (formValue === '') {
+      // 针对首次没有值的情况，默认最小值
+      updateValue(min)
     }
   }, [value])
-
-  useEffect(() => {
-    setInputValue(valueCache)
-  }, [])
 
   return (
     <div className={classes}>
@@ -94,7 +89,7 @@ const FxStepper: FC<StepperProps & StepperEmits> = ({
         shape="square"
         size="small"
         disabled={
-          disabled || props.disabledMinus || parseFloat(valueCache) <= min
+          disabled || props.disabledMinus || parseFloat(formValue) <= min
         }
         onClick={onMinusClick}
       />
@@ -116,7 +111,7 @@ const FxStepper: FC<StepperProps & StepperEmits> = ({
         shape="square"
         size="small"
         disabled={
-          disabled || props.disabledPlus || parseFloat(valueCache) >= max
+          disabled || props.disabledPlus || parseFloat(formValue) >= max
         }
         onClick={onPlusClick}
       />

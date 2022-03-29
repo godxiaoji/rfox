@@ -1,4 +1,4 @@
-import { GroupContextValue, GroupContextItemRef } from './../hooks/types'
+import { GroupContextValue, GroupContextItemRef } from '../hooks/types'
 import type { IconData } from '../Icon/types'
 import { Noop } from '../helpers/types'
 

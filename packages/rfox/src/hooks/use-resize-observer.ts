@@ -1,5 +1,5 @@
 import { noop } from '../helpers/util'
-import { MutableRefObject, useEffect, useRef } from 'react'
+import { MutableRefObject, useEffect, useLayoutEffect, useRef } from 'react'
 
 type Callback = (rect: DOMRectReadOnly, resizeCount: number) => void
 
@@ -19,7 +19,6 @@ export function useResizeObserver(
     new ResizeObserver(entries => {
       entries.forEach(entry => {
         count.current++
-
         callbackRef.current(entry.contentRect, count.current)
       })
     })
@@ -34,9 +33,14 @@ export function useResizeObserver(
     count.current = 0
   }
 
-  useEffect(() => {
-    off()
-    on()
+  const _elRef = useRef<HTMLElement | null>(null)
+
+  useLayoutEffect(() => {
+    if (elRef.current !== _elRef.current) {
+      off()
+      on()
+      _elRef.current = elRef.current ?? null
+    }
   }, [elRef.current])
 
   useEffect(() => off, [])

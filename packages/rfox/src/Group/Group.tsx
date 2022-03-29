@@ -1,25 +1,30 @@
 import classNames from 'classnames'
 import type { GroupProps } from './types'
-import { getGroupClasses } from './util'
+import { getClasses } from './util'
 import type { FC, RenderProp } from '../helpers/types'
 
 const FxGroup: FC<
   GroupProps & {
     renderHeader?: RenderProp
   }
-> = props => {
-  const classes = classNames(getGroupClasses(props), props.className)
+> = ({
+  renderHeader,
+  children,
+  title,
+  strongHeader = false,
+  className,
+  ...attrs
+}) => {
+  const classes = classNames(getClasses(strongHeader), className)
 
   return (
-    <div className={classes}>
+    <div {...attrs} className={classes}>
       <div className="fx-group_header">
-        <div className="fx-group_title">{props.title}</div>
-        <div className="fx-group_more">
-          {props.renderHeader && props.renderHeader()}
-        </div>
+        <div className="fx-group_title">{title}</div>
+        <div className="fx-group_more">{renderHeader && renderHeader()}</div>
       </div>
       <div className="fx-group_body fx-horizontal-hairline hairline-reverse">
-        <div className="fx-group_body-inner">{props.children}</div>
+        <div className="fx-group_body-inner">{children}</div>
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-import { FxProgress, FxGroup } from '@/index'
+import { FxProgress, FxStepper, FxGroup } from '@/index'
 import { useState } from 'react'
 
 export default function ExpProgress() {
@@ -11,7 +11,12 @@ export default function ExpProgress() {
           <FxProgress percentage={percentage} />
         </div>
         <div className="exp-progress-bottom">
-          {/* <fx-stepper :min="0" :max="100" v-model="percentage" /> */}
+          <FxStepper
+            min="0"
+            max="100"
+            value={percentage}
+            onChange={p => setPercentage(parseInt(p))}
+          />
         </div>
       </FxGroup>
       <FxGroup title="展示文字">
@@ -42,10 +47,9 @@ export default function ExpProgress() {
       </FxGroup>
       <FxGroup title="Slot default">
         <div className="exp-progress-box">
-          <FxProgress
-            percentage="5"
-            render={({ progress }) => <>{'已抢' + progress}</>}
-          ></FxProgress>
+          <FxProgress percentage="5">
+            {({ progress }) => <>{'已抢' + progress}</>}
+          </FxProgress>
         </div>
       </FxGroup>
       <FxGroup title="自定义颜色">

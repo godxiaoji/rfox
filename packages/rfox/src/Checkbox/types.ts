@@ -1,4 +1,4 @@
-import type { FormProps } from '../Form/types'
+import type { FormItemCommonProps } from '../Form/types'
 import { GroupContextItemRef, GroupContextValue } from '../hooks/types'
 
 export type ModelValue = number | string
@@ -10,7 +10,7 @@ export type OptionItem = {
 
 export type UserOptionItem = ModelValue | OptionItem
 
-export interface CheckboxGroupCommonProps extends FormProps {
+export interface CheckboxGroupCommonProps extends FormItemCommonProps {
   options?: UserOptionItem[]
   inline?: boolean
   activeColor?: string
@@ -25,7 +25,7 @@ export interface CheckboxGroupEmits {
   onChange?: (value: ModelValue[]) => void
 }
 
-export interface CheckboxCommonProps extends FormProps {
+export interface CheckboxCommonProps extends FormItemCommonProps {
   value?: ModelValue
   checked?: boolean
   activeColor?: string

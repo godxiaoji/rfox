@@ -28,7 +28,11 @@ const externalPlugin = () => {
     setup(build) {
       // Match an import called "./*" and mark it as external
       build.onResolve(
-        { filter: new RegExp(`^./(${config.components.join('|')})$`) },
+        {
+          filter: new RegExp(
+            `^./(${[...config.components, ...config.depComponents].join('|')})$`
+          )
+        },
         () => ({ external: false })
       )
       build.onResolve({ filter: /^\.\// }, () => ({ external: true }))

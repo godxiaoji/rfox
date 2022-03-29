@@ -172,7 +172,7 @@ export default function ExpPopover() {
         </FxCell>
       </FxGroup>
       <FxGroup title="事件监听">
-        <FxCell label="visible-state-change">
+        <FxCell label="onVisibleStateChange">
           <FxButton
             size="small"
             id="popoverEvent"

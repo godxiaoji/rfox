@@ -1,4 +1,4 @@
-import { OnClick } from './../helpers/types'
+import { OnClick } from '../helpers/types'
 import { StateType } from '../helpers/types'
 import type { IconData } from '../Icon/types'
 

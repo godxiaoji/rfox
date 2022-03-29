@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import type { InputEmits, InputProps } from './types'
-import type { FC, OnFocus, RenderProp } from '../helpers/types'
+import type { CSSProperties, FC, OnFocus, RenderProp } from '../helpers/types'
 import { getInputClasses, getInputMode, getMaxLength, getValue } from './util'
 import CloseCircleFilled from '../Icon/icons/CloseCircleFilled'
 import { useEffect, useRef, useState } from 'react'
@@ -12,6 +12,7 @@ const FxInput: FC<
     InputEmits & {
       renderPrepend?: RenderProp
       renderAppend?: RenderProp
+      style?: CSSProperties
     }
 > = ({
   type = 'text',
@@ -145,7 +146,7 @@ const FxInput: FC<
   }, [valueCache, active])
 
   return (
-    <label className={classes}>
+    <label className={classes} style={props.style} onClick={props.onClick}>
       {renderPrepend ? (
         <div className="fx-input_prepend">{renderPrepend()}</div>
       ) : (

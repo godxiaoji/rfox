@@ -126,7 +126,7 @@ export default function ExpFlatList() {
 
   return (
     <>
-      {/* <FxGroup title="基础用法">
+      <FxGroup title="基础用法">
         <FxFlatList
           className="exp-flatList-box"
           ids={list.map(v => v.id)}
@@ -157,7 +157,7 @@ export default function ExpFlatList() {
             <div className="exp-flatList-item">{list[index].text}</div>
           )}
         />
-      </FxGroup> */}
+      </FxGroup>
       <FxGroup title="展示底部加载更多提示">
         <FxFlatList
           className="exp-flatList-box"

@@ -20,13 +20,12 @@ const FxDropdown: FRFC<
   const [top, setTop] = useState(-1)
   const [height, setHeight] = useState(0)
 
-  const { popupStyles, popupClasses, customCancel, onMaskClick, onCloseClick } =
-    usePopup(props, ref, {
-      afterShow: updatePos,
-      afterHidden: () => {
-        setTop(-1)
-      }
-    })
+  const { popupStyles, popupClasses, onMaskClick } = usePopup(props, ref, {
+    afterShow: updatePos,
+    afterHidden: () => {
+      setTop(-1)
+    }
+  })
 
   const classes = classNames(['fx-dropdown', popupClasses, props.className])
 
@@ -66,7 +65,7 @@ const FxDropdown: FRFC<
           height
         })
       : props.children
-  }, [props.children, height])
+  }, [props.children, props.render, height])
 
   return createPortal(
     <div className={classes} style={styles} ref={root}>

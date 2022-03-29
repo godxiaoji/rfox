@@ -2,7 +2,7 @@ import {
   ActionSheetOption,
   ActionSheetOnConfirm,
   showToast,
-  // showDialog,
+  showDialog,
   PopupOnCancel,
   showActionSheet,
   PopupOnVisibleStateChange,
@@ -57,7 +57,7 @@ export default function ExpActionSheet() {
 
   const onVisibleStateChange: PopupOnVisibleStateChange = res => {
     if (visibleEvent.current) {
-      console.log('visible-state-change', res)
+      console.log('onVisibleStateChange', res)
       showToast(`${res.state} 事件触发`)
     }
 
@@ -95,11 +95,11 @@ export default function ExpActionSheet() {
         const { confirm, detail } = res
 
         if (confirm) {
-          // showDialog({
-          //   title: '选择了',
-          //   showCancel: false,
-          //   content: `item.name: '${detail.item.name}'\nindex: ${detail.index}`
-          // })
+          showDialog({
+            title: '选择了',
+            showCancel: false,
+            content: `item.name: '${detail.item.name}'\nindex: ${detail.index}`
+          })
         } else {
           showToast('取消了')
         }
@@ -178,7 +178,7 @@ export default function ExpActionSheet() {
           onClick={() => onShow({ showCancel: true, confirmEvent: true })}
         />
         <FxCell
-          label="visible-state-change"
+          label="onVisibleStateChange"
           isLink
           onClick={() => onShow({ visibleEvent: true })}
         />

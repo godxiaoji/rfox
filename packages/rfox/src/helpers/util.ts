@@ -277,10 +277,18 @@ export const noop = function () {
 }
 
 /**
- * 返回false的函数
+ * 返回 ture 的函数
+ * @returns true
+ */
+export function returnTrue() {
+  return true
+}
+
+/**
+ * 返回 false 的函数
  * @returns false
  */
-export function no() {
+export function returnFalse() {
   return false
 }
 
@@ -412,9 +420,7 @@ export function rangeInteger(
  * @returns boolean
  */
 export const isInNumberRange = (number: unknown, min: number, max: number) => {
-  return (
-    isNumber(number) && (number as number) >= min && (number as number) <= max
-  )
+  return isNumber(number) && number >= min && number <= max
 }
 
 /**

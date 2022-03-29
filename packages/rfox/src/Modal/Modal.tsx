@@ -10,8 +10,11 @@ import type { PopupRef } from '../popup/types'
 import { forwardRef } from 'react'
 
 const FxModal: FRFC<PopupRef, ModalProps & ModalEmits> = (props, ref) => {
-  const { popupStyles, popupClasses, customCancel, onMaskClick, onCloseClick } =
-    usePopup(props, ref, {})
+  const { popupStyles, popupClasses, onMaskClick, onCloseClick } = usePopup(
+    props,
+    ref,
+    {}
+  )
 
   const classes = classNames(['fx-modal', popupClasses, props.className])
   const boxStyles = getModalBoxStyles(props)

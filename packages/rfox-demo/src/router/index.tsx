@@ -13,23 +13,42 @@ import ExpNotify from '../components/Feedback/Notify'
 import ExpPopDialog from '../components/Feedback/PopDialog'
 import ExpSwipeCell from '../components/Feedback/SwipeCell'
 import ExpToast from '../components/Feedback/Toast'
+import ExpCalendar from '../components/Form/Calendar'
+import ExpCalendarPopup from '../components/Form/CalendarPopup'
+import ExpCalendarView from '../components/Form/CalendarView'
+import ExpCascader from '../components/Form/Cascader'
+import ExpCascaderPopup from '../components/Form/CascaderPopup'
+import ExpCascaderView from '../components/Form/CascaderView'
 import ExpCheckbox from '../components/Form/Checkbox'
+import ExpDatePicker from '../components/Form/DatePicker'
+import ExpDatePickerPopup from '../components/Form/DatePickerPopup'
+import ExpDatePickerView from '../components/Form/DatePickerView'
+import ExpForm from '../components/Form/Form'
+import ExpImageUploader from '../components/Form/ImageUploader'
 import ExpInput from '../components/Form/Input'
 import ExpNumberKeyboard from '../components/Form/NumberKeyboard'
+import ExpPicker from '../components/Form/Picker'
+import ExpPickerPopup from '../components/Form/PickerPopup'
+import ExpPickerView from '../components/Form/PickerView'
 import ExpRadio from '../components/Form/Radio'
 import ExpRange from '../components/Form/Range'
 import ExpRate from '../components/Form/Rate'
+import ExpSearchBar from '../components/Form/SearchBar'
 import ExpSlider from '../components/Form/Slider'
 import ExpStepper from '../components/Form/Stepper'
 import ExpSwitch from '../components/Form/Switch'
 import ExpBackTop from '../components/Navigation/BackTop'
 import ExpFixed from '../components/Navigation/Fixed'
+import ExpIndexView from '../components/Navigation/IndexView'
 import ExpNavBar from '../components/Navigation/NavBar'
 import ExpPagination from '../components/Navigation/Pagination'
 import ExpPopMenu from '../components/Navigation/PopMenu'
+import ExpScrollTab from '../components/Navigation/ScrollTab'
 import ExpSideTab from '../components/Navigation/SideTab'
+import ExpSticky from '../components/Navigation/Sticky'
 import ExpTab from '../components/Navigation/Tab'
 import ExpTabBar from '../components/Navigation/TabBar'
+import ExpTabView from '../components/Navigation/TabView'
 import ExpCopy from '../components/Other/Copy'
 import ExpActivityIndicator from '../components/Show/ActivityIndicator'
 import ExpAvatar from '../components/Show/Avatar'
@@ -47,6 +66,7 @@ import ExpImagePreview from '../components/Show/ImagePreview'
 import ExpLayout from '../components/Show/Layout'
 import ExpLoadMore from '../components/Show/LoadMore'
 import ExpNoticeBar from '../components/Show/NoticeBar'
+import ExpOrder from '../components/Show/Order'
 import ExpPrice from '../components/Show/Price'
 import ExpProgress from '../components/Show/Progress'
 import ExpResult from '../components/Show/Result'
@@ -124,6 +144,26 @@ function Router() {
       <Route path="/NumberKeyboard" element={<ExpNumberKeyboard />} />
       <Route path="/VirtualList" element={<ExpVirtualList />} />
       <Route path="/FlatList" element={<ExpFlatList />} />
+      <Route path="/Sticky" element={<ExpSticky />} />
+      <Route path="/IndexView" element={<ExpIndexView />} />
+      <Route path="/ScrollTab" element={<ExpScrollTab />} />
+      <Route path="/TabView" element={<ExpTabView />} />
+      <Route path="/PickerView" element={<ExpPickerView />} />
+      <Route path="/PickerPopup" element={<ExpPickerPopup />} />
+      <Route path="/Picker" element={<ExpPicker />} />
+      <Route path="/CascaderView" element={<ExpCascaderView />} />
+      <Route path="/CascaderPopup" element={<ExpCascaderPopup />} />
+      <Route path="/Cascader" element={<ExpCascader />} />
+      <Route path="/DatePickerView" element={<ExpDatePickerView />} />
+      <Route path="/DatePickerPopup" element={<ExpDatePickerPopup />} />
+      <Route path="/DatePicker" element={<ExpDatePicker />} />
+      <Route path="/CalendarView" element={<ExpCalendarView />} />
+      <Route path="/CalendarPopup" element={<ExpCalendarPopup />} />
+      <Route path="/Calendar" element={<ExpCalendar />} />
+      <Route path="/SearchBar" element={<ExpSearchBar />} />
+      <Route path="/Order" element={<ExpOrder />} />
+      <Route path="/ImageUploader" element={<ExpImageUploader />} />
+      <Route path="/Form" element={<ExpForm />} />
     </Routes>
   )
 }

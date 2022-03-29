@@ -47,7 +47,7 @@ export const navConfig = [
     name: 'Form',
     zhName: '数据输入',
     list: [
-      // { name: 'Form', zhName: '表单' },
+      { name: 'Form', zhName: '表单' },
       { name: 'Input', zhName: '输入框' },
       { name: 'Radio', zhName: '单选框' },
       { name: 'Checkbox', zhName: '复选框' },
@@ -56,20 +56,20 @@ export const navConfig = [
       { name: 'Switch', zhName: '开关选择器' },
       { name: 'Stepper', zhName: '步进器' },
       { name: 'Rate', zhName: '评分' },
-      // { name: 'ImageUploader', zhName: '图片上传' },
-      // { name: 'Picker', zhName: '选择面板' },
-      // { name: 'PickerPopup', zhName: '选择器' },
-      // { name: 'PickerView', zhName: '选择弹窗' },
-      // { name: 'Cascader', zhName: '级联选择器' },
-      // { name: 'CascaderPopup', zhName: '级联选择弹窗' },
-      // { name: 'CascaderView', zhName: '级联选择面板' },
-      // { name: 'DatePicker', zhName: '日期选择器' },
-      // { name: 'DatePickerPopup', zhName: '日期选择弹窗' },
-      // { name: 'DatePickerView', zhName: '日期选择面板' },
-      // { name: 'Calendar', zhName: '日历选择器' },
-      // { name: 'CalendarPopup', zhName: '日历选择弹窗' },
-      // { name: 'CalendarView', zhName: '日历选择面板' },
-      // { name: 'SearchBar', zhName: '搜索栏' },
+      { name: 'ImageUploader', zhName: '图片上传' },
+      { name: 'Picker', zhName: '选择面板' },
+      { name: 'PickerPopup', zhName: '选择器' },
+      { name: 'PickerView', zhName: '选择弹窗' },
+      { name: 'Cascader', zhName: '级联选择器' },
+      { name: 'CascaderPopup', zhName: '级联选择弹窗' },
+      { name: 'CascaderView', zhName: '级联选择面板' },
+      { name: 'DatePicker', zhName: '日期选择器' },
+      { name: 'DatePickerPopup', zhName: '日期选择弹窗' },
+      { name: 'DatePickerView', zhName: '日期选择面板' },
+      { name: 'Calendar', zhName: '日历选择器' },
+      { name: 'CalendarPopup', zhName: '日历选择弹窗' },
+      { name: 'CalendarView', zhName: '日历选择面板' },
+      { name: 'SearchBar', zhName: '搜索栏' },
       { name: 'NumberKeyboard', zhName: '数字键盘' }
     ]
   },
@@ -101,22 +101,22 @@ export const navConfig = [
         name: 'TabBar',
         zhName: '标签栏'
       },
-      // {
-      //   name: 'TabView',
-      //   zhName: '标签页'
-      // },
-      // {
-      //   name: 'Sticky',
-      //   zhName: '粘性布局'
-      // },
-      // {
-      //   name: 'ScrollTab',
-      //   zhName: '标签滚动布局'
-      // },
-      // {
-      //   name: 'IndexView',
-      //   zhName: '索引栏'
-      // },
+      {
+        name: 'TabView',
+        zhName: '标签页'
+      },
+      {
+        name: 'Sticky',
+        zhName: '粘性布局'
+      },
+      {
+        name: 'ScrollTab',
+        zhName: '标签滚动布局'
+      },
+      {
+        name: 'IndexView',
+        zhName: '索引栏'
+      },
       {
         name: 'Fixed',
         zhName: '固定布局'
@@ -185,7 +185,7 @@ export const navConfig = [
       },
       { name: 'Progress', zhName: '进度条' },
       { name: 'Tag', zhName: '标签' },
-      // { name: 'Order', zhName: '调整排序布局' },
+      { name: 'Order', zhName: '调整排序布局' },
       { name: 'CountDown', zhName: '倒计时' },
       { name: 'Steps', zhName: '步骤' },
       { name: 'Price', zhName: '价格' },

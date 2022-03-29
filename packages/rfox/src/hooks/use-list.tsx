@@ -2,10 +2,8 @@ import Exception from '../helpers/exception'
 import { capitalize } from '../helpers/util'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { withProvider } from './with'
-import type { ListContext, ListContextValue } from './types'
+import type { ListContext, ListContextValue, ListUpdateCallback } from './types'
 import { useMounted } from './use-life'
-
-type ListUpdateCallback = ($items: HTMLElement[]) => void
 
 /**
  * 创建默认更新方法，带错误提示
@@ -19,6 +17,12 @@ export function createUpdateInItem(name: string) {
   }
 }
 
+type ValueWithoutUpdate<P> = P extends any
+  ? 'update' extends keyof P
+    ? Pick<P, Exclude<keyof P, 'update'>>
+    : P
+  : P
+
 /**
  * useList
  * @param ParentContext
@@ -28,18 +32,23 @@ export function createUpdateInItem(name: string) {
  */
 export function useList<T extends ListContextValue>(
   ParentContext: ListContext<T>,
-  contextValue: T,
+  contextValue: ValueWithoutUpdate<T>,
   {
+    throttle,
     itemClassName,
     updateCallback
-  }: { itemClassName: string; updateCallback: ListUpdateCallback }
+  }: {
+    throttle: boolean
+    itemClassName: string
+    updateCallback: ListUpdateCallback
+  }
 ) {
   const listEl = useRef<HTMLDivElement>(null)
-  const updateTimer = useRef<number>()
+  const updateTimer = useRef<number>(-1)
 
   const { mounted } = useMounted({
-    onMounted: () => update(0),
-    onBeforeUnmount: () => clearTimeout(updateTimer.current)
+    onMounted: update,
+    onBeforeUnmount: () => cancelAnimationFrame(updateTimer.current)
   })
 
   function doUpdate() {
@@ -52,20 +61,17 @@ export function useList<T extends ListContextValue>(
     updateCallback($items)
   }
 
-  function update(lazy = 17) {
-    if (!mounted.current) {
-      return
-    }
+  function update() {
+    cancelAnimationFrame(updateTimer.current)
 
-    if (lazy === 0) {
+    if (!throttle && mounted.current) {
       doUpdate()
     } else {
-      clearTimeout(updateTimer.current)
-      updateTimer.current = window.setTimeout(() => {
+      updateTimer.current = requestAnimationFrame(() => {
         if (mounted.current) {
           doUpdate()
         }
-      }, lazy)
+      })
     }
   }
 
@@ -75,7 +81,10 @@ export function useList<T extends ListContextValue>(
       : []
   }
 
-  const ListProvider = withProvider(ParentContext, { ...contextValue, update })
+  const ListProvider = withProvider(ParentContext, {
+    ...contextValue,
+    update
+  } as T)
 
   return {
     listEl,

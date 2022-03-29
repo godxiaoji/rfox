@@ -1,14 +1,11 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import classNames from 'classnames'
 import type { ColProps } from './types'
 import { getColClasses, getColStyles } from './util'
 import { LayoutContext } from '../Row/context'
+import type { FC } from '../helpers/types'
 
-const FxCol: React.FC<
-  ColProps & {
-    className?: string
-  }
-> = props => {
+const FxCol: FC<ColProps> = props => {
   const consumer = useContext(LayoutContext)
   const classes = classNames(getColClasses(props), props.className)
   const styles = getColStyles(consumer.gutter)

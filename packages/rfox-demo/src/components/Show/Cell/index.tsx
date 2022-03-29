@@ -1,4 +1,4 @@
-import { FxCell, FxIcon, FxImage, FxGroup } from '@/index'
+import { FxCell, FxIcon, FxGroup } from '@/index'
 
 export default function ExpCell() {
   return (

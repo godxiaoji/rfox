@@ -1,8 +1,6 @@
-import type { GroupProps } from './types'
-
-export function getGroupClasses(props: GroupProps) {
+export function getClasses(strongHeader: boolean) {
   return [
     ['fx-group', 'fx-horizontal-hairline'],
-    { 'strong-header': !!props.strongHeader }
+    { 'strong-header': strongHeader }
   ]
 }

@@ -1,7 +1,7 @@
 import type { OnButtonClick } from '../Button/types'
-import type { FocusEmits, FormProps } from '../Form/types'
+import type { FocusEmits, FormItemCommonProps } from '../Form/types'
 
-export interface StepperProps extends FormProps {
+export interface StepperProps extends FormItemCommonProps {
   value?: number | string
   disabledMinus?: boolean
   disabledPlus?: boolean

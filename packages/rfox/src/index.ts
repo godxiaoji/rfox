@@ -19,6 +19,37 @@ export type {
   PatternType as ButtonPattern
 } from './Button/types'
 export type {
+  SelectorValueParser,
+  SelectorValueFormatter,
+  SelectorModelValue,
+  SelectorDetail,
+  SelectorOnChange,
+  SelectorOnConfirm
+} from './SelectorField/types'
+export type {
+  OnConfirm as PickerOnConfirm,
+  UserFieldNames as PickerFieldNames,
+  UserFieldNames as CascaderFieldNames
+} from './Picker/types'
+export type {
+  OnSelect as CascaderOnSelect,
+  OnConfirm as CascaderOnConfirm
+} from './Cascader/types'
+export type {
+  Mode as DatePickerMode,
+  OptionFilter as DatePickerOptionFilter,
+  OnConfirm as DatePickerOnConfirm
+} from './DatePicker/types'
+export type {
+  ValueFormatter as CalendarValueFormatter,
+  ValueParser as CalendarValueParser,
+  OnSelect as CalendarOnSelect,
+  OnConfirm as CalendarOnConfirm,
+  DayHandler as CalendarDayHandler,
+  Mode as CalendarMode,
+  CalendarDetail
+} from './Calendar/types'
+export type {
   Option as ActionSheetOption,
   OnConfirm as ActionSheetOnConfirm
 } from './ActionSheet/types'
@@ -27,6 +58,14 @@ export type {
   OnConfirm as PopMenuOnConfirm
 } from './PopMenu/types'
 export type { OnChange as ImagePreviewOnChange } from './ImagePreview/types'
+export type {
+  SetSuggestList as SearchBarSetSuggestList,
+  OnInput as SearchBarOnFocus,
+  OnInput as SearchBarOnBlur,
+  OnInput as SearchBarOnInput,
+  OnSearch as SearchBarOnSearch,
+  OnFieldClick as SearchBarOnFieldClick
+} from './SearchBar/types'
 export type {
   PullDirection as ScrollViewPullDirection,
   OnScrollToUpper as ScrollViewOnScrollToUpper,
@@ -54,6 +93,11 @@ export type {
   ButtonOption as SwipeCellButtonOption,
   OnButtonClick as SwipeCellOnButtonClick
 } from './SwipeCell/types'
+export type {
+  OnChange as StickyViewOnChange,
+  OnChange as IndexViewOnChange,
+  OnChange as ScrollTabOnChange
+} from './StickyView/types'
 export type {
   ButtonOption as NavBarButtonOption,
   OnButtonClick as NavBarOnButtonClick,
@@ -96,6 +140,13 @@ export type {
   OnClose as NumberKeyboardOnClose,
   KeyboardType as NumberKeyboardType
 } from './NumberKeyboard/types'
+export type { OnDelete as OrderOnDelete } from './Order/types'
+export type {
+  Accept as ImageUploaderAccept,
+  BeforeUpload as ImageUploaderBeforeUpload,
+  UploadReady as ImageUploaderUploadReady,
+  OnDelete as ImageUploaderOnDelete
+} from './ImageUploader/types'
 export type { BadgeOption } from './Badge/types'
 export type { Mode as ImageMode, OnLoad as ImageOnLoad } from './Image/types'
 export type { ArrowDirection as CellArrowDirection } from './Cell/types'

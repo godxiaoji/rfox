@@ -50,7 +50,7 @@ const buildIndex = async () => {
 
   await fs.promises.writeFile(
     resolveCore('./src/style/index.ts'),
-    paths.join(`\n`),
+    paths.join(`\n`) + `\n`,
     'utf-8'
   )
 }

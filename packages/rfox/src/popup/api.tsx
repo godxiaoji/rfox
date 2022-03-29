@@ -1,16 +1,17 @@
-import React, { useRef, useState } from 'react'
+import type { RefObject } from 'react'
+import { useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { isObject, objectForEach } from '../helpers/util'
 import { getCallbackFns } from '../apis/callback'
-import type { AnyObject, EmptyObject, FC, FRFC } from '../helpers/types'
+import type { AnyObject, EmptyObject, FC } from '../helpers/types'
 import type {
   OnVisibleStateChange,
   PopupCustomConfirm,
-  PopupRef
+  PopupRef,
+  OnCancel
 } from './types'
 import type { ApiOptionsComplete, ApiOptionsFail } from '../apis/types'
 import Exception from '../helpers/exception'
-import { PopupOnCancel } from '..'
 
 type ApiFC = any
 
@@ -20,7 +21,7 @@ type CreatePopupHook = (done: (res: any) => void) => PopupHook
 
 type ComponentRef = {
   uid: HTMLDivElement
-  ref?: React.RefObject<PopupRef>
+  ref?: RefObject<PopupRef>
 }
 
 const $refs: {
@@ -40,8 +41,6 @@ function withComponent(
       if (!['success', 'fail', 'complete'].includes(k)) {
         if (k === 'mode') {
           props.initialMode = v
-        } else if (k === 'value') {
-          props.modelValue = v
         } else {
           props[k] = v
         }
@@ -59,7 +58,7 @@ function withComponent(
       hook('onConfirm', res)
     }
 
-    const onCancel: PopupOnCancel = res => {
+    const onCancel: OnCancel = res => {
       hook('onCancel', res)
     }
 

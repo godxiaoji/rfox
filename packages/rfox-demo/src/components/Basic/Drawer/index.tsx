@@ -114,7 +114,7 @@ export default function ExpDrawer() {
       </FxGroup>
       <FxGroup title="事件监听">
         <FxCell
-          label="visible-state-change"
+          label="onVisibleStateChange"
           isLink
           onClick={() =>
             onShow({

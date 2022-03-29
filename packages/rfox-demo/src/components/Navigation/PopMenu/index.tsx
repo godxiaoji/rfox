@@ -192,7 +192,7 @@ export default function ExpPopMenu() {
             }
           ></FxButton>
         </FxCell>
-        <FxCell label="visible-state-change">
+        <FxCell label="onVisibleStateChange">
           <FxButton
             size="small"
             id="popMenuEvent2"

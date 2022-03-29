@@ -1,6 +1,6 @@
-import type { FormProps } from '../Form/types'
+import type { FormItemCommonProps } from '../Form/types'
 
-export interface SlideCommonProps extends FormProps {
+export interface SlideCommonProps extends FormItemCommonProps {
   showValue?: boolean
   color?: string
   min?: number | string

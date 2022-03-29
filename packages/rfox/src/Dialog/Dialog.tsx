@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import type { DialogEmits, DialogProps } from './types'
 import type { FRFC } from '../helpers/types'
-import { forwardRef, useRef } from 'react'
+import { forwardRef } from 'react'
 import { useLocale } from '../ConfigProvider/context'
 import type { PopupRef } from '../popup/types'
 import { Button, ButtonGroup } from '../Button'

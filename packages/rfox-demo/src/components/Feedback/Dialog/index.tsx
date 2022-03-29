@@ -47,7 +47,7 @@ export default function ExpDialog() {
 
   const onVisibleStateChange: PopupOnVisibleStateChange = res => {
     if (visibleEvent.current) {
-      console.log('visible-state-change', res)
+      console.log('onVisibleStateChange', res)
       showToast(`${res.state} 事件触发`)
     }
 
@@ -131,7 +131,7 @@ export default function ExpDialog() {
           }
         />
         <FxCell
-          label="visible-state-change"
+          label="onVisibleStateChange"
           isLink
           onClick={() =>
             onShow({

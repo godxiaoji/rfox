@@ -1,4 +1,4 @@
-import type { PlacementType } from './../helpers/types'
+import type { PlacementType } from '../helpers/types'
 import type { PopupEmits, PopupProps } from '../popup/types'
 
 export interface DrawerProps extends PopupProps {

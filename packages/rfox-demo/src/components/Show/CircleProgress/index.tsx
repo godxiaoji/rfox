@@ -1,4 +1,4 @@
-import { FxCircleProgress, FxGroup } from '@/index'
+import { FxCircleProgress, FxStepper, FxGroup } from '@/index'
 import { useState } from 'react'
 
 export default function ExpCircleProgress() {
@@ -9,7 +9,12 @@ export default function ExpCircleProgress() {
       <FxGroup title="基础用法">
         <div className="exp-circleProgress-box">
           <FxCircleProgress percentage={percentage} />
-          {/* <fx-stepper :min="0" :max="100" v-model="percentage" /> */}
+          <FxStepper
+            min="0"
+            max="100"
+            value={percentage}
+            onChange={p => setPercentage(parseInt(p))}
+          />
         </div>
       </FxGroup>
       <FxGroup title="参数设置">
@@ -33,12 +38,9 @@ export default function ExpCircleProgress() {
       </FxGroup>
       <FxGroup title="Render Props">
         <div className="exp-circleProgress-box">
-          <FxCircleProgress
-            percentage={percentage}
-            render={p => {
-              return '已抢' + p
-            }}
-          ></FxCircleProgress>
+          <FxCircleProgress percentage={percentage}>
+            {({ progress }) => <>{'已抢' + progress}</>}
+          </FxCircleProgress>
         </div>
       </FxGroup>
     </>

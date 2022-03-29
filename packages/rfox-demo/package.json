@@ -8,6 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@formily/core": "^2.0.17",
+    "@formily/react": "^2.0.17",
     "@fox2/vfox-icons": "^0.0.4",
     "antd": "^4.19.1",
     "classnames": "^2.3.1",

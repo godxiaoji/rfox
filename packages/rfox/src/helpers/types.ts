@@ -21,6 +21,12 @@ export type FC<T = Record<string, unknown>> = React.FC<
   }
 >
 
+export type VFC<T = Record<string, unknown>> = React.VFC<
+  T & {
+    className?: string
+  }
+>
+
 export type FRFC<
   T,
   P = Record<string, unknown>
@@ -36,7 +42,13 @@ export type RenderProp<T = void> = T extends void
   ? () => React.ReactNode
   : (data: T) => React.ReactNode
 
+export type RenderChildren<T> =
+  | ((payload: T) => React.ReactNode)
+  | React.ReactNode
+
 export interface CSSProperties extends React.CSSProperties, FxCSS {}
+
+export type { Dayjs } from 'dayjs'
 
 export type AnyObject = Record<string, any>
 export type EmptyObject = Record<string, never>
@@ -94,3 +106,4 @@ export type OnSVGClick = React.MouseEventHandler<SVGSVGElement>
 export type OnFocus = React.FocusEventHandler<
   HTMLInputElement | HTMLTextAreaElement
 >
+export type OnChange = React.ChangeEventHandler<HTMLInputElement>

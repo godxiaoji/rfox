@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import type { TabProps, TabEmits, TabRef } from './types'
-import type { FC, FRFC } from '../helpers/types'
+import type { FRFC } from '../helpers/types'
 import { getTabItemClasses, getTabClasses } from './util'
 import { useTab } from './use-tab'
 import { forwardRef, useCallback } from 'react'

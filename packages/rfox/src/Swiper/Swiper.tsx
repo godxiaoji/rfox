@@ -1,8 +1,8 @@
 import {
   forwardRef,
-  useCallback,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState
 } from 'react'
@@ -26,6 +26,7 @@ import { useResizeObserver } from '../hooks/use-resize-observer'
 import { SwiperContext } from './context'
 import { getStretchOffset } from '../helpers/animation'
 import { Icon } from '../Icon'
+import { useStableState } from '../hooks/use'
 
 interface SwiperCoords {
   offset: boolean | null
@@ -43,7 +44,7 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
     initialCircular = false,
     navigationButtons = false,
     bounces = true,
-    activeIndex = 0,
+    initialActiveIndex = 0,
     ...props
   },
   ref
@@ -62,19 +63,21 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
   const inMove = useRef(false)
   const playing = useRef(false)
   const horizontal = useRef<boolean | null>(null)
-  const index = useRef(0)
+  // const index = useRef(0)
   const itemSize = useRef(0)
   const autoplayTimer = useRef<number>()
   const durationTimer = useRef<number>()
   const $items = useRef<HTMLElement[]>([])
   const prevTranSize = useRef(0)
+  const [getActiveIndex, setActiveIndex] = useStableState(0)
 
   const [pagination, setPagination] = useState<boolean[]>([])
 
-  const { listEl, update } = useList(
+  const { listEl, update, ListProvider } = useList(
     SwiperContext,
-    { hasGroup: true },
+    { vertical: direction.current === 'y', activeIndex: getActiveIndex() },
     {
+      throttle: true,
       itemClassName: 'fx-swiper-item',
       updateCallback: resetItems
     }
@@ -93,7 +96,7 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
     const len = $items.current.length
 
     if (isNumber(newIndex) && newIndex >= 0 && newIndex <= len) {
-      if (len !== 0 && newIndex !== index.current) {
+      if (len !== 0 && newIndex !== getActiveIndex(true)) {
         to(newIndex, false)
       }
     } else {
@@ -111,13 +114,13 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
    * 跳转到上一项
    */
   function prev(useCircular = false) {
-    to(useCircular ? getCircleIndex(-1) : index.current - 1)
+    to(useCircular ? getCircleIndex(-1) : getActiveIndex(true) - 1)
   }
   /**
    * 跳转到下一项
    */
   function next(useCircular = false) {
-    to(useCircular ? getCircleIndex(1) : index.current + 1)
+    to(useCircular ? getCircleIndex(1) : getActiveIndex(true) + 1)
   }
 
   /**
@@ -125,7 +128,7 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
    */
   function getCircleIndex(step: number) {
     const length = $items.current.length
-    return (index.current + length + (step % length)) % length
+    return (getActiveIndex(true) + length + (step % length)) % length
   }
 
   function updateSwipeLoop(offset?: number) {
@@ -133,7 +136,7 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
       return
     }
 
-    const slideIndex = index.current
+    const slideIndex = getActiveIndex(true)
     const lastIndex = getLastIndex()
     const itemCount = lastIndex + 1
 
@@ -204,7 +207,7 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
       props.onChange && props.onChange(toIndex, fromIndex)
     }
 
-    index.current = toIndex
+    setActiveIndex(toIndex)
     udpatePagination()
   }
 
@@ -229,7 +232,11 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
       return
     }
 
-    if (toIndex >= 0 && toIndex <= lastIndex && toIndex != index.current) {
+    if (
+      toIndex >= 0 &&
+      toIndex <= lastIndex &&
+      toIndex != getActiveIndex(true)
+    ) {
       slide(toIndex, slideIndex, animated)
     } else {
       if (circular.current) {
@@ -241,7 +248,7 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
           toIndex = 0
         }
       } else {
-        toIndex = index.current
+        toIndex = getActiveIndex(true)
       }
 
       slide(toIndex, slideIndex, animated)
@@ -262,7 +269,7 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
 
     playing.current = true
 
-    const fromIndex = index.current
+    const fromIndex = getActiveIndex(true)
     const transSize = -itemSize.current * slideIndex
     const transSizeOffset = prevTranSize.current - transSize
 
@@ -332,13 +339,9 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
   }
 
   const isFirst = useRef(true)
-  const activeIndexCache = useRef(0)
 
-  // 这里涉及到有异步回调，获取不到当时的props.activeIndex，需要cache一下实时的数据
-  activeIndexCache.current = activeIndex
-
-  function resetItems(res: HTMLElement[]) {
-    $items.current = res
+  function resetItems(_$items: HTMLElement[]) {
+    $items.current = _$items
     setSlideStyle()
 
     const last = getLastIndex()
@@ -346,12 +349,21 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
     if (isFirst.current) {
       isFirst.current = false
 
-      if (activeIndexCache.current !== 0) {
-        swipeTo(activeIndexCache.current)
+      if (initialActiveIndex !== 0) {
+        swipeTo(initialActiveIndex)
       }
-    } else if (index.current > last) {
+    } else if (getActiveIndex(true) > last) {
       to(last)
     }
+
+    props.onResetItems &&
+      props.onResetItems(
+        _$items.map(($item, index) => ({
+          index,
+          name: $item.dataset.name || '',
+          subName: $item.dataset.subName || ''
+        }))
+      )
   }
 
   /**
@@ -380,7 +392,7 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
       transition: 'transform 0ms ease-out'
     })
 
-    updateListStyle(-itemSize.current * index.current)
+    updateListStyle(-itemSize.current * getActiveIndex(true))
 
     $items.current.forEach(($item, i) => {
       $item.dataset.index = i.toString()
@@ -401,7 +413,7 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
   function udpatePagination() {
     setPagination(
       $items.current.map(($item, i) => {
-        return i === index.current
+        return i === getActiveIndex(true)
       })
     )
   }
@@ -424,9 +436,9 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
     clearTimeout(autoplayTimer.current)
   }
 
-  function getItemEl(index: number): HTMLElement | null {
-    return $items.current[index] || null
-  }
+  // function getItemEl(index: number): HTMLElement | null {
+  //   return $items.current[index] || null
+  // }
 
   useTouch({
     el: root,
@@ -501,7 +513,7 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
         }
       }
 
-      const active = index.current
+      const active = getActiveIndex(true)
       let transSize = active * itemSize.current
 
       if (
@@ -542,7 +554,7 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
             ? coords.current.startX - coords.current.stopX
             : coords.current.startY - coords.current.stopY
         let absX = Math.abs(offsetX)
-        const active = index.current
+        const active = getActiveIndex(true)
 
         let transIndex
 
@@ -569,10 +581,6 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
     }
   })
 
-  useEffect(() => {
-    !isFirst.current && swipeTo(activeIndex)
-  }, [activeIndex])
-
   useEffect(start, [props.autoplay, props.interval])
 
   useEffect(() => {
@@ -585,12 +593,12 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
     }
   }, [])
 
-  useResizeObserver(root, () => update(50))
+  useResizeObserver(root, () => update())
 
   /**
    * 渲染小点导航
    */
-  const renderPagination = useCallback(() => {
+  const renderPagination = useMemo(() => {
     const indicatorsClasses = classNames(
       getSwiperIndicatorsClasses(direction.current)
     )
@@ -604,9 +612,9 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
           <span
             key={_index}
             className={classNames(
-              getPaginationItemClasses(_index, index.current)
+              getPaginationItemClasses(_index, getActiveIndex())
             )}
-            style={getPaginationItemStyles(props, _index, index.current)}
+            style={getPaginationItemStyles(props, _index, getActiveIndex())}
           ></span>
         ))}
       </div>
@@ -618,7 +626,7 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
   /**
    * 显然上下页按钮
    */
-  const renderNavigation = useCallback(() => {
+  const renderNavigation = useMemo(() => {
     return navigationButtons && pagination.length > 1 ? (
       <>
         <button className="fx-swiper_prev" onClick={() => prev(true)}>
@@ -633,6 +641,15 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
     )
   }, [navigationButtons, pagination])
 
+  const renderList = useMemo(
+    () => (
+      <div className="fx-swiper_list" ref={listEl}>
+        <ListProvider>{props.children}</ListProvider>
+      </div>
+    ),
+    [props.children]
+  )
+
   useImperativeHandle(
     ref,
     () => ({
@@ -645,11 +662,9 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
 
   return (
     <div className={classes} onClick={onClick} ref={root}>
-      <div className="fx-swiper_list" ref={listEl}>
-        {props.children}
-      </div>
-      {renderPagination()}
-      {renderNavigation()}
+      {renderList}
+      {renderPagination}
+      {renderNavigation}
     </div>
   )
 }

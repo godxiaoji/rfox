@@ -1,0 +1,10 @@
+@import '../style/var.scss';
+
+.fx-calendar-popup {
+  &_confirm {
+    padding: 12px 16px;
+    background-color: $white-color;
+    display: flex;
+    border-top: 1px solid $divider-color;
+  }
+}

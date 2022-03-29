@@ -7,7 +7,7 @@ import type {
   VirtualListProps,
   VirtualListRef
 } from './types'
-import type { FRFC, RenderProp } from '../helpers/types'
+import type { FRFC, FxEventCallback, RenderProp } from '../helpers/types'
 import {
   cloneData,
   getSameValueArray,
@@ -53,7 +53,13 @@ const FxVirtualList: FRFC<
     preLoad = 1.5,
     initialWaterfallCount = 1,
     approvedItemVisibleScale = 0.5,
-    ...props
+    initialHorizontal = false,
+    className,
+    itemSize,
+    onVisibleItemsChange,
+    onResize,
+    ids = [],
+    ...attrs
   },
   ref
 ) => {
@@ -63,7 +69,7 @@ const FxVirtualList: FRFC<
   const scrollEl = useRef<HTMLElement>()
 
   const [horizontal] = useState(
-    !(initialWaterfallCount > 1 || !props.initialHorizontal)
+    !(initialWaterfallCount > 1 || !initialHorizontal)
   )
   const cols = useRef(
     initialWaterfallCount > 1
@@ -75,12 +81,12 @@ const FxVirtualList: FRFC<
   const list = useRef<ListItem[]>([])
   const [renderList, setRenderList] = useState<RenderItem[]>([])
 
-  const classes = classNames(getClasses(horizontal), props.className)
+  const classes = classNames(getClasses(horizontal), className)
 
   function getFixedSize(index: number) {
-    if (typeof props.itemSize === 'function') {
+    if (typeof itemSize === 'function') {
       try {
-        const size = props.itemSize(index)
+        const size = itemSize(index)
 
         if (isNumber(size)) {
           return size
@@ -94,8 +100,8 @@ const FxVirtualList: FRFC<
           )
         )
       }
-    } else if (isNumber(props.itemSize)) {
-      return props.itemSize
+    } else if (isNumber(itemSize)) {
+      return itemSize
     }
 
     return -1
@@ -103,12 +109,12 @@ const FxVirtualList: FRFC<
 
   const [isDataChange, setIsDataChange] = useState(false)
 
-  function dataToList(ids: (string | number)[]) {
+  function dataToList(_ids: (string | number)[]) {
     const newList: ListItem[] = []
 
-    let isChange = ids.length !== list.current.length
+    let isChange = _ids.length !== list.current.length
 
-    ids.forEach((id, index) => {
+    _ids.forEach((id, index) => {
       const oldItem = list.current[index]
       // 如果没有固定高度（或宽度），默认不回收，因为需要展示以获取当前高度
       let newItem: ListItem = {
@@ -255,9 +261,9 @@ const FxVirtualList: FRFC<
 
     for (let i = startCols.index, len = list.current.length; i < len; i++) {
       const item = list.current[i]
-      const itemSize = item.size
+      const _itemSize = item.size
 
-      if (itemSize === -1) {
+      if (_itemSize === -1) {
         return
       }
 
@@ -280,17 +286,17 @@ const FxVirtualList: FRFC<
             {
               offset,
               otherOffset: `${colMinIndex * 100}%`,
-              itemSize,
+              itemSize: _itemSize,
               otherSizePx:
                 newCols.length > 1 ? `calc(100% / ${newCols.length})` : '100%'
             },
             cols.current,
             horizontal
           ),
-          size: itemSize
+          size: _itemSize
         })
 
-        if (isVisible(offset, itemSize, scrollSize, aivs)) {
+        if (isVisible(offset, _itemSize, scrollSize, aivs)) {
           newVisibleIndexList.push(item.index)
         }
 
@@ -312,7 +318,7 @@ const FxVirtualList: FRFC<
         }
       }
 
-      newCols[colMinIndex] += itemSize
+      newCols[colMinIndex] += _itemSize
     }
 
     if (!isCalcEnd.current) {
@@ -348,7 +354,7 @@ const FxVirtualList: FRFC<
     if (payload.items.length > 0) {
       payload.items.sort((a, b) => a.index - b.index)
 
-      props.onVisibleItemsChange && props.onVisibleItemsChange(payload)
+      onVisibleItemsChange && onVisibleItemsChange(payload)
     }
   }
 
@@ -363,13 +369,13 @@ const FxVirtualList: FRFC<
 
   function isVisible(
     offset: number,
-    itemSize: number,
+    _itemSize: number,
     scrollSize: number,
     aivs: number
   ) {
     return (
-      scrollSize <= offset + itemSize - itemSize * aivs &&
-      scrollSize >= offset - wrapperSize.current + itemSize * aivs
+      scrollSize <= offset + _itemSize - _itemSize * aivs &&
+      scrollSize >= offset - wrapperSize.current + _itemSize * aivs
     )
   }
 
@@ -405,7 +411,7 @@ const FxVirtualList: FRFC<
   const scrollTimer = useRef<number>()
   const scrollCount = useRef(0)
 
-  const handleScroll = () => {
+  const handleScroll: FxEventCallback = () => {
     if (scrollCount.current > 10) {
       // 每轮询10次更新一次
       scrollCount.current = 0
@@ -540,7 +546,7 @@ const FxVirtualList: FRFC<
   const renderPoolItems = useMemo(() => {
     const newList: RenderItem[] = []
 
-    list.current.forEach((item, index) => {
+    list.current.forEach(item => {
       if (item.size === -1 && !renderList.some(v => v.id === item.id)) {
         newList.push(item)
       }
@@ -571,7 +577,7 @@ const FxVirtualList: FRFC<
       resetCalc()
       updateItems('resize')
 
-      props.onResize && props.onResize(newSize)
+      onResize && onResize(newSize)
     }
   }
 
@@ -587,8 +593,8 @@ const FxVirtualList: FRFC<
   }, [])
 
   useEffect(() => {
-    dataToList(props.ids)
-  }, [props.ids])
+    dataToList(ids)
+  }, [ids])
 
   useImperativeHandle(
     ref,
@@ -602,13 +608,11 @@ const FxVirtualList: FRFC<
     []
   )
 
+  const listStyles = getListStyles(horizontal, colsSizeMax)
+
   return (
-    <div className={classes} ref={root}>
-      <ul
-        className="fx-virtual-list_list"
-        style={getListStyles(horizontal, colsSizeMax)}
-        ref={listEl}
-      >
+    <div {...attrs} className={classes} ref={root}>
+      <ul className="fx-virtual-list_list" style={listStyles} ref={listEl}>
         {renderItems}
       </ul>
       <ul className="fx-virtual-list_list pool" ref={poolEl}>

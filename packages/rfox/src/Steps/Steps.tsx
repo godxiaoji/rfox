@@ -15,8 +15,9 @@ const FxSteps: FC<
 
   const { ListProvider, listEl } = useList(
     StepListContext,
-    { activeIndex, hasGroup: true },
+    { activeIndex },
     {
+      throttle: true,
       itemClassName: 'fx-step',
       updateCallback: noop
     }

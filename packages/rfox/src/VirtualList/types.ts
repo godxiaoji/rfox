@@ -1,3 +1,4 @@
+import { HTMLAttributes } from 'react'
 import type {
   CSSProperties,
   FnArgs,
@@ -61,7 +62,7 @@ export type RenderItem = {
   size: number
 }
 
-export interface VirtualListProps {
+export interface VirtualListProps extends HTMLAttributes<HTMLDivElement> {
   ids: (string | number)[]
   itemSize?: number | ((index: number) => number)
   initialHorizontal?: boolean

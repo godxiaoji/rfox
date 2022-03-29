@@ -1,6 +1,7 @@
+import type { FC } from '../helpers/types'
 import type { SpriteSVGProps } from './types'
 
-const FxSpriteSVG: React.FC<SpriteSVGProps> = ({ iconName, ...props }) => {
+const FxSpriteSVG: FC<SpriteSVGProps> = ({ iconName, ...props }) => {
   return (
     <svg {...props}>
       <use xlinkHref={'#' + iconName}></use>

@@ -1,5 +1,5 @@
 import type { CSSProperties } from '../helpers/types'
-import { HandleOptionItem, OptionItem, OptionList } from './types'
+import type { HandleOptionItem } from './types'
 
 export const getTabStyles = (color?: string, activeColor?: string) => {
   const obj: CSSProperties = {}

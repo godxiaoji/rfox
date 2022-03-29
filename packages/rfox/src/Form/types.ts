@@ -1,6 +1,6 @@
-import type { OnFocus } from './../helpers/types'
+import type { Noop, OnFocus } from '../helpers/types'
 
-export interface FormProps {
+export interface FormItemCommonProps {
   name?: string
   disabled?: boolean
 }
@@ -8,4 +8,16 @@ export interface FormProps {
 export interface FocusEmits {
   onFocus?: OnFocus
   onBlur?: OnFocus
+}
+
+export interface FocusWithoutEventEmits {
+  onFocus?: Noop
+  onBlur?: Noop
+}
+
+export interface FormItemProps {
+  label?: string
+  required?: boolean
+  error?: string | string[]
+  validateStatus?: string
 }

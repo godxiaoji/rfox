@@ -7,7 +7,7 @@ import { getDrawerInnerClasses, getDrawerInnerStyles } from './util'
 import { NavBar } from '../NavBar'
 import { useSafeAreaInsets } from '../hooks/use-safe-area-insets'
 import CloseOutlined from '../Icon/icons/CloseOutlined'
-import { forwardRef, useRef } from 'react'
+import { forwardRef } from 'react'
 import { PopupRef } from '../popup/types'
 
 const FxDrawer: FRFC<
@@ -17,7 +17,7 @@ const FxDrawer: FRFC<
       renderHeader?: RenderProp
     }
 > = ({ showMask = true, ...props }, ref) => {
-  const innerEl = useRef<HTMLDivElement>(null)
+  // const innerEl = useRef<HTMLDivElement>(null)
 
   const { popupStyles, popupClasses, onMaskClick, onCloseClick } = usePopup(
     props,

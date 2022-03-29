@@ -1,8 +1,9 @@
 import classNames from 'classnames'
 import type { SliderProps, SliderEmits } from './types'
 import type { FC } from '../helpers/types'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSlide } from './use-slide'
+import { useStableState } from '../hooks/use'
 
 const FxSlider: FC<SliderProps & SliderEmits> = ({
   value,
@@ -11,7 +12,7 @@ const FxSlider: FC<SliderProps & SliderEmits> = ({
   ...props
 }) => {
   const [progress, setProgress] = useState(0)
-  const [inputValue, setInputValue] = useState(0)
+  const [getInputValue, setInputValue] = useStableState(-1)
 
   const {
     sliderEl,
@@ -22,7 +23,7 @@ const FxSlider: FC<SliderProps & SliderEmits> = ({
     slideStyles
   } = useSlide(props, {
     getValue() {
-      return inputValue
+      return getInputValue(true)
     },
     move({ value: newVal, progress: newProgress }) {
       setInputValue(newVal)
@@ -31,37 +32,34 @@ const FxSlider: FC<SliderProps & SliderEmits> = ({
       onInput && onInput(newVal)
     },
     end({ isChange }) {
-      isChange && onChange && onChange(inputValue)
+      isChange && onChange && onChange(getInputValue(true))
     }
   })
 
-  const updateValue = useCallback(
-    (val: unknown) => {
-      if (val == null) {
-        return
-      }
+  const updateValue = (val: unknown) => {
+    if (val == null) {
+      return
+    }
 
-      let newVal = toInteger(val as string)
+    let newVal = toInteger(val as string)
 
-      if (isNaN(newVal)) {
-        return
-      }
+    if (isNaN(newVal)) {
+      return
+    }
 
-      newVal = rangeValue(newVal)
+    newVal = rangeValue(newVal)
 
-      if (newVal !== inputValue) {
-        setInputValue(newVal)
-        setProgress(value2Progress(newVal))
+    if (newVal !== getInputValue(true)) {
+      setInputValue(newVal)
+      setProgress(value2Progress(newVal))
 
-        onChange && onChange(newVal)
-      }
-    },
-    [inputValue]
-  )
+      onChange && onChange(newVal)
+    }
+  }
 
   useEffect(() => updateValue(value), [value])
 
-  useEffect(() => updateValue(inputValue), [props.min, props.max])
+  useEffect(() => updateValue(getInputValue(true)), [props.min, props.max])
 
   const classes = classNames('fx-slider', slideClasses, props.className)
 
@@ -78,14 +76,14 @@ const FxSlider: FC<SliderProps & SliderEmits> = ({
             data-thumb="true"
             style={{ left: progress * 100 + '%' }}
           >
-            {props.showValue ? inputValue : ''}
+            {props.showValue ? getInputValue() : ''}
           </div>
         </div>
         <input
           type="hidden"
           name={props.name}
           disabled={props.disabled}
-          value={inputValue}
+          value={getInputValue().toString()}
         />
       </div>
     </div>
