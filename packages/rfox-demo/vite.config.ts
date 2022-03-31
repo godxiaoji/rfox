@@ -25,5 +25,8 @@ export default defineConfig({
       // 可以为项目根目录的上一级提供服务
       allow: ['../']
     }
+  },
+  build: {
+    outDir: '../rfox-docs/docs/.vitepress/dist/demo'
   }
 })
