@@ -1,12 +1,7 @@
 import classNames from 'classnames'
-import type {
-  ButtonOption,
-  NavBarProps,
-  OnButtonClick,
-  OnTitleDbClick
-} from './types'
-import type { FC, OnClick, RenderProp } from '../helpers/types'
-import { Button, ButtonGroup } from '../Button'
+import type { ButtonOption, NavBarEmits, NavBarProps } from './types'
+import type { OnClick, RenderProp, VFC } from '../helpers/types'
+import { Button } from '../Button'
 import { useLocale } from '../ConfigProvider/context'
 import LeftOutlined from '../Icon/icons/LeftOutlined'
 import HomeOutlined from '../Icon/icons/HomeOutlined'
@@ -16,17 +11,12 @@ import { useDbclick } from '../hooks/use-event'
 
 type ButtonMouseEvent = MouseEvent<HTMLButtonElement>
 
-const FxNavBar: FC<
-  NavBarProps & {
-    renderLeft?: RenderProp
-    renderRight?: RenderProp
-
-    onBackClick?: OnButtonClick
-    onHomeClick?: OnButtonClick
-    onLeftButtonClick?: OnButtonClick
-    onRightButtonClick?: OnButtonClick
-    onTitleDbclick?: OnTitleDbClick
-  }
+const FxNavBar: VFC<
+  NavBarProps &
+    NavBarEmits & {
+      renderLeft?: RenderProp
+      renderRight?: RenderProp
+    }
 > = props => {
   const { locale } = useLocale()
   const titleEl = useRef<HTMLDivElement>(null)
@@ -104,7 +94,7 @@ const FxNavBar: FC<
       props.showHome
     ) {
       return (
-        <ButtonGroup
+        <Button.Group
           className="fx-nav-bar_button-group"
           shape={props.iconOnly ? 'square' : 'rectangle'}
           pattern="borderless"
@@ -118,9 +108,7 @@ const FxNavBar: FC<
                   transparent
                   type={item.type}
                   icon={item.icon}
-                  onClick={(e: ButtonMouseEvent) =>
-                    onLeftIconClick(e, item, index)
-                  }
+                  onClick={e => onLeftIconClick(e, item, index)}
                 >
                   {item.text}
                 </Button>
@@ -156,7 +144,7 @@ const FxNavBar: FC<
               )}
             </>
           )}
-        </ButtonGroup>
+        </Button.Group>
       )
     }
     return <></>
@@ -165,7 +153,7 @@ const FxNavBar: FC<
   function renderRightButtons() {
     if (props.rightButtons && props.rightButtons.length > 0) {
       return (
-        <ButtonGroup
+        <Button.Group
           className="fx-nav-bar_button-group"
           shape={props.iconOnly ? 'square' : 'rectangle'}
           pattern="borderless"
@@ -179,15 +167,13 @@ const FxNavBar: FC<
                 transparent
                 type={item.type}
                 icon={item.icon}
-                onClick={(e: ButtonMouseEvent) =>
-                  onRightIconClick(e, item, index)
-                }
+                onClick={e => onRightIconClick(e, item, index)}
               >
                 {item.text}
               </Button>
             )
           })}
-        </ButtonGroup>
+        </Button.Group>
       )
     }
     return <></>

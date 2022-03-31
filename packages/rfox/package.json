@@ -1,5 +1,5 @@
 {
-  "name": "@fox2/rfox",
+  "name": "@fox2/react-ui",
   "private": true,
   "version": "0.0.0",
   "description": "rfox ui",
@@ -11,8 +11,6 @@
   "module": "index.ts",
   "types": "module",
   "dependencies": {
-    "classnames": "^2.3.1",
-    "csstype": "^3.0.11",
-    "react": "^17.0.2"
+    "classnames": "^2.3.1"
   }
 }

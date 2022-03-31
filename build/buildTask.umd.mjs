@@ -47,7 +47,7 @@ const buildUmdJs = async () => {
     format: 'umd',
     file: resolve('./dist/index.js'),
     globals: {
-      vue: 'React',
+      react: 'React',
       'react-dom': 'ReactDom'
     },
     sourcemap: true

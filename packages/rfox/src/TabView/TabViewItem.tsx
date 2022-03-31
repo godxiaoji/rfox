@@ -1,9 +1,7 @@
 import classNames from 'classnames'
 import { useRef } from 'react'
 import type { FC } from '../helpers/types'
-import { useListItem } from '../hooks/use-list'
 import { useTouch } from '../hooks/use-touch'
-import { SwiperContext } from '../Swiper/context'
 import type { TabViewItemProps } from './types'
 
 interface TabViewItemCoords {
@@ -15,14 +13,16 @@ interface TabViewItemCoords {
   stop: boolean
 }
 
-const FxTabViewItem: FC<TabViewItemProps> = props => {
+const FxTabViewItem: FC<TabViewItemProps> = ({
+  vertical = false,
+  ...props
+}) => {
   const classes = classNames(
     'fx-swiper-item',
     'fx-tab-view-item',
     props.className
   )
-  const { root, vertical } = useListItem(SwiperContext)
-
+  const root = useRef<HTMLDivElement>(null)
   const coords = useRef<TabViewItemCoords | null>(null)
 
   useTouch({

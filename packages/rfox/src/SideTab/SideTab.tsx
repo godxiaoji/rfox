@@ -1,14 +1,14 @@
 import classNames from 'classnames'
-import type { SideTabProps, SideTabEmits } from './types'
-import type { FRFC } from '../helpers/types'
-import { useTab } from '../Tab/use-tab'
 import { forwardRef, useCallback } from 'react'
+import type { SideTabProps, SideTabEmits } from './types'
+import type { FRVFC } from '../helpers/types'
+import { useTab } from '../Tab/use-tab'
 import { Badge } from '../Badge'
 import { Icon } from '../Icon'
 import { getSideTabClasses, getSideTabItemClasses } from './util'
 import type { TabRef } from '../Tab/types'
 
-const FxSideTab: FRFC<TabRef, SideTabProps & SideTabEmits> = (
+const FxSideTab: FRVFC<TabRef, SideTabProps & SideTabEmits> = (
   { className, ...tabProps },
   ref
 ) => {

@@ -1,5 +1,3 @@
-import type { ListContextValue } from '../hooks/types'
-
 export interface StepsProps {
   activeIndex?: number
   dot?: boolean
@@ -8,8 +6,7 @@ export interface StepsProps {
 
 export interface StepProps {
   title?: string
-}
-
-export interface StepContextValue extends ListContextValue {
-  activeIndex: number
+  index?: number
+  active?: boolean
+  finish?: boolean
 }

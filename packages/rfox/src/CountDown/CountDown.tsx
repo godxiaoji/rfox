@@ -5,7 +5,7 @@ import type {
   CountDownRef,
   CountTime
 } from './types'
-import type { FRFC, RenderProp } from '../helpers/types'
+import type { FRVFC, RenderProp } from '../helpers/types'
 import {
   forwardRef,
   useCallback,
@@ -16,7 +16,7 @@ import {
 import { useCountTime } from './use-count-time'
 import { useLocale } from '../ConfigProvider/context'
 
-const FxCountDown: FRFC<
+const FxCountDown: FRVFC<
   CountDownRef,
   CountDownProps &
     CountDownEmits & {

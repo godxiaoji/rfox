@@ -1,10 +1,10 @@
 import type { ImageUploaderAddProps } from './types'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 import { Icon } from '../Icon'
 import PlusOutlined from '../Icon/icons/PlusOutlined'
 import classNames from 'classnames'
 
-const FxImageUploaderAdd: FC<ImageUploaderAddProps> = ({
+const FxImageUploaderAdd: VFC<ImageUploaderAddProps> = ({
   accept,
   disabled,
   multiple,

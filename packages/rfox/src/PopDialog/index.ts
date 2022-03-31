@@ -1,11 +1,11 @@
 import PopDialog from './PopDialog'
 import { createConfirmHook, createShowPopup } from '../popup/api'
 import type { PopupSuccessConfirmArgs } from '../popup/types'
-import type { DomSelector, PlacementType, EmptyObject } from '../helpers/types'
+import type { PlacementType, EmptyObject, Selector } from '../helpers/types'
 
 const showPopDialog = createShowPopup<
   {
-    selector: DomSelector
+    selector: Selector
     content: string
   } & Partial<{
     placement: PlacementType

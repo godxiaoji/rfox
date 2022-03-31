@@ -5,7 +5,7 @@ export interface RateProps extends FormItemCommonProps {
   value?: number | string
   count?: number | string
   allowHalf?: boolean
-  readonly?: boolean
+  readOnly?: boolean
   icon?: IconData
   activeIcon?: IconData
   color?: string

@@ -2,9 +2,8 @@ import classNames from 'classnames'
 import type { StepsProps } from './types'
 import type { CSSProperties, FC } from '../helpers/types'
 import { getStepsClasses } from './util'
-import { StepListContext } from './context'
-import { useList } from '../hooks/use-list'
-import { noop } from '../helpers/util'
+import { toArray } from '../helpers/react'
+import { cloneElement } from 'react'
 
 const FxSteps: FC<
   StepsProps & {
@@ -13,19 +12,19 @@ const FxSteps: FC<
 > = ({ activeIndex = 0, ...props }) => {
   const classes = classNames(getStepsClasses(props), props.className)
 
-  const { ListProvider, listEl } = useList(
-    StepListContext,
-    { activeIndex },
-    {
-      throttle: true,
-      itemClassName: 'fx-step',
-      updateCallback: noop
-    }
-  )
-
   return (
-    <div className={classes} style={props.style} ref={listEl}>
-      <ListProvider>{props.children}</ListProvider>
+    <div className={classes} style={props.style}>
+      {toArray(props.children).map((child, index) => {
+        const childProps = {
+          ...child.props,
+          index,
+          active: activeIndex === index,
+          finish: index < activeIndex,
+          key: index
+        }
+
+        return cloneElement(child, childProps)
+      })}
     </div>
   )
 }

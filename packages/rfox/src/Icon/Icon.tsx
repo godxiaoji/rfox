@@ -2,10 +2,10 @@ import classNames from 'classnames'
 import type { IconProps } from './types'
 import { getIconStyles } from './util'
 import FxSpriteSVG from './SpriteSVG'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 import { isString } from '../helpers/util'
 
-const FxIcon: FC<IconProps> = ({
+const FxIcon: VFC<IconProps> = ({
   icon,
   width,
   height,

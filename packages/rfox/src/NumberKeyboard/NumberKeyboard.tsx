@@ -1,13 +1,14 @@
 import classNames from 'classnames'
+import { forwardRef, useMemo, useRef } from 'react'
 import type {
   NumberKeyboardEmits,
   NumberKeyboardProps,
   OnConfirm
 } from './types'
-import type { FRFC } from '../helpers/types'
+import type { FRVFC } from '../helpers/types'
 import { getBodyClasses, isShowHeaderConfirm } from './util'
 import { Drawer } from '../Drawer'
-import { forwardRef, useMemo, useRef } from 'react'
+import { Icon } from '../Icon'
 import { useLocale } from '../ConfigProvider/context'
 import type { OnCancel, OnVisibleStateChange, PopupRef } from '../popup/types'
 import { usePopupRef } from '../popup/use-popup'
@@ -15,7 +16,6 @@ import type { NumberKeyboardItem } from './types'
 import BackspaceOutlined from '../Icon/icons/BackspaceOutlined'
 import KeyboardOutlined from '../Icon/icons/KeyboardOutlined'
 import { stringMix2StringArray } from '../helpers/util'
-import { Icon } from '../Icon'
 
 const backspaceItem: NumberKeyboardItem = {
   text: 'backspace',
@@ -23,7 +23,7 @@ const backspaceItem: NumberKeyboardItem = {
   icon: BackspaceOutlined
 }
 
-const FxNumberKeyboard: FRFC<
+const FxNumberKeyboard: FRVFC<
   PopupRef,
   NumberKeyboardProps & NumberKeyboardEmits
 > = ({ onUpdateValue, ...props }, ref) => {

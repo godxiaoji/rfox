@@ -1,13 +1,13 @@
 import classNames from 'classnames'
-import type { StopwatchEmits, StopwatchProps, StopwatchRef } from './types'
-import type { FRFC, RenderProp } from '../helpers/types'
-import { cloneData } from '../helpers/util'
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react'
+import type { StopwatchEmits, StopwatchProps, StopwatchRef } from './types'
+import type { FRVFC, RenderProp } from '../helpers/types'
+import { cloneData } from '../helpers/util'
 import { useCountTime } from '../CountDown/use-count-time'
 import { getCountTime } from '../CountDown/util'
 import type { CountTime } from '../CountDown/types'
 
-const FxStopwatch: FRFC<
+const FxStopwatch: FRVFC<
   StopwatchRef,
   StopwatchProps &
     StopwatchEmits & {

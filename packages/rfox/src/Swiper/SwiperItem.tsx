@@ -1,24 +1,15 @@
 import classNames from 'classnames'
-import { useMemo } from 'react'
 import type { FC } from '../helpers/types'
-import { useListItem } from '../hooks/use-list'
-import { SwiperContext } from './context'
 import type { SwiperItemProps } from './types'
 
-const FxSwiperItem: FC<SwiperItemProps> = props => {
+const FxSwiperItem: FC<SwiperItemProps> = ({ index = -1, ...props }) => {
   const classes = classNames('fx-swiper-item', props.className)
-  const { root } = useListItem(SwiperContext)
 
-  const render = useMemo(
-    () => (
-      <div className={classes} ref={root}>
-        {props.children}
-      </div>
-    ),
-    [props.children]
+  return (
+    <div className={classes} data-index={index}>
+      {props.children}
+    </div>
   )
-
-  return render
 }
 
 export default FxSwiperItem

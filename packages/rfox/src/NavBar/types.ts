@@ -27,3 +27,11 @@ export interface NavBarProps {
   rightButtons?: ButtonOption[]
   iconOnly?: boolean
 }
+
+export interface NavBarEmits {
+  onBackClick?: OnButtonClick
+  onHomeClick?: OnButtonClick
+  onLeftButtonClick?: OnButtonClick
+  onRightButtonClick?: OnButtonClick
+  onTitleDbclick?: OnTitleDbClick
+}

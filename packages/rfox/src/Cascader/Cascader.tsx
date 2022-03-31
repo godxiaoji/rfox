@@ -1,12 +1,12 @@
 import classNames from 'classnames'
 import type { CascaderEmits, CascaderProps } from './types'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 import { SelectorField } from '../SelectorField'
 import CascaderPopup from './CascaderPopup'
 import { usePicker } from '../Picker/use-picker'
 import { mergeHandlers } from '../Picker/util'
 
-const FxCascader: FC<CascaderProps & CascaderEmits> = props => {
+const FxCascader: VFC<CascaderProps & CascaderEmits> = props => {
   const classes = classNames('fx-picker', props.className)
 
   const {

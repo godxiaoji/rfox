@@ -8,7 +8,6 @@ import {
   FxSwitch,
   FxRate,
   FxSlider,
-  FxRange,
   FxStepper,
   FxRadioGroup,
   FxCheckboxGroup,
@@ -17,10 +16,10 @@ import {
   showToast,
   ImageUploaderUploadReady
 } from '@/index'
+import { multiOptions, regionOptions } from '../Picker/data'
 import { createForm, setValidateLanguage } from '@formily/core'
 import { FormProvider, Field, FormConsumer } from '@formily/react'
-import FormItem from './FormItem'
-import { multiOptions, regionOptions } from '../Picker/data'
+import FormilyFormItem from './FormilyFormItem'
 
 const genderOptions = [
   { label: '男', value: 1 },
@@ -54,10 +53,6 @@ export default function ExpForm() {
     showToast('校验通过')
   }
 
-  function onChange(res: any) {
-    console.log(res)
-  }
-
   return (
     <>
       <FxGroup title="Formily">
@@ -70,7 +65,7 @@ export default function ExpForm() {
               FxInput,
               { placeholder: '请输入昵称', showClear: true }
             ]}
-            decorator={[FormItem]}
+            decorator={[FormilyFormItem]}
           />
           <Field
             name="avatar"
@@ -80,7 +75,7 @@ export default function ExpForm() {
               FxImageUploader,
               { uploadReady: hookUpload, columnNumber: 1, maxCount: 1 }
             ]}
-            decorator={[FormItem]}
+            decorator={[FormilyFormItem]}
           />
           <Field
             name="gender"
@@ -92,14 +87,14 @@ export default function ExpForm() {
                 options: genderOptions
               }
             ]}
-            decorator={[FormItem]}
+            decorator={[FormilyFormItem]}
           />
           <Field
             name="weight"
             title="体重Kg"
             required
             component={[FxSlider, { showValue: true, min: 35, max: 120 }]}
-            decorator={[FormItem]}
+            decorator={[FormilyFormItem]}
           />
           <Field
             name="season"
@@ -109,21 +104,21 @@ export default function ExpForm() {
               FxPicker,
               { options: multiOptions, placeholder: '选择季节' }
             ]}
-            decorator={[FormItem]}
+            decorator={[FormilyFormItem]}
           />
           <Field
             name="birthday"
             title="生日"
             required
             component={[FxCalendar, { placeholder: '选择生日' }]}
-            decorator={[FormItem]}
+            decorator={[FormilyFormItem]}
           />
           <Field
             name="character"
             title="性格"
             required
             component={[FxCheckboxGroup, { options: characters }]}
-            decorator={[FormItem]}
+            decorator={[FormilyFormItem]}
           />
           <Field
             name="region"
@@ -137,28 +132,28 @@ export default function ExpForm() {
                 options: regionOptions
               }
             ]}
-            decorator={[FormItem]}
+            decorator={[FormilyFormItem]}
           />
           <Field
             name="happinessIndex"
             title="幸福指数"
             required
             component={[FxRate, { allowHalf: true }]}
-            decorator={[FormItem]}
+            decorator={[FormilyFormItem]}
           />
           <Field
             name="stepper"
             title="步进器"
             required
             component={[FxStepper, { max: 10, step: 0.2, decimalLength: 1 }]}
-            decorator={[FormItem]}
+            decorator={[FormilyFormItem]}
           />
           <Field
             name="agree"
             title="认可"
             required
             component={[FxSwitch]}
-            decorator={[FormItem]}
+            decorator={[FormilyFormItem]}
           />
           <FormConsumer>
             {form => (

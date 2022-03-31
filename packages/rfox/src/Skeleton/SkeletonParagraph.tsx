@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import type { SkeletonParagraphProps } from './types'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 import { useContext } from 'react'
 import { SkeletonContext } from './context'
 import {
@@ -10,7 +10,7 @@ import {
 } from './util'
 import { skeletonDefaultProps } from './props'
 
-const FxSkeletonParagraph: FC<SkeletonParagraphProps> = props => {
+const FxSkeletonParagraph: VFC<SkeletonParagraphProps> = props => {
   const consumer = useContext(SkeletonContext)
   const classes = classNames(
     getSkeletonParagraphClasses(props, consumer),

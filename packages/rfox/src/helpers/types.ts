@@ -38,6 +38,16 @@ export type FRFC<
   }
 >
 
+export type FRVFC<
+  T,
+  P = Record<string, unknown>
+> = React.ForwardRefRenderFunction<
+  T,
+  P & {
+    className?: string
+  }
+>
+
 export type RenderProp<T = void> = T extends void
   ? () => React.ReactNode
   : (data: T) => React.ReactNode
@@ -55,13 +65,7 @@ export type EmptyObject = Record<string, never>
 
 export type ViewPosition = 'start' | 'center' | 'end' | 0 | 0.5 | 1
 
-export interface Validator<T = unknown> {
-  (value: T): boolean
-}
-
 export type Selector = HTMLElement | string
-
-export type DomSelector = Selector | Document
 
 /**
  * 事件

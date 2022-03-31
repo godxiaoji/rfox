@@ -88,10 +88,10 @@ export default function ExpImageUploader() {
           value={imageList2}
           deletable={false}
           uploadReady={hookUpload}
-        ></FxImageUploader>
+        />
       </FxGroup>
       <FxGroup title="禁用上传">
-        <FxImageUploader disabled> </FxImageUploader>
+        <FxImageUploader disabled />
       </FxGroup>
     </>
   )

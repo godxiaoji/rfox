@@ -1,11 +1,11 @@
 import classNames from 'classnames'
-import type { SliderProps, SliderEmits } from './types'
-import type { FC } from '../helpers/types'
 import { useEffect, useState } from 'react'
+import type { SliderProps, SliderEmits } from './types'
+import type { VFC } from '../helpers/types'
 import { useSlide } from './use-slide'
 import { useStableState } from '../hooks/use'
 
-const FxSlider: FC<SliderProps & SliderEmits> = ({
+const FxSlider: VFC<SliderProps & SliderEmits> = ({
   value,
   onInput,
   onChange,

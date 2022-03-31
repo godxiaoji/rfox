@@ -1,11 +1,11 @@
 import classNames from 'classnames'
 import type { RangeProps, RangeEmits } from './types'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 import { useEffect, useRef, useState } from 'react'
 import { useSlide } from '../Slider/use-slide'
 import { cloneData, isNumberArray, isSameArray } from '../helpers/util'
 
-const FxRange: FC<RangeProps & RangeEmits> = ({
+const FxRange: VFC<RangeProps & RangeEmits> = ({
   allowSameValue = true,
   value,
   onInput,

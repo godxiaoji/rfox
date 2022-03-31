@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import type { CountUpEmits, CountUpProps, CountUpRef } from './types'
-import type { FRFC } from '../helpers/types'
+import type { FRVFC } from '../helpers/types'
 import { getDuration } from './util'
 import { getNumber } from '../helpers/util'
 import {
@@ -14,7 +14,7 @@ import {
 import { useFrameTask } from '../hooks/use-frame-task'
 import { thousands as handleThousands } from '../helpers/digital-conversion'
 
-const FxCountUp: FRFC<CountUpRef, CountUpProps & CountUpEmits> = (
+const FxCountUp: FRVFC<CountUpRef, CountUpProps & CountUpEmits> = (
   {
     initialNumber = 0,
     number = 0,

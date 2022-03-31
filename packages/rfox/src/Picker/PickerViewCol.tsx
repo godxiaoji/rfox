@@ -1,11 +1,11 @@
 import classNames from 'classnames'
 import type { PickerViewColProps } from './types'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 import { VirtualList } from '../VirtualList'
 import type { UIEventHandler } from 'react'
 import { defaultItemHeight } from './util'
 
-const FxPickerViewCol: FC<PickerViewColProps> = ({
+const FxPickerViewCol: VFC<PickerViewColProps> = ({
   list,
   listIndex,
   onListScroll

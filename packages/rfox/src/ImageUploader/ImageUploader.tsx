@@ -6,7 +6,7 @@ import type {
   BeforeUploadReturn,
   FileItem
 } from './types'
-import type { FC, OnChange } from '../helpers/types'
+import type { OnChange, VFC } from '../helpers/types'
 import { Button } from '../Button'
 import { Order } from '../Order'
 import { ImagePreview } from '../ImagePreview'
@@ -33,7 +33,7 @@ import { useStableState } from '../hooks/use'
 import UploaderAdd from './ImageUploaderAdd'
 import UploaderItem from './ImageUploaderItem'
 
-const FxImageUploader: FC<ImageUploaderProps & ImageUploaderEmits> = ({
+const FxImageUploader: VFC<ImageUploaderProps & ImageUploaderEmits> = ({
   uploadReady = noop,
   beforeUpload = returnTrue,
   preview = true,

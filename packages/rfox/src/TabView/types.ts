@@ -14,6 +14,8 @@ export interface TabViewEmits {
 export interface TabViewItemProps {
   name?: string
   subName?: string
+  vertical?: boolean
+  index?: number
 }
 
 export interface TabViewRef {

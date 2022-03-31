@@ -1,11 +1,11 @@
 import classNames from 'classnames'
 import type { SelectorFieldEmits, SelectorFieldProps } from './types'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 import { Icon } from '../Icon'
 import RightOutlined from '../Icon/icons/RightOutlined'
 import { getClasses, getInputClasses } from './util'
 
-const FxSelectorField: FC<SelectorFieldProps & SelectorFieldEmits> = props => {
+const FxSelectorField: VFC<SelectorFieldProps & SelectorFieldEmits> = props => {
   const classes = classNames(getClasses(props), props.className)
   const inputClasses = classNames(getInputClasses(props))
 

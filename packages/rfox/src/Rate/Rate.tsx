@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import type { RateProps, RateEmits } from './types'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 import { getMax, getRateClasses, getRateStyles, isIntegerOrHalf } from './util'
 import { isInteger, rangeInteger } from '../helpers/util'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -19,7 +19,7 @@ interface RateCoords {
   isChange: boolean
 }
 
-const FxRate: FC<RateProps & RateEmits> = ({
+const FxRate: VFC<RateProps & RateEmits> = ({
   icon = StarOutlined,
   activeIcon = StarFilled,
   count = 5,
@@ -45,22 +45,6 @@ const FxRate: FC<RateProps & RateEmits> = ({
       props.onChange && props.onChange(newVal)
     }
   }
-
-  // function onHalfClick(num: number) {
-  //   if (props.readonly || props.disabled) {
-  //     return
-  //   }
-
-  //   change(num, true)
-  // }
-
-  // function onItemClick(num: number) {
-  //   if (props.readonly || props.disabled) {
-  //     return
-  //   }
-
-  //   change(num)
-  // }
 
   const coords = useRef<RateCoords | null>(null)
 
@@ -163,8 +147,8 @@ const FxRate: FC<RateProps & RateEmits> = ({
   }, [value])
 
   useEffect(() => {
-    isReadOnly.current = !!(props.disabled || props.readonly)
-  }, [props.disabled, props.readonly])
+    isReadOnly.current = !!(props.disabled || props.readOnly)
+  }, [props.disabled, props.readOnly])
 
   const classes = classNames(getRateClasses(props))
   const styles = getRateStyles(props)

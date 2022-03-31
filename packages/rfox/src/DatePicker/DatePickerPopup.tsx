@@ -1,11 +1,11 @@
 import type { DatePickerPopupEmits, DatePickerPopupProps } from './types'
-import type { FRFC } from '../helpers/types'
+import type { FRVFC } from '../helpers/types'
 import { PickerPopup } from '../Picker'
 import { useHandlers } from './use-date-picker'
 import type { PickerPopupRef } from '../Picker/types'
 import { forwardRef } from 'react'
 
-const FxDatePickerPopup: FRFC<
+const FxDatePickerPopup: FRVFC<
   PickerPopupRef,
   DatePickerPopupProps & DatePickerPopupEmits
 > = (

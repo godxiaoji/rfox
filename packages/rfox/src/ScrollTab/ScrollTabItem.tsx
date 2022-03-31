@@ -1,8 +1,6 @@
 import classNames from 'classnames'
 import type { ScrollTabItemProps } from './types'
 import type { FC } from '../helpers/types'
-import { useListItem } from '../hooks/use-list'
-import { StickyViewListContext } from '../StickyView/context'
 
 const FxScrollTabItem: FC<ScrollTabItemProps> = props => {
   const classes = classNames(
@@ -11,14 +9,14 @@ const FxScrollTabItem: FC<ScrollTabItemProps> = props => {
     props.className
   )
 
-  const { root } = useListItem(StickyViewListContext)
-
   return (
-    <div className={classes} data-name={props.name} ref={root}>
+    <div className={classes} data-name={props.name}>
       <div className="fx-sticky-view-item_header">{props.name}</div>
       <div className="fx-sticky-view-item_body">{props.children}</div>
     </div>
   )
 }
+
+FxScrollTabItem.displayName = 'FxStickyViewItem'
 
 export default FxScrollTabItem

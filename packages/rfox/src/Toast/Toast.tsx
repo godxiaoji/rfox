@@ -1,8 +1,9 @@
-import { createPortal } from 'react-dom'
 import classNames from 'classnames'
+import { forwardRef } from 'react'
+import { createPortal } from 'react-dom'
 import type { ToastEmits, ToastProps } from './types'
 import { hasIcon } from './util'
-import type { FRFC } from '../helpers/types'
+import type { FRVFC } from '../helpers/types'
 import { usePopup } from '../popup/use-popup'
 import { ActivityIndicator } from '../ActivityIndicator'
 import { Icon } from '../Icon'
@@ -10,9 +11,8 @@ import CheckOutlined from '../Icon/icons/CheckOutlined'
 import CloseOutlined from '../Icon/icons/CloseOutlined'
 import { useDelay } from '../hooks/use-delay'
 import type { PopupRef } from '../popup/types'
-import { forwardRef } from 'react'
 
-const FxToast: FRFC<PopupRef, ToastProps & ToastEmits> = (props, ref) => {
+const FxToast: FRVFC<PopupRef, ToastProps & ToastEmits> = (props, ref) => {
   const { addDelayTask, removeDelayTask } = useDelay(() => {
     customCancel('auto', true)
   }, props.duration)

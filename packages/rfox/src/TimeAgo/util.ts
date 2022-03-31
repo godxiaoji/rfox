@@ -1,4 +1,4 @@
-import type { Dayjs } from 'dayjs'
+import type { Dayjs } from '../helpers/types'
 import type { TimeAgoProps } from './types'
 import dayjs from '../helpers/day'
 

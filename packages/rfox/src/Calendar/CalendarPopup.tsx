@@ -6,7 +6,7 @@ import type {
   CalendarViewRef,
   CalendarDetail
 } from './types'
-import type { FRFC } from '../helpers/types'
+import type { FRVFC } from '../helpers/types'
 import CalendarView from './CalendarView'
 import { Drawer } from '../Drawer'
 import { Button } from '../Button'
@@ -26,7 +26,7 @@ import { cloneDetail, isSameDetail } from '../Picker/util'
 import { useLocale } from '../ConfigProvider/context'
 import { getDefaultDetail } from './util'
 
-const FxCalendarPopup: FRFC<
+const FxCalendarPopup: FRVFC<
   CalendarPopupRef,
   CalendarPopupProps & CalendarPopupEmits
 > = (props, ref) => {

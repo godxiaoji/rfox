@@ -1,12 +1,12 @@
 import PopMenu from './PopMenu'
 import { createConfirmHook, createShowPopup } from '../popup/api'
 import type { PopupSuccessConfirmArgs } from '../popup/types'
-import type { DomSelector, PlacementType } from '../helpers/types'
+import type { Selector, PlacementType } from '../helpers/types'
 import type { Option, Detail } from './types'
 
 const showPopMenu = createShowPopup<
   {
-    selector: DomSelector
+    selector: Selector
     options: Option[]
     placement?: PlacementType
   },

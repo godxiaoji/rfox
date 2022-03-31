@@ -1,11 +1,11 @@
 import classNames from 'classnames'
 import type { CascaderViewGroupProps } from './types'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 import { VirtualList } from '../VirtualList'
 import { Icon } from '../Icon'
 import CheckOutlined from '../Icon/icons/CheckOutlined'
 
-const FxCascaderViewGroup: FC<CascaderViewGroupProps> = ({
+const FxCascaderViewGroup: VFC<CascaderViewGroupProps> = ({
   tabIndex,
   list,
   listIndex,

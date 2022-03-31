@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import type { ActionSheetEmits, ActionSheetProps } from './types'
-import type { FRFC } from '../helpers/types'
+import type { FRVFC } from '../helpers/types'
 import { getItemClasses, getOptions } from './util'
 import { Drawer } from '../Drawer'
 import { forwardRef, useCallback } from 'react'
@@ -8,7 +8,7 @@ import { useLocale } from '../ConfigProvider/context'
 import type { PopupRef } from '../popup/types'
 import { usePopupRef } from '../popup/use-popup'
 
-const FxActionSheet: FRFC<PopupRef, ActionSheetProps & ActionSheetEmits> = (
+const FxActionSheet: FRVFC<PopupRef, ActionSheetProps & ActionSheetEmits> = (
   props,
   ref
 ) => {

@@ -2,11 +2,10 @@ import classNames from 'classnames'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { FC } from '../helpers/types'
 import { rangeNumber } from '../helpers/util'
-import { useListItem } from '../hooks/use-list'
 import { useTouch } from '../hooks/use-touch'
 import { Image } from '../Image'
 import type { OnLoad } from '../Image/types'
-import { SwiperContext } from '../Swiper/context'
+import { showToast } from '../Toast'
 import type { DistanceOptions, ImageObject } from './types'
 import { getDistance, getImageStyles, mergeLoadedData } from './util'
 
@@ -39,7 +38,11 @@ interface ImageCoords {
   inMove?: boolean
 }
 
-const ImagePreviewItem: FC<{ src: string }> = ({ src }) => {
+const ImagePreviewItem: FC<{
+  src: string
+  active: boolean
+  imageHighRendering: boolean
+}> = ({ src, active, imageHighRendering }) => {
   const [imageObject, setImageObject] = useState<ImageObject>({
     src,
     width: 0,
@@ -54,7 +57,6 @@ const ImagePreviewItem: FC<{ src: string }> = ({ src }) => {
   })
 
   const imageWrapperEl = useRef<HTMLDivElement>(null)
-  const imageEl = useRef<HTMLDivElement | null>(null)
   const [zoomAnimated, setZoomAnimated] = useState(false)
   const coords = useRef<ImageCoords | null>(null)
 
@@ -167,6 +169,7 @@ const ImagePreviewItem: FC<{ src: string }> = ({ src }) => {
           (coords.current.image as ImageCoordsImage).width * scale
         imageObject.height =
           (coords.current.image as ImageCoordsImage).height * scale
+        setImageObject({ ...imageObject })
       } else {
         // 放开一只手指就不执行缩放操作
       }
@@ -201,6 +204,7 @@ const ImagePreviewItem: FC<{ src: string }> = ({ src }) => {
 
         imageObject.offsetTop = offsetTop
         imageObject.offsetLeft = offsetLeft
+        setImageObject({ ...imageObject })
 
         e.preventDefault()
         e.stopPropagation()
@@ -239,6 +243,8 @@ const ImagePreviewItem: FC<{ src: string }> = ({ src }) => {
       })
       imageObject.offsetTop = offsetTop
       imageObject.offsetLeft = offsetLeft
+
+      setImageObject({ ...imageObject })
     }
 
     if (e.touches.length > 0) {
@@ -251,45 +257,50 @@ const ImagePreviewItem: FC<{ src: string }> = ({ src }) => {
   }
 
   useTouch({
-    el: imageEl,
+    el: imageWrapperEl,
     onTouchStart: onImageTouchStart,
     onTouchMove: onImageTouchMove,
     onTouchEnd: onImageTouchEnd
   })
 
   const onImageLoad: OnLoad = res => {
+    if (imageHighRendering) {
+      const dpr = window.devicePixelRatio || 1
+      res.width = res.width / dpr
+      res.height = res.height / dpr
+    }
+
     setImageObject(imageObject => mergeLoadedData(imageObject, res))
   }
 
   useEffect(() => {
-    imageEl.current =
-      (imageWrapperEl.current?.firstElementChild as HTMLImageElement) || null
-
-    return () => {
-      imageEl.current = null
-    }
-  }, [])
-
-  const { root, activeIndex } = useListItem(SwiperContext)
+    setImageObject({
+      ...imageObject,
+      width: imageObject.initialWidth,
+      height: imageObject.initialHeight,
+      offsetTop: 0,
+      offsetLeft: 0
+    })
+  }, [active])
 
   const renderImage = useMemo(
     () => (
-      <div className="fx-preview-image_image-container" ref={imageWrapperEl}>
-        <Image
-          className={classes}
-          src={imageObject.src}
-          mode="aspectFit"
-          onLoaded={onImageLoad}
-          style={styles}
-        />
-      </div>
+      <Image
+        className={classes}
+        src={imageObject.src}
+        mode="aspectFit"
+        onLoaded={onImageLoad}
+        style={styles}
+      />
     ),
-    [imageObject, zoomAnimated]
+    [imageObject]
   )
 
   return (
-    <div className="fx-swiper-item" ref={root}>
-      {renderImage}
+    <div className="fx-swiper-item">
+      <div className={classes} ref={imageWrapperEl}>
+        {renderImage}
+      </div>
     </div>
   )
 }

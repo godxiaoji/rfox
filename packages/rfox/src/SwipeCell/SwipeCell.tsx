@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import { useMemo, useRef, useState } from 'react'
 import type { ButtonOption, SwipeCellEmits, SwipeCellProps } from './types'
 import type { FC } from '../helpers/types'
 import {
@@ -7,7 +8,6 @@ import {
   getSwipeCellInnerStyles
 } from './util'
 import { cloneData, getSameValueArray, rangeNumber } from '../helpers/util'
-import { useMemo, useRef, useState } from 'react'
 import { getStretchOffset } from '../helpers/animation'
 import { useBlur, useStop } from '../hooks/use-event'
 import { useTouch } from '../hooks/use-touch'

@@ -94,7 +94,7 @@ export default function ExpNumberKeyboard() {
           onClick={() => onShow({ title: '键盘标题' })}
         ></FxCell>
         <FxCell label="数据绑定" isLink onClick={() => setVisible2(true)}>
-          <FxInput value={inputValue} readonly />
+          <FxInput value={inputValue} readOnly />
         </FxCell>
       </FxGroup>
       <FxNumberKeyboard

@@ -1,5 +1,4 @@
 import type { Noop, OnClick } from '../helpers/types'
-import type { ListContextValue } from '../hooks/types'
 
 export type OnChange = (index: number, fromIndex: number) => void
 
@@ -31,11 +30,12 @@ export interface SwiperEmits {
   onChange?: OnChange
   onAnimated?: OnAnimated
   onClick?: OnClick
-  onResetItems?: OnResetItems
 }
 
 export type SwiperItemProps = {
   className?: string
+  index?: number
+  vertical?: boolean
 }
 
 export type SwipeTo = (newIndex: number) => void
@@ -44,9 +44,4 @@ export type SwiperRef = {
   swipeTo: SwipeTo
   prev: Noop
   next: Noop
-}
-
-export interface SwiperContextValue extends ListContextValue {
-  vertical: boolean
-  activeIndex: number
 }

@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import type { PickerEmits, PickerProps } from './types'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 import { usePicker } from './use-picker'
 import { mergeHandlers } from './util'
 import { SelectorField } from '../SelectorField'
@@ -8,7 +8,7 @@ import PickerPopup from './PickerPopup'
 import { useContext } from 'react'
 import { PickerContext } from './context'
 
-const FxPicker: FC<PickerProps & PickerEmits> = props => {
+const FxPicker: VFC<PickerProps & PickerEmits> = props => {
   const classes = classNames('fx-picker', props.className)
   const handlers = useContext(PickerContext)
 

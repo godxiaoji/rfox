@@ -1,9 +1,9 @@
 import classNames from 'classnames'
 import type { LoadingIconProps } from './types'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 import { DEFAULT_SIZE, DEFAULT_STROKE_WIDTH, getRealStrokeWidth } from './util'
 
-const FxLoadingIcon: FC<LoadingIconProps> = props => {
+const FxLoadingIcon: VFC<LoadingIconProps> = props => {
   const classes = classNames('fx-loading-icon', props.className)
   const strokeWidth = getRealStrokeWidth(props)
 

@@ -25,10 +25,9 @@ import {
   scrollTo as _scrollTo
 } from '../helpers/dom'
 import { useScroll } from '../hooks/use-scroll'
-import { useList } from '../hooks/use-list'
-import { StickyViewListContext } from './context'
 import type { ResetContainer, StickyRef } from '../Sticky/types'
-import type { ListUpdateCallback } from '../hooks/types'
+import { getFilteredChildren } from '../helpers/react'
+import { isSameArray } from '../helpers/util'
 
 const FxStickyView: FRFC<StickyViewRef, StickyViewProps & StickyViewEmits> = (
   { activeIndex = 0, onUpdateActiveIndex, onChange, ...props },
@@ -38,10 +37,12 @@ const FxStickyView: FRFC<StickyViewRef, StickyViewProps & StickyViewEmits> = (
   const classes = classNames(getClasses(isSelfContainer), props.className)
 
   const root = useRef<HTMLDivElement>(null)
+  const listEl = useRef<HTMLDivElement>(null)
   const container = useRef<HTMLElement>()
   const fixedEl = useRef<HTMLDivElement>(null)
   const stickyRef = useRef<StickyRef>(null)
   const _activeIndex = useRef(0)
+  const itemNames = useRef<string[]>([])
 
   function updateTitle(t: string, tY: number | null) {
     if (!(fixedEl.current && fixedEl.current.firstElementChild)) {
@@ -54,36 +55,19 @@ const FxStickyView: FRFC<StickyViewRef, StickyViewProps & StickyViewEmits> = (
     $inner.style.cssText = CSSProperties2CssText(getFixedStyles(tY))
   }
 
-  const resetItems: ListUpdateCallback = $items => {
-    updateFixed()
-
-    props.onResetItems &&
-      props.onResetItems(
-        $items.map((v, k) => {
-          return {
-            name: getItemName(k),
-            index: k
-          }
-        })
-      )
+  function getItems(): HTMLDivElement[] {
+    return listEl.current
+      ? [].slice.call(
+          listEl.current.querySelectorAll('.fx-sticky-view-item'),
+          0
+        )
+      : []
   }
-
-  const { listEl, getItems } = useList(
-    StickyViewListContext,
-    {
-      hasGroup: true
-    },
-    {
-      throttle: true,
-      itemClassName: 'fx-sticky-view-item',
-      updateCallback: resetItems
-    }
-  )
 
   const isScrollTo = useRef(false)
 
   function getItemName(index: number) {
-    return getItems()[index]?.dataset.name || ''
+    return itemNames.current[index] || ''
   }
 
   function updateFixed(ss?: number) {
@@ -93,7 +77,7 @@ const FxStickyView: FRFC<StickyViewRef, StickyViewProps & StickyViewEmits> = (
 
     const h = fixedEl.current.clientHeight
 
-    if (getItems().length === 0) {
+    if (itemNames.current.length === 0) {
       updateTitle('', null)
       return
     }
@@ -212,6 +196,18 @@ const FxStickyView: FRFC<StickyViewRef, StickyViewProps & StickyViewEmits> = (
     updateFixed()
   }
 
+  const resetItems = () => {
+    updateFixed()
+
+    props.onResetItems &&
+      props.onResetItems(
+        itemNames.current.map((name, index) => ({
+          name,
+          index
+        }))
+      )
+  }
+
   useScroll(container, () => updateFixed())
 
   useEffect(() => {
@@ -231,6 +227,22 @@ const FxStickyView: FRFC<StickyViewRef, StickyViewProps & StickyViewEmits> = (
     }),
     []
   )
+
+  useEffect(() => {
+    const newItemNames: string[] = []
+
+    getFilteredChildren(props.children, 'FxStickyViewItem').forEach(child => {
+      newItemNames.push(child.props.name ?? '')
+
+      return child
+    })
+
+    if (!isSameArray(newItemNames, itemNames.current)) {
+      itemNames.current = newItemNames
+      resetItems()
+      updateFixed()
+    }
+  }, [props.children])
 
   return (
     <div className={classes} ref={root}>

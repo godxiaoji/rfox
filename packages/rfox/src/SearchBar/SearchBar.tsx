@@ -1,11 +1,13 @@
 import classNames from 'classnames'
+import type { FormEventHandler } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type {
   SearchBarEmits,
   SearchBarProps,
   SuggestItem,
   SuggestList
 } from './types'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 import { Icon } from '../Icon'
 import { Input } from '../Input'
 import { Button } from '../Button'
@@ -15,7 +17,7 @@ import { Tag } from '../Tag'
 import { isStringArray } from '../helpers/util'
 import { useLocale } from '../ConfigProvider/context'
 import SearchOutlined from '../Icon/icons/SearchOutlined'
-import { FormEventHandler, useEffect, useMemo, useRef, useState } from 'react'
+
 import {
   getFieldClasses,
   getInnerClasses,
@@ -24,7 +26,7 @@ import {
 } from './util'
 import { useStableState } from '../hooks/use'
 
-const FxSearchBar: FC<SearchBarProps & SearchBarEmits> = ({
+const FxSearchBar: VFC<SearchBarProps & SearchBarEmits> = ({
   placeholderInterval = 5000,
   ...props
 }) => {

@@ -58,8 +58,8 @@ export default function ExpInput() {
         </FxCell>
       </FxGroup>
       <FxGroup title="其他">
-        <FxCell label="只读 readonly">
-          <FxInput type="text" value="只读文本" readonly />
+        <FxCell label="只读 readOnly">
+          <FxInput type="text" value="只读文本" readOnly />
         </FxCell>
         <FxCell label="禁用 disabled">
           <FxInput type="text" value="禁用文本" disabled />

@@ -1,13 +1,13 @@
 import classNames from 'classnames'
 import type { InputEmits, InputProps } from './types'
-import type { CSSProperties, FC, OnFocus, RenderProp } from '../helpers/types'
+import type { CSSProperties, OnFocus, RenderProp, VFC } from '../helpers/types'
 import { getInputClasses, getInputMode, getMaxLength, getValue } from './util'
 import CloseCircleFilled from '../Icon/icons/CloseCircleFilled'
 import { useEffect, useRef, useState } from 'react'
 import type { MouseEventHandler } from 'react'
 import { Icon } from '../Icon'
 
-const FxInput: FC<
+const FxInput: VFC<
   InputProps &
     InputEmits & {
       renderPrepend?: RenderProp
@@ -158,7 +158,7 @@ const FxInput: FC<
           name={props.name}
           disabled={disabled}
           placeholder={props.placeholder}
-          readOnly={props.readonly}
+          readOnly={props.readOnly}
           maxLength={maxLength}
           ref={textareaEl}
           onInput={onInput}
@@ -174,7 +174,7 @@ const FxInput: FC<
           name={props.name}
           disabled={disabled}
           placeholder={props.placeholder}
-          readOnly={props.readonly}
+          readOnly={props.readOnly}
           maxLength={maxLength}
           ref={inputEl}
           onInput={onInput}

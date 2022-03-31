@@ -1,13 +1,13 @@
 import classNames from 'classnames'
 import type { ActivityIndicatorProps } from './types'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 import { getActivityIndicatorClasses } from './util'
 import { LoadingIcon } from '../LoadingIcon'
 import { getNumber } from '../helpers/util'
 
 const defaultSize = 20
 
-const FxActivityIndicator: FC<ActivityIndicatorProps> = props => {
+const FxActivityIndicator: VFC<ActivityIndicatorProps> = props => {
   const classes = classNames(
     getActivityIndicatorClasses(props),
     props.className

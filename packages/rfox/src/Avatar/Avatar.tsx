@@ -9,7 +9,6 @@ import {
   getAvatarStyles,
   getBadgeProps
 } from './util'
-import { useChildCountConsumer } from '../hooks/use-child-count'
 import { Badge } from '../Badge'
 import { GroupContext } from './context'
 import { useContext } from 'react'
@@ -20,8 +19,6 @@ import WomanOutlined from '../Icon/icons/WomanOutlined'
 import UserOutlined from '../Icon/icons/UserOutlined'
 
 const FxAvatar: FC<AvatarProps> = props => {
-  useChildCountConsumer()
-
   const consumer = useContext(GroupContext)
   const size2 = getAvatarSize(props, consumer)
   const shape2 = getAvatarShape(props, consumer)

@@ -1,12 +1,12 @@
 import classNames from 'classnames'
+import { useEffect, useState } from 'react'
 import type { SwitchProps, SwitchEmits } from './types'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 import { getSwitchClasses, getSwitchStyles } from './util'
 import { isBoolean } from '../helpers/util'
-import { useEffect, useState } from 'react'
 import { useInput } from '../Form/use-form'
 
-const FxSwitch: FC<SwitchProps & SwitchEmits> = props => {
+const FxSwitch: VFC<SwitchProps & SwitchEmits> = props => {
   const [checked, setChecked] = useState<boolean | null>(null)
 
   const { inputEl, setInputChecked, getInputChecked } = useInput()

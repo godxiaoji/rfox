@@ -1,10 +1,10 @@
 import Popover from './Popover'
 import { createAlertHook, createShowPopup } from '../popup/api'
 import type { PopupSuccessAlertArgs } from '../popup/types'
-import type { DomSelector, PlacementType } from '../helpers/types'
+import type { PlacementType, Selector } from '../helpers/types'
 
 interface ShowPopoverOptions {
-  selector: DomSelector
+  selector: Selector
   content: string
   placement?: PlacementType
 }

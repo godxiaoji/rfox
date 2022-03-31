@@ -1,8 +1,8 @@
 import classNames from 'classnames'
 import type { CalendarViewMonthProps } from './types'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 
-const FxCalendarViewMonth: FC<CalendarViewMonthProps> = ({
+const FxCalendarViewMonth: VFC<CalendarViewMonthProps> = ({
   mode,
   month,
   monthIndex,

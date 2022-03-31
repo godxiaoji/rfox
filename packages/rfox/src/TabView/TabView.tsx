@@ -1,14 +1,28 @@
 import classNames from 'classnames'
 import type { TabViewEmits, TabViewProps, TabViewRef } from './types'
 import type { CSSProperties, FRFC } from '../helpers/types'
-import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
+import {
+  cloneElement,
+  forwardRef,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState
+} from 'react'
 import { getClasses } from './util'
 import { SideTab } from '../SideTab'
 import { Tab } from '../Tab'
 import { Swiper } from '../Swiper'
-import type { OnResetItems, SwiperRef } from '../Swiper/types'
+import type { SwiperRef } from '../Swiper/types'
 import type { TabRef } from '../Tab/types'
 import { isString } from '../helpers/util'
+import { toArray } from '../helpers/react'
+
+interface TabItem {
+  value: number
+  label: string
+  subLabel: string
+}
 
 const FxTabView: FRFC<
   TabViewRef,
@@ -22,25 +36,7 @@ const FxTabView: FRFC<
   const [vertical] = useState(!!props.initialVertical)
   const classes = classNames(getClasses(vertical), props.className)
 
-  const [tabList, setTabList] = useState<
-    {
-      value: number
-      label: string
-      subLabel: string
-    }[]
-  >([])
-
-  const onResetItems: OnResetItems = items => {
-    setTabList(
-      items.map(({ name, subName }, index) => {
-        return {
-          value: index,
-          label: name || '',
-          subLabel: subName || ''
-        }
-      })
-    )
-  }
+  const [tabList, setTabList] = useState<TabItem[]>([])
 
   const activeIndex = useRef(0)
 
@@ -63,6 +59,33 @@ const FxTabView: FRFC<
     tabRef.current?.switchToIndex(index)
     swiperRef.current?.swipeTo(index)
   }
+
+  const renderItems = useMemo(() => {
+    const newTabList: TabItem[] = []
+
+    const newChildren = toArray(props.children).map((child, index) => {
+      newTabList.push({
+        value: index,
+        label: child.props.name ?? '',
+        subLabel: child.props.subName ?? ''
+      })
+
+      const childProps = {
+        key: index,
+        ...child.props,
+        index,
+        vertical
+      }
+
+      return cloneElement(child, childProps)
+    })
+
+    if (JSON.stringify(newTabList) !== JSON.stringify(tabList)) {
+      setTabList(newTabList)
+    }
+
+    return newChildren
+  }, [props.children])
 
   useImperativeHandle(
     ref,
@@ -100,9 +123,8 @@ const FxTabView: FRFC<
           onAnimated={props.onAnimated}
           ref={swiperRef}
           onChange={onChange}
-          onResetItems={onResetItems}
         >
-          {props.children}
+          {renderItems}
         </Swiper>
       </div>
     </div>

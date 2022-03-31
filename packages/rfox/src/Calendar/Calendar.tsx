@@ -5,7 +5,7 @@ import type {
   CalendarProps,
   CalendarDetail
 } from './types'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 import { SelectorField } from '../SelectorField'
 import CalendarPopup from './CalendarPopup'
 import { useHandlers } from './use-calendar'
@@ -14,7 +14,7 @@ import { getDefaultDetail } from './util'
 import { cloneDetail, isSameValue } from '../Picker/util'
 import type { SelectorModelValue } from '../SelectorField/types'
 
-const FxCalendar: FC<CalendarProps & CalendarEmits> = props => {
+const FxCalendar: VFC<CalendarProps & CalendarEmits> = props => {
   const [isInitPopup, setIsInitPopup] = useState(false)
   const [popupVisible, setPopupVisible] = useState(true)
   const [fieldValue, setFieldValue] = useState('')

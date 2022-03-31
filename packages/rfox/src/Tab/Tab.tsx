@@ -1,13 +1,13 @@
 import classNames from 'classnames'
+import { forwardRef, useCallback } from 'react'
 import type { TabProps, TabEmits, TabRef } from './types'
-import type { FRFC } from '../helpers/types'
+import type { FRVFC } from '../helpers/types'
 import { getTabItemClasses, getTabClasses } from './util'
 import { useTab } from './use-tab'
-import { forwardRef, useCallback } from 'react'
 import { Badge } from '../Badge'
 import { Icon } from '../Icon'
 
-const FxTab: FRFC<TabRef, TabProps & TabEmits> = (
+const FxTab: FRVFC<TabRef, TabProps & TabEmits> = (
   { scrollThreshold = 4, className, ...tabProps },
   ref
 ) => {

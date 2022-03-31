@@ -3,11 +3,11 @@ import { GroupContext } from './context'
 import { createDefaultProps } from './props'
 import { getButtonGroupClasses } from './util'
 import classNames from 'classnames'
-import { useChildCountProvider } from '../hooks/use-child-count'
 import type { FC } from '../helpers/types'
+import { toArray } from '../helpers/react'
 
 const FxButtonGroup: FC<ButtonGroupProps> = props => {
-  const { ChildCountProvider, childCount } = useChildCountProvider()
+  const childCount = toArray(props.children).length
   const classes = classNames(
     getButtonGroupClasses(props, childCount),
     props.className
@@ -22,9 +22,7 @@ const FxButtonGroup: FC<ButtonGroupProps> = props => {
         hasGroup: true
       }}
     >
-      <ChildCountProvider>
-        <div className={classes}>{props.children}</div>
-      </ChildCountProvider>
+      <div className={classes}>{props.children}</div>
     </GroupContext.Provider>
   )
 }

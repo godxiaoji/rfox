@@ -1,11 +1,11 @@
 import type { ImageUploaderItemProps } from './types'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 import { Image } from '../Image'
 import { Icon } from '../Icon'
 import { ActivityIndicator } from '../ActivityIndicator'
 import DeleteOutlined from '../Icon/icons/DeleteOutlined'
 
-const FxImageUploaderItem: FC<ImageUploaderItemProps> = ({
+const FxImageUploaderItem: VFC<ImageUploaderItemProps> = ({
   item,
   imageMode,
   onClick

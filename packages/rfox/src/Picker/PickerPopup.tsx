@@ -4,7 +4,7 @@ import type {
   PickerPopupProps,
   PickerPopupRef
 } from './types'
-import type { FRFC } from '../helpers/types'
+import type { FRVFC } from '../helpers/types'
 import PickerView from './PickerView'
 import { Drawer } from '../Drawer'
 import { NavBar } from '../NavBar'
@@ -13,7 +13,7 @@ import { useLocale } from '../ConfigProvider/context'
 import { forwardRef } from 'react'
 import { OnVisibleStateChange } from '../popup/types'
 
-const FxPickerPopup: FRFC<
+const FxPickerPopup: FRVFC<
   PickerPopupRef,
   PickerPopupProps & PickerPopupEmits
 > = (props, ref) => {

@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import { CascaderViewEmits, CascaderViewProps, CascaderViewRef } from './types'
-import type { FRFC } from '../helpers/types'
+import type { FRVFC } from '../helpers/types'
 import { Empty } from '../Empty'
 import { useLocale } from '../ConfigProvider/context'
 import {
@@ -25,7 +25,7 @@ interface SelectedTabs {
   value: number | string
 }
 
-const FxCascaderView: FRFC<
+const FxCascaderView: FRVFC<
   CascaderViewRef,
   CascaderViewProps & CascaderViewEmits
 > = (props, ref) => {

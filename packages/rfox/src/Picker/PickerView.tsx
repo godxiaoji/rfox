@@ -1,11 +1,4 @@
 import classNames from 'classnames'
-import type { PickerViewEmits, PickerViewProps, PickerViewRef } from './types'
-import type { FRFC } from '../helpers/types'
-import { Empty } from '../Empty'
-import { frameTo } from '../helpers/animation'
-import { mergeHandlers, defaultItemHeight } from './util'
-import { usePickerView } from './use-picker'
-import { useLocale } from '../ConfigProvider/context'
 import {
   forwardRef,
   useContext,
@@ -13,6 +6,13 @@ import {
   useMemo,
   useRef
 } from 'react'
+import type { PickerViewEmits, PickerViewProps, PickerViewRef } from './types'
+import type { FRVFC } from '../helpers/types'
+import { Empty } from '../Empty'
+import { frameTo } from '../helpers/animation'
+import { mergeHandlers, defaultItemHeight } from './util'
+import { usePickerView } from './use-picker'
+import { useLocale } from '../ConfigProvider/context'
 import ViewCol from './PickerViewCol'
 import { PickerContext } from './context'
 
@@ -21,7 +21,7 @@ interface ScrollElement extends HTMLElement {
   scrollTimer?: number
 }
 
-const FxPickerView: FRFC<PickerViewRef, PickerViewProps & PickerViewEmits> = (
+const FxPickerView: FRVFC<PickerViewRef, PickerViewProps & PickerViewEmits> = (
   props,
   ref
 ) => {

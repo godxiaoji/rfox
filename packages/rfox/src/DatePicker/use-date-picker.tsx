@@ -1,7 +1,7 @@
 import { useMemo, useRef } from 'react'
 import { DatePickerCommonProps } from './types'
 import dayjs from '../helpers/day'
-import type { Dayjs } from 'dayjs'
+import type { Dayjs } from '../helpers/types'
 import { getEnumsValue } from '../helpers/validator'
 import type {
   PickerOptionsHandler,

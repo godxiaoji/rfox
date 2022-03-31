@@ -2,6 +2,7 @@ import {
   FxSkeleton,
   FxGroup,
   FxIcon,
+  FxSwitch,
   SkeletonAvatarShape,
   SkeletonButtonShape
 } from '@/index'
@@ -11,7 +12,7 @@ export default function ExpSkeleton() {
   const [animated] = useState(true)
   const [avatarShape] = useState<SkeletonAvatarShape>('circle')
   const [buttonShape] = useState<SkeletonButtonShape>('default')
-  const [loading] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   return (
     <>
@@ -32,10 +33,10 @@ export default function ExpSkeleton() {
       </FxGroup>
       <FxGroup title="显示子组件">
         <div className="exp-skeleton-panel">
-          {/* <div className="exp-skeleton-switch">
-        <fx-switch v-model="loadingSwitch" />
-      </div> */}
-          <FxSkeleton avatar loading={loading}>
+          <div className="exp-skeleton-switch">
+            <FxSwitch value={loading} onChange={setLoading} />
+          </div>
+          <FxSkeleton avatar loading={!loading}>
             <div className="exp-skeleton-sub-component">
               <FxIcon icon="HeartFilled" size="32" />
               <h4 className="title">hello World</h4>

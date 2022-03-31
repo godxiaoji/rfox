@@ -5,7 +5,7 @@ import type {
   CalendarViewRef,
   DayInfo
 } from './types'
-import type { OnClick, Dayjs, FRFC } from '../helpers/types'
+import type { OnClick, Dayjs, FRVFC } from '../helpers/types'
 import dayjs from '../helpers/day'
 import { cloneData, getNumber, isSameArray } from '../helpers/util'
 import { showToast } from '../Toast'
@@ -51,7 +51,7 @@ function getDefaultSelectDay(): SelectDay {
   }
 }
 
-const FxCalendarView: FRFC<
+const FxCalendarView: FRVFC<
   CalendarViewRef,
   CalendarViewProps & CalendarViewEmits
 > = (props, ref) => {

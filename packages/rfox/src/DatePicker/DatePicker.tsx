@@ -1,9 +1,9 @@
 import type { DatePickerEmits, DatePickerProps } from './types'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 import { Picker } from '../Picker'
 import { useHandlers } from './use-date-picker'
 
-const FxDatePicker: FC<DatePickerProps & DatePickerEmits> = ({
+const FxDatePicker: VFC<DatePickerProps & DatePickerEmits> = ({
   formatTemplate,
   initialMode,
   minDate,

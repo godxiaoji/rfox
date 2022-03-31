@@ -1,0 +1,19 @@
+{
+  "name": "@fox2/rfox-docs",
+  "private": true,
+  "version": "0.0.0",
+  "description": "rfox docs",
+  "keywords": [
+    "rfox",
+    "docs"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "dev": "vitepress dev docs",
+    "build": "vitepress build docs",
+    "serve": "vitepress serve docs"
+  },
+  "devDependencies": {
+    "vitepress": "^0.22.3"
+  }
+}

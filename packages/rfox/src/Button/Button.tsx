@@ -5,7 +5,6 @@ import { FORM_TYPES, getButtonClasses, getButtonStyles } from './util'
 import { getEnumsValue } from '../helpers/validator'
 import { GroupContext } from './context'
 import { createDefaultProps } from './props'
-import { useChildCountConsumer } from '../hooks/use-child-count'
 import { Icon } from '../Icon'
 import LoadingOutlined from '../Icon/icons/LoadingOutlined'
 import type { FC } from '../helpers/types'
@@ -27,7 +26,6 @@ const FxButton: FC<ButtonProps & ButtonEmits> = ({
   onClick,
   ...attrs
 }) => {
-  useChildCountConsumer()
   const consumer = useContext(GroupContext)
 
   const classes = classNames(

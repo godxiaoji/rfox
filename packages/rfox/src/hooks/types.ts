@@ -1,5 +1,5 @@
 import React from 'react'
-import type { Noop, UnionToIntersection } from '../helpers/types'
+import type { UnionToIntersection } from '../helpers/types'
 
 export type UseEmitFn<
   Options,
@@ -56,12 +56,3 @@ export type GroupContext<T, P extends GroupContextItemRef> = React.Context<
     removeItem?: (ref: React.MutableRefObject<P>) => void
   }
 >
-
-export type ListContextValue = {
-  update?: Noop
-}
-
-export type ListContext<T extends ListContextValue = ListContextValue> =
-  React.Context<T>
-
-export type ListUpdateCallback = ($items: HTMLElement[]) => void

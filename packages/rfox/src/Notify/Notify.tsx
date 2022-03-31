@@ -1,14 +1,14 @@
+import { forwardRef } from 'react'
 import { createPortal } from 'react-dom'
 import classNames from 'classnames'
 import type { NotifyEmits, NotifyProps } from './types'
-import type { FRFC } from '../helpers/types'
+import type { FRVFC } from '../helpers/types'
 import { usePopup } from '../popup/use-popup'
 import { useDelay } from '../hooks/use-delay'
 import { NoticeBar } from '../NoticeBar'
 import type { PopupRef } from '../popup/types'
-import { forwardRef } from 'react'
 
-const FxNotify: FRFC<PopupRef, NotifyProps & NotifyEmits> = (props, ref) => {
+const FxNotify: FRVFC<PopupRef, NotifyProps & NotifyEmits> = (props, ref) => {
   const { addDelayTask, removeDelayTask } = useDelay(() => {
     customCancel('auto', true)
   }, props.duration)

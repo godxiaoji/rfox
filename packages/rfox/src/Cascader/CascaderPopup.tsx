@@ -4,14 +4,14 @@ import type {
   CascaderPopupProps,
   CascaderPopupRef
 } from './types'
-import type { FRFC } from '../helpers/types'
+import type { FRVFC } from '../helpers/types'
 import CascaderView from './CascaderView'
 import { Drawer } from '../Drawer'
 import { forwardRef } from 'react'
 import { OnVisibleStateChange } from '../popup/types'
 import { usePickerPopup } from '../Picker/use-picker'
 
-const FxCascaderPopup: FRFC<
+const FxCascaderPopup: FRVFC<
   CascaderPopupRef,
   CascaderPopupProps & CascaderPopupEmits
 > = (props, ref) => {

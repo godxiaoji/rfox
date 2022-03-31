@@ -9,12 +9,12 @@ import {
   removeComponentFromLazy,
   withCheckInView
 } from './load-image'
-import type { FC, TypeException } from '../helpers/types'
+import type { TypeException, VFC } from '../helpers/types'
 import ImageOutlined from '../Icon/icons/ImageOutlined'
 import ImageBreakOutlined from '../Icon/icons/ImageBreakOutlined'
 import { Icon } from '../Icon'
 
-const FxImage: FC<ImageProps & ImageEmits> = ({
+const FxImage: VFC<ImageProps & ImageEmits> = ({
   loadingIcon = ImageOutlined,
   errorIcon = ImageBreakOutlined,
   lazyLoad = false,

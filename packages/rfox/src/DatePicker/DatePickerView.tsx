@@ -1,9 +1,9 @@
 import type { DatePickerViewEmits, DatePickerViewProps } from './types'
-import type { FC } from '../helpers/types'
+import type { VFC } from '../helpers/types'
 import { PickerView } from '../Picker'
 import { useHandlers } from './use-date-picker'
 
-const FxDatePickerView: FC<DatePickerViewProps & DatePickerViewEmits> = ({
+const FxDatePickerView: VFC<DatePickerViewProps & DatePickerViewEmits> = ({
   formatTemplate,
   initialMode,
   minDate,

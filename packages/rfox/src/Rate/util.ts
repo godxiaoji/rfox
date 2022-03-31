@@ -15,12 +15,12 @@ export const getMax = (count?: number | string) =>
 
 export const getRateClasses = ({
   disabled,
-  readonly
+  readOnly
 }: {
   disabled?: boolean
-  readonly?: boolean
+  readOnly?: boolean
 }) => {
-  return ['fx-rate', { disabled: !!disabled, readonly: !!readonly }]
+  return ['fx-rate', { disabled: !!disabled, readonly: !!readOnly }]
 }
 
 export const getRateStyles = ({
