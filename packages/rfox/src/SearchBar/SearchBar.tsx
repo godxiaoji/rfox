@@ -63,7 +63,6 @@ const FxSearchBar: VFC<SearchBarProps & SearchBarEmits> = ({
 
     props.onInput &&
       props.onInput(text, res => {
-        console.log(text, getSearchText(true))
         updateSuggestList(res, text !== getSearchText(true))
       })
   }

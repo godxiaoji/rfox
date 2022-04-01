@@ -62,6 +62,8 @@ import type { StickyViewOnChange } from 'rfox'
 
 ## StickyView Slots
 
+### children
+
 注：其中只可放置 [StickyViewItem](./Sticky.md#stickyviewitem-props) 组件，否则会导致未定义的行为。
 
 ```tsx
@@ -90,6 +92,8 @@ import type { StickyViewOnChange } from 'rfox'
 | name | string |        | 是   | 分组名，也应用于吸附 |
 
 ## StickyViewItem Slots
+
+### children
 
 ```tsx
 <FxStickyView.Item name="Sticky 1">

@@ -126,9 +126,9 @@ type BadgeOption =
 
 ## Events
 
-| 事件     | 描述                | 回调函数参数                             | TypeScript 函数 |
-| -------- | ------------------- | ---------------------------------------- | --------------- |
-| onChange | 点击切换 tab 时触发 | (value：string \| number, index: number) | TabOnChange     |
+| 事件     | 描述                | 回调函数参数                               | TypeScript 函数 |
+| -------- | ------------------- | ------------------------------------------ | --------------- |
+| onChange | 点击切换 tab 时触发 | ( value：string \| number, index: number ) | TabOnChange     |
 
 ### onChange 的回调参数
 

@@ -13,17 +13,15 @@ const FxNotify: FRVFC<PopupRef, NotifyProps & NotifyEmits> = (props, ref) => {
     customCancel('auto', true)
   }, props.duration)
 
-  const {
-    popupStyles,
-    popupClasses,
-    customCancel,
-    onCloseClick,
-    setForbidScroll
-  } = usePopup(props, ref, {
-    afterHide: removeDelayTask,
-    afterShow: addDelayTask
-  })
-  setForbidScroll(false)
+  const { popupStyles, popupClasses, customCancel, onCloseClick } = usePopup(
+    props,
+    ref,
+    {
+      afterHide: removeDelayTask,
+      afterShow: addDelayTask,
+      initialForbidScroll: false
+    }
+  )
 
   const classes = classNames(['fx-notify', popupClasses])
 

@@ -37,6 +37,8 @@ import type { ScrollTabOnChange } from 'rfox'
 
 ## ScrollTab Slots
 
+### children
+
 注：其中只可放置 [ScrollTabItem](./ScrollTab.md#scrolltabitem-props) 组件，否则会导致未定义的行为。
 
 ```tsx
@@ -57,6 +59,8 @@ import type { ScrollTabOnChange } from 'rfox'
 | name | string |        | 是   | 分组名，也应用于吸附和菜单 |
 
 ## ScrollTabItem Slots
+
+### children
 
 ```tsx
 <FxScrollTab.Item name="Dust Red">

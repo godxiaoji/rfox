@@ -30,9 +30,9 @@ import type { IndexViewOnChange } from 'rfox'
 
 ## IndexView Events
 
-| 事件     | 描述       | 回调函数参数                                | TypeScript 函数   |
-| -------- | ---------- | ------------------------------------------- | ----------------- |
-| onChange | 切换时触发 | payload: { activeIndex: number } 当前项索引 | IndexViewOnChange |
+| 事件     | 描述       | 回调函数参数                       | TypeScript 函数   |
+| -------- | ---------- | ---------------------------------- | ----------------- |
+| onChange | 切换时触发 | ( activeIndex: number ) 当前项索引 | IndexViewOnChange |
 
 ## Methods
 
@@ -42,6 +42,8 @@ import type { IndexViewOnChange } from 'rfox'
 | scrollTo      | 滚动列表到指定的偏移，单位 px                           | ({ offset: number }) => void |
 
 ## IndexView Slots
+
+### children
 
 注：其中只可放置 [IndexViewItem](./IndexView.md#indexviewitem-索引子项) 组件，否则会导致未定义的行为。
 
@@ -62,6 +64,8 @@ import type { IndexViewOnChange } from 'rfox'
 | name | string |        | 是   | 分组名，也应用于吸附和菜单 |
 
 ## IndexViewItem Slots
+
+### children
 
 ```tsx
 <FxIndexView.Item name="A">

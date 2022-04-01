@@ -21,8 +21,11 @@ const FxBackTop: FC<
   const classes = classNames('fx-back-top', props.className)
   const styles = getBackTopStyles(props.offset, isShow, safeAreaInsets)
 
-  useScroll(docEl, (e, $el) => {
-    setIsShow(getScrollTop($el) >= (props.visibleHeight as number))
+  useScroll(docEl, e => {
+    setIsShow(
+      getScrollTop(e.currentTarget as HTMLElement) >=
+        (props.visibleHeight as number)
+    )
   })
 
   function toTop() {

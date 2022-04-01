@@ -2,57 +2,18 @@ import classNames from 'classnames'
 import { useMemo, useRef, useState } from 'react'
 import type { ButtonOption, SwipeCellEmits, SwipeCellProps } from './types'
 import type { FC } from '../helpers/types'
-import {
-  getButtons,
-  getSwipeCellButtonStyles,
-  getSwipeCellInnerStyles
-} from './util'
+import { getButtons, getSwipeCellInnerStyles } from './util'
 import { cloneData, getSameValueArray, rangeNumber } from '../helpers/util'
 import { getStretchOffset } from '../helpers/animation'
-import { useBlur, useStop } from '../hooks/use-event'
+import { useBlur } from '../hooks/use-event'
 import { useTouch } from '../hooks/use-touch'
+import SwipeCellButton from './SwipeCellButton'
 
 interface SwipeCellCoords {
   startX: number
   buttonsW: number
   isShow: boolean
   isSwipe: boolean
-}
-
-interface OnButtonClick {
-  (item: Required<ButtonOption>, index: number): void
-}
-
-function SwipeCellButton({
-  item,
-  index,
-  buttonTranslateXs,
-  duration,
-  onButtonClick
-}: {
-  item: Required<ButtonOption>
-  index: number
-  buttonTranslateXs: number[]
-  duration: number
-  onButtonClick: OnButtonClick
-}) {
-  const buttonEl = useRef<HTMLButtonElement>(null)
-
-  useStop(buttonEl, 'click', () => onButtonClick(item, index))
-
-  return (
-    <button
-      className={classNames(['fx-swipe-cell_button', 'type--' + item.type])}
-      style={getSwipeCellButtonStyles({
-        buttonTranslateXs,
-        duration,
-        index
-      })}
-      ref={buttonEl}
-    >
-      {item.text}
-    </button>
-  )
 }
 
 const FxSwipeCell: FC<SwipeCellProps & SwipeCellEmits> = props => {
@@ -117,6 +78,7 @@ const FxSwipeCell: FC<SwipeCellProps & SwipeCellEmits> = props => {
       }
 
       if (coords.current.isShow) {
+        // 针对已经展开的情况
         e.stopPropagation()
       }
     },
@@ -160,13 +122,15 @@ const FxSwipeCell: FC<SwipeCellProps & SwipeCellEmits> = props => {
     },
     onTouchEnd(e) {
       if (coords.current) {
-        const { isSwipe, buttonsW } = coords.current
+        if (!coords.current.isShow) {
+          const { isSwipe, buttonsW } = coords.current
 
-        if (isSwipe && translateX > buttonsW / 2) {
-          // 展示
-          show(buttonsW)
-        } else {
-          hide()
+          if (isSwipe && translateX > buttonsW / 2) {
+            // 展示
+            show(buttonsW)
+          } else {
+            hide()
+          }
         }
 
         coords.current = null

@@ -5,7 +5,6 @@ import { rangeNumber } from '../helpers/util'
 import { useTouch } from '../hooks/use-touch'
 import { Image } from '../Image'
 import type { OnLoad } from '../Image/types'
-import { showToast } from '../Toast'
 import type { DistanceOptions, ImageObject } from './types'
 import { getDistance, getImageStyles, mergeLoadedData } from './util'
 

@@ -188,11 +188,16 @@ const FxStickyView: FRFC<StickyViewRef, StickyViewProps & StickyViewEmits> = (
   }
 
   const resetContainer: ResetContainer = selector => {
-    container.current = querySelector(selector) || (root.current as HTMLElement)
-    setIsSelfContainer(container.current === root.current)
+    const newEl = querySelector(selector) || (root.current as HTMLElement)
 
-    stickyRef.current?.resetContainer(container.current)
+    if (newEl === container.current) {
+      return
+    }
 
+    container.current = newEl
+    setIsSelfContainer(newEl === root.current)
+    stickyRef.current?.resetContainer(newEl)
+    scrollElChange()
     updateFixed()
   }
 
@@ -208,7 +213,7 @@ const FxStickyView: FRFC<StickyViewRef, StickyViewProps & StickyViewEmits> = (
       )
   }
 
-  useScroll(container, () => updateFixed())
+  const { elChange: scrollElChange } = useScroll(container, () => updateFixed())
 
   useEffect(() => {
     resetContainer(props.containSelector)

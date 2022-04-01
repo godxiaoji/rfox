@@ -296,8 +296,6 @@ export function usePickerView(
         values.length > 0 || isPicker ? selectedLabels.current : []
       currentValues.current =
         values.length > 0 || isPicker ? selectedValues.current : []
-
-      console.log()
     }
 
     return getDetail()

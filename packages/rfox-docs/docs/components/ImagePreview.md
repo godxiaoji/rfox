@@ -40,12 +40,12 @@ import type {
 
 ## Events
 
-| 事件                 | 描述           | 回调函数参数                                                              | TypeScript 函数           |
-| -------------------- | -------------- | ------------------------------------------------------------------------- | ------------------------- |
-| onChange             | 图片切换后触发 | (current: string, activeIndex: number, fromIndex: number)                 | ImagePreviewOnChange      |
-| onCancel             | 关闭时触发     | payload: { source: string }                                               | PopupOnCancel             |
-| onVisibleStateChange | 展示隐藏时触发 | payload: { state: [VisibleState](./ImagePreview.md#visiblestate-值说明) } | PopupOnVisibleStateChange |
-| onUpdateVisible      | 展示隐藏时触发 | visible: boolean 是否显示                                                 |                           |
+| 事件                 | 描述           | 回调函数参数                                                                  | TypeScript 函数           |
+| -------------------- | -------------- | ----------------------------------------------------------------------------- | ------------------------- |
+| onChange             | 图片切换后触发 | ( current: string, activeIndex: number, fromIndex: number )                   | ImagePreviewOnChange      |
+| onCancel             | 关闭时触发     | ( payload: { source: string } )                                               | PopupOnCancel             |
+| onVisibleStateChange | 展示隐藏时触发 | ( payload: { state: [VisibleState](./ImagePreview.md#visiblestate-值说明) } ) | PopupOnVisibleStateChange |
+| onUpdateVisible      | 展示隐藏时触发 | ( visible: boolean 是否显示 )                                                 |                           |
 
 ### onChange 的回调参数
 

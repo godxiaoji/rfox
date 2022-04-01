@@ -4,6 +4,11 @@ import { getEnumsValue } from '../helpers/validator'
 import type { SafeAreaInsets } from '../hooks/types'
 import type { DrawerProps } from './types'
 
+export const getDrawerClass = (showMask: boolean) => [
+  'fx-drawer',
+  { 'no--mask': !showMask }
+]
+
 export const getDrawerInnerStyles = (
   props: DrawerProps,
   safeAreaInsets: SafeAreaInsets

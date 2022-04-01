@@ -7,7 +7,7 @@ import type {
   VirtualListProps,
   VirtualListRef
 } from './types'
-import type { FRFC, FxEventCallback, RenderProp } from '../helpers/types'
+import type { FRFC, RenderProp } from '../helpers/types'
 import {
   cloneData,
   getSameValueArray,
@@ -411,7 +411,7 @@ const FxVirtualList: FRFC<
   const scrollTimer = useRef<number>()
   const scrollCount = useRef(0)
 
-  const handleScroll: FxEventCallback = () => {
+  const handleScroll = () => {
     if (scrollCount.current > 10) {
       // 每轮询10次更新一次
       scrollCount.current = 0
@@ -565,7 +565,13 @@ const FxVirtualList: FRFC<
   }, [list.current, renderList, render, renderSeparator])
 
   function resetScrollContainer($el: HTMLElement) {
+    if (scrollEl.current === $el) {
+      return
+    }
+
     scrollEl.current = $el
+    resizeElChange()
+    scrollElChange()
     handleResize()
   }
 
@@ -581,8 +587,8 @@ const FxVirtualList: FRFC<
     }
   }
 
-  useScroll(scrollEl, handleScroll)
-  useResizeObserver(scrollEl, handleResize)
+  const { elChange: scrollElChange } = useScroll(scrollEl, handleScroll)
+  const { elChange: resizeElChange } = useResizeObserver(scrollEl, handleResize)
 
   useEffect(() => {
     resetScrollContainer(root.current as HTMLElement)

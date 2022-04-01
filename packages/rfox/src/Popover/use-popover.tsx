@@ -17,7 +17,10 @@ import type { FC } from '../helpers/types'
 import classNames from 'classnames'
 
 export function usePopover(
-  props: PopoverProps & {
+  {
+    showMask = true,
+    ...props
+  }: PopoverProps & {
     className?: string
   },
   ref: ForwardedRef<PopupRef>
@@ -54,7 +57,9 @@ export function usePopover(
     afterHidden() {
       isShow.current = false
       updatePos('show')
-    }
+    },
+    initialForbidScroll: showMask,
+    initialEnableBlurCancel: !showMask
   })
 
   const arrowStyles = useMemo(
@@ -67,36 +72,42 @@ export function usePopover(
   )
 
   useEffect(() => {
-    const showMask = props.showMask !== false
-
     popup.setForbidScroll(showMask)
     popup.setEnableBlurCancel(!showMask)
-  }, [props.showMask])
+  }, [showMask])
+
+  const { elChange: containerChange } = useResizeObserver(container, () =>
+    updatePos('container resize')
+  )
+  useResizeObserver(docEl, () => updatePos('window resize'))
 
   useEffect(() => {
-    container.current = querySelector(props.selector)
-    updatePos('selector change')
+    const newEl = querySelector(props.selector)
+    if (newEl !== container.current) {
+      container.current = newEl
+      containerChange()
+      updatePos('selector change')
+    }
   }, [props.selector])
-
-  useResizeObserver(container, () => updatePos('container resize'))
-  useResizeObserver(docEl, () => updatePos('window resize'))
 
   const PopoverWrapper: FC = ({ children, className }) => {
     const classes = classNames([
       'fx-popover',
       popup.popupClasses,
       props.className,
-      className
+      className,
+      { 'no--mask': !showMask }
     ])
 
     return (
       <div className={classes} style={popup.popupStyles}>
-        {props.showMask !== false ? (
-          <div className="fx-mask" onClick={popup.onMaskClick}></div>
-        ) : (
-          <></>
-        )}
-        <div className="fx-popover_inner" ref={innerEl} style={innerStyles}>
+        <div className="fx-mask" onClick={popup.onMaskClick}></div>
+        <div
+          className="fx-popover_inner"
+          ref={innerEl}
+          style={innerStyles}
+          onClick={popup.onStopBlur}
+        >
           <i className="fx-popover_arrow" style={arrowStyles}></i>
           <div className="fx-popover_content">{children}</div>
         </div>

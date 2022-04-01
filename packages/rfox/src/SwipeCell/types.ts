@@ -17,3 +17,11 @@ export interface SwipeCellProps {
 export interface SwipeCellEmits {
   onButtonClick?: OnButtonClick
 }
+
+export interface SwiperCellButtonProps {
+  item: Required<ButtonOption>
+  index: number
+  buttonTranslateXs: number[]
+  duration: number
+  onButtonClick: (item: Required<ButtonOption>, index: number) => void
+}

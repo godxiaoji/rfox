@@ -86,11 +86,18 @@ const FxSticky: FRFC<StickyRef, StickyProps> = (
   }
 
   const resetContainer: ResetContainer = selector => {
-    container.current = querySelector(selector) || document.documentElement
+    const newEl = querySelector(selector) || document.documentElement
+
+    if (newEl === container.current) {
+      return
+    }
+
+    container.current = newEl
+    scrollElChange()
     updateFixed()
   }
 
-  useScroll(container, updateFixed)
+  const { elChange: scrollElChange } = useScroll(container, updateFixed)
 
   useEffect(updateFixed, [props.disabled])
 

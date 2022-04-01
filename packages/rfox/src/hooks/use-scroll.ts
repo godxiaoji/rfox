@@ -1,4 +1,3 @@
-import type { FxEventCallback } from '../helpers/types'
 import type { ScrollToEnd, ScrollToOffset } from './types'
 import type { MutableRefObject } from 'react'
 import { isNumber } from '../helpers/util'
@@ -12,7 +11,7 @@ import { useEvent } from './use-event'
  */
 export function useScroll(
   elRef: MutableRefObject<HTMLElement | null | undefined>,
-  callback: FxEventCallback
+  callback: EventListener
 ) {
   return useEvent(elRef, 'scroll', callback)
 }

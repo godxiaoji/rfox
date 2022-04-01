@@ -111,7 +111,8 @@
     "ImagePreviewItem",
     "ImageUploaderAdd",
     "ImageUploaderItem",
-    "PickerViewCol"
+    "PickerViewCol",
+    "SwipeCellButton"
   ],
   "apis": [
     ["ActionSheet", "showActionSheet"],

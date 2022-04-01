@@ -118,7 +118,6 @@ export function removeComponentFromLazy(uid: number | symbol) {
 
   if (index > -1) {
     const [vm] = ListenerQueue.splice(index, 1)
-    console.log(vm)
     vm.done = true
   }
 

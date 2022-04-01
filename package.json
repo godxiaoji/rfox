@@ -1,6 +1,6 @@
 {
   "name": "@fox2/rfox",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React components include form, toast, modal, etc.",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -61,6 +61,7 @@
     "@semantic-release/release-notes-generator": "^10.0.2",
     "@types/md5": "^2.3.1",
     "@types/react-is": "^17.0.3",
+    "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.11.0",
     "babel-jest": "^27.0.0",
@@ -111,6 +112,7 @@
   },
   "lint-staged": {
     "*.{md,js,ts,tsx,scss}": "prettier --write",
-    "*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}": "eslint --fix"
+    "*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}": "eslint --fix",
+    "*.{css,scss}": "stylelint --fix"
   }
 }

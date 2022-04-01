@@ -1,18 +1,11 @@
 import type { MutableRefObject } from 'react'
 import { useRef, useEffect } from 'react'
 import { addEvent, touchEvent, addLongPressEvent } from '../helpers/events'
-import type {
-  FxEventCallback,
-  LongPressEventCallback,
-  Noop
-} from '../helpers/types'
+import type { LongPressEventCallback, Noop } from '../helpers/types'
 
 type ElRef = MutableRefObject<HTMLElement | null | undefined>
 
-function useFn(
-  elRef: MutableRefObject<HTMLElement | null | undefined>,
-  fn: (el: HTMLElement) => Noop
-) {
+function useFn(elRef: ElRef, fn: (el: HTMLElement) => Noop) {
   const stopHandle = useRef<Noop | null>(null)
 
   function on() {
@@ -28,22 +21,19 @@ function useFn(
     }
   }
 
-  const _elRef = useRef<HTMLElement | null>(null)
-
-  if (_elRef.current == null && elRef.current == null) {
-    //
-  } else if (elRef.current !== _elRef.current) {
-    _elRef.current = elRef.current ?? null
+  function elChange() {
     off()
     on()
   }
 
-  useEffect(() => off, [])
+  useEffect(() => {
+    on()
 
-  return off
+    return off
+  }, [])
+
+  return { off, elChange }
 }
-
-type EventCallback = (e: Event) => void
 
 /**
  * 事件
@@ -53,13 +43,13 @@ type EventCallback = (e: Event) => void
 export function useEvent(
   elRef: ElRef,
   event = touchEvent.touchstart,
-  callback: FxEventCallback
+  callback: EventListener
 ) {
-  const callbackRef = useRef<FxEventCallback | null>(null)
-  callbackRef.current = callback || null
+  const callbackRef = useRef<EventListener | null>(null)
+  callbackRef.current = callback
 
-  const onEvent: FxEventCallback = (e, $el) => {
-    callbackRef.current && callbackRef.current(e, $el)
+  const onEvent: EventListener = e => {
+    callbackRef.current && callbackRef.current(e)
   }
 
   return useFn(elRef, el => addEvent(event, onEvent, el))
@@ -73,18 +63,14 @@ export function useEvent(
 export function useStop(
   elRef: ElRef,
   event = touchEvent.touchstart,
-  callback?: EventCallback
+  callback?: EventListener
 ) {
-  const callbackRef = useRef<FxEventCallback | null>(null)
-  callbackRef.current = callback || null
-
-  const onStop: FxEventCallback = (e, $el) => {
-    callbackRef.current && callbackRef.current(e, $el)
-
+  const onStop: EventListener = e => {
+    callback && callback(e)
     e.stopPropagation()
   }
 
-  return useFn(elRef, el => addEvent(event, onStop, el))
+  return useEvent(elRef, event, onStop)
 }
 
 /**
@@ -93,7 +79,14 @@ export function useStop(
  * @returns 取消函数
  */
 export function useLongPress(elRef: ElRef, callback: LongPressEventCallback) {
-  return useFn(elRef, el => addLongPressEvent(el, callback))
+  const callbackRef = useRef<LongPressEventCallback | null>(null)
+  callbackRef.current = callback
+
+  const onEvent: LongPressEventCallback = e => {
+    callbackRef.current && callbackRef.current(e)
+  }
+
+  return useFn(elRef, el => addLongPressEvent(el, onEvent))
 }
 
 /**
@@ -137,5 +130,7 @@ export function useDbclick(
 export function useBlur(callback: Noop) {
   const elRef = useRef(document.documentElement)
 
-  return useFn(elRef, el => addEvent('click', callback, el))
+  const { off } = useEvent(elRef, 'click', callback)
+
+  return { off }
 }

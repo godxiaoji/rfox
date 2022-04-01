@@ -16,7 +16,7 @@ import {
   useState
 } from 'react'
 import { getNewZIndex, getPopupStyles } from './util'
-import type { Noop } from '../helpers/types'
+import type { Noop, OnClick } from '../helpers/types'
 import { useBlur } from '../hooks/use-event'
 import { capitalize } from '../helpers/util'
 
@@ -28,20 +28,29 @@ type LifeName =
   | 'afterHide'
   | 'afterHidden'
 
-type UseOptions = Partial<Record<LifeName, Noop>>
+type UseOptions = Partial<
+  Record<LifeName, Noop> & {
+    initialForbidScroll: boolean // 初始是否禁用滚动条
+    initialEnableBlurCancel: boolean
+  }
+>
 
 export function usePopup(
   props: PopupProps & PopupEmits,
   ref: ForwardedRef<PopupRef>,
-  useOptions: UseOptions
+  {
+    initialEnableBlurCancel = false,
+    initialForbidScroll = true,
+    ...useOptions
+  }: UseOptions
 ) {
   const [isShow, setIsShow] = useState(false)
   const [visible2, setVisible2] = useState(false)
   const [zIndex, setZIndex] = useState(0)
   const [absTop, setAbsTop] = useState<number | null>(null)
 
-  const forbidScroll = useRef(true)
-  const enableBlurCancel = useRef(false)
+  const forbidScroll = useRef(initialForbidScroll)
+  const enableBlurCancel = useRef(initialEnableBlurCancel)
   const showing = useRef(false)
   const hiding = useRef(true)
   const visibleTimer = useRef<number>()
@@ -56,6 +65,12 @@ export function usePopup(
 
   function setEnableBlurCancel(enable: boolean) {
     enableBlurCancel.current = enable
+  }
+
+  const onStopBlur: OnClick = e => {
+    if (enableBlurCancel.current) {
+      e.stopPropagation()
+    }
   }
 
   function doShow() {
@@ -73,10 +88,6 @@ export function usePopup(
     } else {
       setAbsTop(getScrollTop())
     }
-
-    // if (useOptions.enableUseBlur) {
-    //   visibleBlur.addEvent()
-    // }
 
     setZIndex(getNewZIndex())
     setIsShow(true)
@@ -201,7 +212,8 @@ export function usePopup(
     onCloseClick,
     onCancelClick,
     setForbidScroll,
-    setEnableBlurCancel
+    setEnableBlurCancel,
+    onStopBlur
   }
 }
 

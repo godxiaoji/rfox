@@ -3,12 +3,16 @@ import classNames from 'classnames'
 import type { DrawerEmits, DrawerProps } from './types'
 import type { FRFC, RenderProp } from '../helpers/types'
 import { usePopup } from '../popup/use-popup'
-import { getDrawerInnerClasses, getDrawerInnerStyles } from './util'
+import {
+  getDrawerClass,
+  getDrawerInnerClasses,
+  getDrawerInnerStyles
+} from './util'
 import { NavBar } from '../NavBar'
 import { useSafeAreaInsets } from '../hooks/use-safe-area-insets'
 import CloseOutlined from '../Icon/icons/CloseOutlined'
-import { forwardRef } from 'react'
-import { PopupRef } from '../popup/types'
+import { forwardRef, useEffect } from 'react'
+import type { PopupRef } from '../popup/types'
 
 const FxDrawer: FRFC<
   PopupRef,
@@ -17,31 +21,34 @@ const FxDrawer: FRFC<
       renderHeader?: RenderProp
     }
 > = ({ showMask = true, ...props }, ref) => {
-  // const innerEl = useRef<HTMLDivElement>(null)
-
-  const { popupStyles, popupClasses, onMaskClick, onCloseClick } = usePopup(
-    props,
-    ref,
-    {}
-  )
+  const {
+    popupStyles,
+    popupClasses,
+    onMaskClick,
+    onCloseClick,
+    setEnableBlurCancel,
+    onStopBlur
+  } = usePopup(props, ref, {})
   const { safeAreaInsets } = useSafeAreaInsets(props.enableSafeAreaInsets)
 
   const hasHeader = !!(props.title || props.showClose || props.renderHeader)
 
-  const classes = classNames(['fx-drawer', popupClasses, props.className])
+  const classes = classNames([
+    getDrawerClass(showMask),
+    popupClasses,
+    props.className
+  ])
   const innerClasses = classNames(getDrawerInnerClasses(props, hasHeader))
   const innerStyles = getDrawerInnerStyles(props, safeAreaInsets)
 
-  // useStop(innerEl, 'click')
-
-  // useEffect(() => {
-  //   setEnableBlurCancel(!showMask)
-  // }, [showMask])
+  useEffect(() => {
+    setEnableBlurCancel(!showMask)
+  }, [showMask])
 
   return createPortal(
     <div className={classes} style={popupStyles}>
       {showMask ? <div className="fx-mask" onClick={onMaskClick}></div> : <></>}
-      <div className={innerClasses} style={innerStyles}>
+      <div className={innerClasses} style={innerStyles} onClick={onStopBlur}>
         {props.renderHeader ? (
           props.renderHeader()
         ) : hasHeader ? (

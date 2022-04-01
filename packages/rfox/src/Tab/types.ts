@@ -5,18 +5,18 @@ import type {
 import { CSSProperties } from '../helpers/types'
 import type { IconData } from '../Icon/types'
 
+export type ActiveValue = number | string
+
 export interface OptionItem {
   label: string
-  value: number | string
-  icon?: IconData
-  activeIcon?: IconData
+  value: ActiveValue
+  icon?: string | IconData
+  activeIcon?: string | IconData
   badge?: BadgeOption
   subLabel?: string
 }
 
-export type OptionList = (number | string | OptionItem)[]
-
-export type ActiveValue = number | string
+export type OptionList = (ActiveValue | OptionItem)[]
 
 export interface HandleOptionItem extends OptionItem {
   badge?: HandleBadgeOption

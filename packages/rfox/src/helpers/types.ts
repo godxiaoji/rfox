@@ -67,14 +67,6 @@ export type ViewPosition = 'start' | 'center' | 'end' | 0 | 0.5 | 1
 
 export type Selector = HTMLElement | string
 
-/**
- * 事件
- */
-export type FxEventElement = HTMLElement | Document
-export interface FxEventCallback {
-  (e: Event, $el: HTMLElement): void
-}
-
 export interface LongPressEventCallback {
   (res: { type: 'long-press' | 'click' }): void
 }

@@ -1,95 +1,20 @@
 import { isMobile } from '../helpers/device'
-import {
-  FxEventElement,
-  FxEventCallback,
-  LongPressEventCallback
-} from './types'
-
-type EventTargetWithUID = {
-  _euid: number
-} & FxEventElement
-
-let euid = 0
-
-const callbacks: Record<string, Record<number, FxEventCallback[]>> = {}
-
-// window.callbacks = callbacks
-
-function onEvent(e: Event) {
-  const currentTarget = e.currentTarget as EventTargetWithUID
-  const type = e.type
-  const uid = currentTarget._euid
-
-  if (uid && callbacks[type] && callbacks[type][uid]) {
-    const currentCallbacks = callbacks[type][uid]
-
-    const $el = (
-      currentTarget === document ? document.documentElement : currentTarget
-    ) as HTMLElement
-
-    currentCallbacks.forEach((callback: FxEventCallback) => {
-      callback.call(callback, e, $el)
-    })
-  }
-}
+import { LongPressEventCallback } from './types'
 
 export function addEvent(
   type: string,
-  callback: FxEventCallback,
-  $el: FxEventElement = document
+  callback: EventListenerOrEventListenerObject,
+  $el: HTMLElement | Document | Window
 ) {
-  const target = (
-    $el === document.documentElement ? document : $el
-  ) as EventTargetWithUID
-
-  if (!target._euid) {
-    target._euid = ++euid
-  }
-  const uid = target._euid
-
-  if (!callbacks[type]) {
-    callbacks[type] = {}
-  }
-  if (!callbacks[type][uid]) {
-    callbacks[type][uid] = []
-    target.addEventListener(type, onEvent, false)
+  if ($el === document || $el === document.documentElement) {
+    // document 之类的全挂window
+    $el = window
   }
 
-  callbacks[type][uid].push(callback)
+  $el.addEventListener(type, callback, false)
 
-  return () => removeEvent(type, callback, $el)
-}
-
-export function removeEvent(
-  type: string,
-  callback: FxEventCallback,
-  $el: FxEventElement = document
-) {
-  const target = (
-    $el === document.documentElement ? document : $el
-  ) as EventTargetWithUID
-
-  const uid = target._euid
-
-  if (callbacks[type] && callbacks[type][uid]) {
-    const currentCallbacks = callbacks[type][uid]
-    let index = -1
-
-    for (let i = 0; i < currentCallbacks.length; i++) {
-      if (currentCallbacks[i] == callback) {
-        index = i
-        break
-      }
-    }
-
-    if (index > -1) {
-      currentCallbacks.splice(index, 1)
-
-      if (currentCallbacks.length === 0) {
-        target.removeEventListener(type, onEvent, false)
-        delete callbacks[type][uid]
-      }
-    }
+  return () => {
+    $el.removeEventListener(type, callback, false)
   }
 }
 

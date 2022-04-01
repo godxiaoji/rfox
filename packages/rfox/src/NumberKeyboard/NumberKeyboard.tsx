@@ -183,6 +183,7 @@ const FxNumberKeyboard: FRVFC<
       className={classes}
       title={props.title}
       placement="bottom"
+      showMask={false}
       visible={props.visible}
       onConfirm={onConfirm}
       onCancel={onCancel}

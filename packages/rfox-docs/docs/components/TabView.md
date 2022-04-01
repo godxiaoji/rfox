@@ -32,10 +32,10 @@ import type { TabViewOnChange, TabViewOnAnimated } from 'rfox'
 
 ## TabView Events
 
-| 事件       | 描述           | 回调函数参数                     | TypeScript 函数   |
-| ---------- | -------------- | -------------------------------- | ----------------- |
-| onChange   | 切换时触发     | (activeIndex: number) 当前项索引 | TabViewOnChange   |
-| onAnimated | 动画结束时触发 | (activeIndex: number) 当前项索引 | TabViewOnAnimated |
+| 事件       | 描述           | 回调函数参数            | TypeScript 函数   |
+| ---------- | -------------- | ----------------------- | ----------------- |
+| onChange   | 切换时触发     | ( activeIndex: number ) | TabViewOnChange   |
+| onAnimated | 动画结束时触发 | ( activeIndex: number ) | TabViewOnAnimated |
 
 ## TabView Slots
 

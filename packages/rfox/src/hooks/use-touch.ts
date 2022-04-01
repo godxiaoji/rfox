@@ -30,6 +30,10 @@ const {
   getTouch
 } = touchEvent
 
+/**
+ * useTouch
+ * @summary el 只支持生命周期内默认绑定的元素，不支持半途修改
+ */
 export function useTouch({
   el,
   onTouchStart,
