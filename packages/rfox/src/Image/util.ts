@@ -18,14 +18,13 @@ export const MODE_NAMES: Mode[] = [
   'bottom right'
 ]
 
-export const getModeClassName = (mode?: Mode) => {
-  return (
-    'mode--' +
+export const getImgClasses = (mode?: Mode) => [
+  'fx-image_img',
+  'mode--' +
     camelCase2KebabCase(getEnumsValue(MODE_NAMES, mode)).replace(/\s+/g, '-')
-  )
-}
+]
 
-export const getImageRatioStyles = (aspectRatio?: number | string) => {
+export const getRatioStyles = (aspectRatio?: number | string) => {
   return {
     paddingTop: getNumber(aspectRatio) * 100 + '%'
   } as CSSProperties

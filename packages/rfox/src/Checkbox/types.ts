@@ -10,14 +10,14 @@ export type OptionItem = {
 
 export type UserOptionItem = ModelValue | OptionItem
 
-export interface CheckboxGroupCommonProps extends FormItemCommonProps {
+export interface CheckGroupCommonProps extends FormItemCommonProps {
   options?: UserOptionItem[]
   inline?: boolean
   activeColor?: string
   value?: ModelValue | ModelValue[]
 }
 
-export interface CheckboxGroupProps extends CheckboxGroupCommonProps {
+export interface CheckboxGroupProps extends CheckGroupCommonProps {
   value?: ModelValue[]
 }
 
@@ -25,23 +25,23 @@ export interface CheckboxGroupEmits {
   onChange?: (value: ModelValue[]) => void
 }
 
-export interface CheckboxCommonProps extends FormItemCommonProps {
+export interface CheckCommonProps extends FormItemCommonProps {
   value?: ModelValue
   checked?: boolean
   activeColor?: string
 }
 
-export interface CheckboxProps extends CheckboxCommonProps {
+export interface CheckboxProps extends CheckCommonProps {
   circle?: boolean
 }
 
-export interface CheckboxCommonEmits {
+export interface CheckCommonEmits {
   onChange?: (checked: boolean) => void
 }
 
-export type CheckboxEmits = CheckboxCommonEmits
+export type CheckboxEmits = CheckCommonEmits
 
-export interface CheckboxContextValue extends GroupContextValue {
+export interface CheckContextValue extends GroupContextValue {
   value?: ModelValue | ModelValue[]
   activeColor?: string
   name?: string
@@ -49,7 +49,7 @@ export interface CheckboxContextValue extends GroupContextValue {
   onChange?: (uid: symbol) => void
 }
 
-export interface CheckboxContextRef extends GroupContextItemRef {
+export interface CheckContextRef extends GroupContextItemRef {
   getInputChecked: () => boolean
   getValue: () => ModelValue | undefined
   setChecked: (checked: boolean) => void

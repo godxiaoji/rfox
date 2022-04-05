@@ -288,7 +288,7 @@ const ImagePreviewItem: FC<{
         className={classes}
         src={imageObject.src}
         mode="aspectFit"
-        onLoaded={onImageLoad}
+        onLoad={onImageLoad}
         style={styles}
       />
     ),

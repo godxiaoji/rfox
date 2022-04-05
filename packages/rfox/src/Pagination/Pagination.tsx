@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import { useEffect, useState } from 'react'
 import type { OnChange, PaginationProps } from './types'
 import type {
   CSSProperties,
@@ -6,11 +7,11 @@ import type {
   RenderProp,
   VFC
 } from '../helpers/types'
-import { getNumber, isNumeric, rangeInteger } from '../helpers/util'
+import { isNumeric, rangeInteger } from '../helpers/util'
 import { Icon } from '../Icon'
 import LeftOutlined from '../Icon/icons/LeftOutlined'
 import RightOutlined from '../Icon/icons/RightOutlined'
-import { useEffect, useState } from 'react'
+import { getTotal } from './util'
 
 const FxPagination: VFC<
   PaginationProps & {
@@ -26,33 +27,35 @@ const FxPagination: VFC<
 > = ({ current, onChange, ...props }) => {
   const classes = classNames('fx-pagination', props.className)
   const [pageNum, setPageNum] = useState(-1)
-  const total = Math.max(getNumber(props.total, 1), 1)
+  const totalNum = getTotal(props.total)
+
+  function change(newPageNum: number) {
+    setPageNum(newPageNum)
+    onChange && onChange(newPageNum)
+  }
 
   function onClick(type: string) {
     const newPageNum = rangeInteger(
       type === 'next' ? pageNum + 1 : pageNum - 1,
       1,
-      total
+      totalNum
     )
 
-    setPageNum(newPageNum)
-
-    onChange && onChange(newPageNum)
+    change(newPageNum)
   }
 
   useEffect(() => {
     if (isNumeric(current)) {
-      setPageNum(rangeInteger(current, 0, total))
+      setPageNum(rangeInteger(current, 0, totalNum))
     } else if (pageNum === -1) {
       // 首次不传值的时候
-      setPageNum(1)
-      onChange && onChange(1)
+      change(1)
     }
   }, [current])
 
   const children =
     typeof props.children === 'function'
-      ? props.children({ current: pageNum, total })
+      ? props.children({ current: pageNum, total: totalNum })
       : props.children
 
   return (
@@ -65,11 +68,11 @@ const FxPagination: VFC<
         {props.renderPrev ? props.renderPrev() : <Icon icon={LeftOutlined} />}
       </button>
       <div className="fx-pagination_content">
-        {children || `${pageNum} / ${total}`}
+        {children || `${pageNum} / ${totalNum}`}
       </div>
       <button
         className="fx-pagination_next"
-        disabled={pageNum >= total}
+        disabled={pageNum >= totalNum}
         onClick={() => onClick('next')}
       >
         {props.renderNext ? props.renderNext() : <Icon icon={RightOutlined} />}

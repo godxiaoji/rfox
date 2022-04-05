@@ -1,11 +1,9 @@
-import { OnClick } from '../helpers/types'
-import { StateType } from '../helpers/types'
+import type { OnClick, StateType } from '../helpers/types'
 import type { IconData } from '../Icon/types'
 
 export type Mode = 'default' | 'clickable' | 'closable'
 
 export interface NoticeBarProps {
-  visible?: boolean
   title?: string
   mode?: Mode
   leftIcon?: IconData
@@ -16,5 +14,6 @@ export interface NoticeBarProps {
 }
 
 export interface NoticeBarEmits {
+  onClick?: OnClick
   onCloseClick?: OnClick
 }

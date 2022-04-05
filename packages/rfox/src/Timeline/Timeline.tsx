@@ -1,8 +1,7 @@
 import classNames from 'classnames'
-import type { TimelineProps } from './types'
-import type { FC } from '../helpers/types'
+import type { CSSProperties, FC } from '../helpers/types'
 
-const FxTimeline: FC<TimelineProps> = props => {
+const FxTimeline: FC<{ style?: CSSProperties }> = props => {
   const classes = classNames('fx-timeline', props.className)
 
   return (

@@ -33,6 +33,7 @@ importers:
       eslint-config-prettier: ^8.5.0
       eslint-plugin-prettier: ^4.0.0
       eslint-plugin-react: ^7.29.4
+      eslint-plugin-react-hooks: ^4.4.0
       execa: ^6.0.0
       gulp: ^4.0.2
       gulp-autoprefixer: ^8.0.0
@@ -95,6 +96,7 @@ importers:
       eslint-config-prettier: 8.5.0_eslint@8.12.0
       eslint-plugin-prettier: 4.0.0_b253a92c95b42c3296c682f11cccb3bd
       eslint-plugin-react: 7.29.4_eslint@8.12.0
+      eslint-plugin-react-hooks: 4.4.0_eslint@8.12.0
       execa: 6.1.0
       gulp: 4.0.2
       gulp-autoprefixer: 8.0.0_gulp@4.0.2
@@ -4572,6 +4574,15 @@ packages:
       eslint-config-prettier: 8.5.0_eslint@8.12.0
       prettier: 2.6.1
       prettier-linter-helpers: 1.0.0
+    dev: true
+
+  /eslint-plugin-react-hooks/4.4.0_eslint@8.12.0:
+    resolution: {integrity: sha512-U3RVIfdzJaeKDQKEJbz5p3NW8/L80PCATJAfuojwbaEL+gBjfGdhUcGde+WGUW46Q5sr/NgxevsIiDtNXrvZaQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
+    dependencies:
+      eslint: 8.12.0
     dev: true
 
   /eslint-plugin-react/7.29.4_eslint@8.12.0:

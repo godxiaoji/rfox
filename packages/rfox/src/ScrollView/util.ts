@@ -30,9 +30,12 @@ export const getContentStyles = ({
   } as CSSProperties
 }
 
-export const getIndicatorStyles = (json: string) => {
-  const pullIndicatorSafeArea: PullIndicatorSafeArea = JSON.parse(json)
-
+export const getIndicatorStyles = (pullIndicatorSafeArea: {
+  top: number
+  right: number
+  bottom: number
+  left: number
+}) => {
   return {
     padding: `${pullIndicatorSafeArea.top}px ${pullIndicatorSafeArea.right}px ${pullIndicatorSafeArea.bottom}px ${pullIndicatorSafeArea.left}px`
   }

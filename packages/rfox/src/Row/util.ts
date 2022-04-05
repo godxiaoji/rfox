@@ -2,7 +2,7 @@ import { isNumberArray, isNumeric } from '../helpers/util'
 import type { CSSProperties } from '../helpers/types'
 import type { JustifyType, AlignType, UserGutter, RowProps } from './types'
 
-const JUSTIFY_TYPE: JustifyType[] = [
+export const JUSTIFY_TYPES: JustifyType[] = [
   'start',
   'end',
   'center',
@@ -10,7 +10,7 @@ const JUSTIFY_TYPE: JustifyType[] = [
   'space-between'
 ]
 
-const ALIGN_TYPE: AlignType[] = ['top', 'middle', 'bottom']
+export const ALIGN_TYPES: AlignType[] = ['top', 'middle', 'bottom']
 
 export const parseGutter = (val?: UserGutter) => {
   if (isNumeric(val)) {
@@ -35,10 +35,10 @@ export const getRowClasses = (props: RowProps) => {
   const classes = [`fx-row`]
 
   props.justify &&
-    JUSTIFY_TYPE.includes(props.justify) &&
+    JUSTIFY_TYPES.includes(props.justify) &&
     classes.push(`justify--${props.justify}`)
   props.align &&
-    ALIGN_TYPE.includes(props.align) &&
+    ALIGN_TYPES.includes(props.align) &&
     classes.push(`align--${props.align}`)
 
   return classes

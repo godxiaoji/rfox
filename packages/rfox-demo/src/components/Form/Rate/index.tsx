@@ -39,7 +39,7 @@ export default function ExpRate() {
       </FxGroup>
       <FxGroup title="状态">
         <FxCell label="只读">
-          <FxRate readOnly value="3" />
+          <FxRate readonly value="3" />
         </FxCell>
         <FxCell label="禁用">
           <FxRate disabled value="3" />

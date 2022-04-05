@@ -5,14 +5,17 @@ import { getActivityIndicatorClasses } from './util'
 import { LoadingIcon } from '../LoadingIcon'
 import { getNumber } from '../helpers/util'
 
-const defaultSize = 20
+const DEFAULT_SIZE = 20
 
-const FxActivityIndicator: VFC<ActivityIndicatorProps> = props => {
+const FxActivityIndicator: VFC<ActivityIndicatorProps> = ({
+  animated = true,
+  ...props
+}) => {
   const classes = classNames(
-    getActivityIndicatorClasses(props),
+    getActivityIndicatorClasses(animated),
     props.className
   )
-  const nSize = getNumber(props.size, defaultSize)
+  const nSize = getNumber(props.size, DEFAULT_SIZE)
 
   return (
     <LoadingIcon
@@ -23,11 +26,6 @@ const FxActivityIndicator: VFC<ActivityIndicatorProps> = props => {
       color={props.color}
     />
   )
-}
-
-FxActivityIndicator.defaultProps = {
-  animated: true,
-  size: defaultSize
 }
 
 export default FxActivityIndicator

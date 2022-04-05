@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react'
 import classNames from 'classnames'
 import type {
   CollapseContextItemRef,
@@ -6,11 +7,10 @@ import type {
   CollapseItemProps
 } from './types'
 import type { FC } from '../helpers/types'
-import { useRef, useState } from 'react'
 import { useGroupItem } from '../hooks/use-group'
 import { CollapseContext } from './context'
 import Exception from '../helpers/exception'
-import { getCollapseItemClasses } from './util'
+import { getItemClasses } from './util'
 import { Cell } from '../Cell'
 
 const FxCollapseItem: FC<CollapseItemProps & CollapseItemEmits> = ({
@@ -118,7 +118,7 @@ const FxCollapseItem: FC<CollapseItemProps & CollapseItemEmits> = ({
     isActive.current ? hide(true) : show(true)
   }
 
-  const classes = classNames(getCollapseItemClasses(active))
+  const classes = classNames(getItemClasses(active))
 
   return (
     <div className={classes}>

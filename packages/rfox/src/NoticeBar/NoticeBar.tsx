@@ -1,10 +1,10 @@
 import classNames from 'classnames'
 import type { NoticeBarEmits, NoticeBarProps } from './types'
 import {
-  getNoticeBarClasses,
-  getNoticeBarContentClasses,
-  getNoticeBarContentStyles,
-  getNoticeBarStyles
+  getClasses,
+  getContentClasses,
+  getContentStyles,
+  getStyles
 } from './util'
 import type { FC, OnClick } from '../helpers/types'
 import { useEffect, useRef, useState } from 'react'
@@ -26,10 +26,10 @@ const FxNoticeBar: FC<NoticeBarProps & NoticeBarEmits> = props => {
   const marqueeTimer = useRef<number>()
   const contentEl = useRef<HTMLDivElement | null>(null)
 
-  const classes = classNames(getNoticeBarClasses(props), props.className)
-  const styles = getNoticeBarStyles(props)
-  const contentClasses = classNames(getNoticeBarContentClasses(props))
-  const contentStyles = getNoticeBarContentStyles(marqueeX, marqueeDuration)
+  const classes = classNames(getClasses(props.type), props.className)
+  const styles = getStyles(props.color)
+  const contentClasses = classNames(getContentClasses(props.marquee))
+  const contentStyles = getContentStyles({ marqueeX, marqueeDuration })
 
   function marqueeStep(x: number, pW: number) {
     setMarqueeX(pW)
@@ -75,18 +75,20 @@ const FxNoticeBar: FC<NoticeBarProps & NoticeBarEmits> = props => {
   const rightIcon2 =
     props.rightIcon || (props.mode && modeMaps.get(props.mode)) || null
 
+  const onClick: OnClick = e => {
+    if (props.mode === 'clickable') {
+      props.onClick && props.onClick(e)
+    }
+  }
+
   const onRightIconClick: OnClick = e => {
     if (props.mode === 'closable') {
-      // if (!notifyExist) {
-      //   hide()
-      // }
-
       props.onCloseClick && props.onCloseClick(e)
     }
   }
 
   return (
-    <div className={classes} style={styles}>
+    <div className={classes} style={styles} onClick={onClick}>
       {props.leftIcon ? (
         <div className="fx-notice-bar_left-icon">
           <Icon icon={props.leftIcon} />
@@ -111,7 +113,6 @@ const FxNoticeBar: FC<NoticeBarProps & NoticeBarEmits> = props => {
 }
 
 FxNoticeBar.defaultProps = {
-  visible: true,
   title: '',
   marquee: false
 }

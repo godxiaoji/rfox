@@ -17,7 +17,7 @@ export type OnFieldClick = (payload: { text: string }) => void
 
 export interface SearchBarProps {
   ghost?: boolean
-  readOnly?: boolean
+  readonly?: boolean
   showCancel?: boolean
   focus?: boolean
   maxlength?: number

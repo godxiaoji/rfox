@@ -2,7 +2,7 @@ import type { DragEventHandler } from 'react'
 import { useRef, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import type { ImageEmits, ImageProps, LoadedResource } from './types'
-import { getImageRatioStyles, getModeClassName } from './util'
+import { getRatioStyles, getImgClasses } from './util'
 import {
   addLazyQueue,
   loadNow,
@@ -24,14 +24,14 @@ const FxImage: VFC<ImageProps & ImageEmits> = ({
   mode,
   aspectRatio,
   iconSize,
-  onLoaded,
-  onLoadError,
+  onLoad,
+  onError,
   ...attrs
 }) => {
   const root = useRef<HTMLDivElement | null>(null)
   const classes = classNames('fx-image', className)
-  const imgClasses = classNames('fx-image_img', getModeClassName(mode))
-  const ratioStyles = getImageRatioStyles(aspectRatio)
+  const imgClasses = classNames(getImgClasses(mode))
+  const ratioStyles = getRatioStyles(aspectRatio)
 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -62,8 +62,8 @@ const FxImage: VFC<ImageProps & ImageEmits> = ({
       setCurrentSrc(res.src)
     }
 
-    onLoaded &&
-      onLoaded({
+    onLoad &&
+      onLoad({
         width: res.naturalWidth,
         height: res.naturalHeight,
         src: res.src
@@ -78,7 +78,7 @@ const FxImage: VFC<ImageProps & ImageEmits> = ({
     setLoading(false)
     setError(true)
 
-    onLoadError && onLoadError(e)
+    onError && onError(e)
   }
 
   const onDrag: DragEventHandler<HTMLImageElement> = e => {

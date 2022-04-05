@@ -1,20 +1,20 @@
 import { isStringNumberMix } from '../helpers/util'
 import { useGroup, useGroupItem } from '../hooks/use-group'
 import type {
-  CheckboxCommonEmits,
-  CheckboxCommonProps,
-  CheckboxContextRef,
-  CheckboxContextValue,
-  CheckboxGroupCommonProps,
+  CheckCommonEmits,
+  CheckCommonProps,
+  CheckContextRef,
+  CheckContextValue,
+  CheckGroupCommonProps,
   ModelValue,
   OptionItem
 } from './types'
 import { useEffect, useMemo, useRef } from 'react'
 import { CheckboxContext } from './context'
-import { getCheckboxOrRadioStyles } from './util'
+import { getCheckStyles } from './util'
 
-export function useCheckboxOrRadio(
-  props: CheckboxCommonProps & CheckboxCommonEmits,
+export function useCheck(
+  props: CheckCommonProps & CheckCommonEmits,
   name: 'checkbox' | 'radio'
 ) {
   const uid = useRef(Symbol())
@@ -37,7 +37,7 @@ export function useCheckboxOrRadio(
     getInputEl().checked = checked
   }
 
-  const groupOptions = useGroupItem<CheckboxContextValue, CheckboxContextRef>(
+  const groupOptions = useGroupItem<CheckContextValue, CheckContextRef>(
     CheckboxContext,
     {
       uid: uid.current,
@@ -92,7 +92,7 @@ export function useCheckboxOrRadio(
     }
   }, [props.checked])
 
-  const styles = getCheckboxOrRadioStyles(
+  const styles = getCheckStyles(
     groupOptions.hasGroup ? groupOptions.activeColor : props.activeColor
   )
 
@@ -105,8 +105,8 @@ export function useCheckboxOrRadio(
   }
 }
 
-export function useCheckboxOrRadioGroup<T>(
-  props: CheckboxGroupCommonProps,
+export function useCheckGroup<T>(
+  props: CheckGroupCommonProps,
   {
     name,
     updateValue,
@@ -115,11 +115,11 @@ export function useCheckboxOrRadioGroup<T>(
     name: 'checkbox' | 'radio'
     updateValue: (options: {
       isChange: boolean
-      children: CheckboxContextRef[]
+      children: CheckContextRef[]
       uid: symbol | undefined
     }) => T
     watchValue: (options: {
-      children: CheckboxContextRef[]
+      children: CheckContextRef[]
       value?: ModelValue | ModelValue[]
     }) => void
   }
@@ -131,8 +131,8 @@ export function useCheckboxOrRadioGroup<T>(
   }
 
   const { children, GroupProvider } = useGroup<
-    CheckboxContextValue,
-    CheckboxContextRef
+    CheckContextValue,
+    CheckContextRef
   >(CheckboxContext, {
     value: props.value,
     name: props.name,

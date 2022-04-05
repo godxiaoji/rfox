@@ -21,7 +21,7 @@ import UserOutlined from '../Icon/icons/UserOutlined'
 const FxAvatar: FC<AvatarProps> = props => {
   const consumer = useContext(GroupContext)
   const size2 = getAvatarSize(props, consumer)
-  const shape2 = getAvatarShape(props, consumer)
+  const shape2 = getAvatarShape(props, consumer.hasGroup)
 
   const classes = classNames(
     getAvatarClasses(props, size2, shape2),

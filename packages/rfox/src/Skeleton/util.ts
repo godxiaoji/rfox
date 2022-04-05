@@ -11,15 +11,15 @@ import type {
   SkeletonTitleProps
 } from './types'
 
-export const paragraphDefaultRow = 3
+export const PARAGRAPH_DEFAULT_ROW = 3
 export const AVATAR_SHAPE_NAMES: AvatarShape[] = ['default', 'circle']
 export const BUTTON_SHAPE_NAMES: ButtonShape[] = ['default', 'round']
 
-export const getSkeletonClasses = (props: SkeletonProps) => {
-  return ['fx-skeleton', { animated: !!props.animated }]
+export const getClasses = (animated?: boolean) => {
+  return ['fx-skeleton', { animated: !!animated }]
 }
 
-export const getSkeletonAvatarClasses = (
+export const getAvatarClasses = (
   props: SkeletonAvatarProps,
   parentProps?: SkeletonProps
 ) => {
@@ -31,7 +31,7 @@ export const getSkeletonAvatarClasses = (
   ]
 }
 
-export const getSkeletonButtonClasses = (
+export const getButtonClasses = (
   props: SkeletonButtonProps,
   parentProps?: SkeletonProps
 ) => {
@@ -43,7 +43,7 @@ export const getSkeletonButtonClasses = (
   ]
 }
 
-export const getSkeletonImageClasses = (
+export const getImageClasses = (
   props: SkeletonImageProps,
   parentProps?: SkeletonProps
 ) => {
@@ -53,7 +53,7 @@ export const getSkeletonImageClasses = (
   ]
 }
 
-export const getSkeletonTitleClasses = (
+export const getTitleClasses = (
   props: SkeletonTitleProps,
   parentProps?: SkeletonProps
 ) => {
@@ -63,7 +63,7 @@ export const getSkeletonTitleClasses = (
   ]
 }
 
-export const getSkeletonParagraphClasses = (
+export const getParagraphClasses = (
   props: SkeletonParagraphProps,
   parentProps?: SkeletonProps
 ) => {
@@ -78,7 +78,7 @@ export const getParagraphRowList = (
   parentProps?: SkeletonProps
 ) => {
   const row = getNumber(props.row ?? parentProps?.paragraphRow)
-  const rowLen = isNumber(row) && row > 0 ? row : paragraphDefaultRow
+  const rowLen = isNumber(row) && row > 0 ? row : PARAGRAPH_DEFAULT_ROW
 
   const rowList = []
 

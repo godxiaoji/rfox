@@ -32,8 +32,6 @@ export interface ButtonProps
   formType?: FormType
 }
 
-export type OnButtonClick = OnClick<HTMLButtonElement>
-
 export interface ButtonEmits {
-  onClick?: OnButtonClick
+  onClick?: OnClick<HTMLButtonElement>
 }

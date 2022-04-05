@@ -4,7 +4,8 @@ export type SVGComponent = FC<SVGAttributes<SVGSVGElement>>
 
 export type IconData = string | SVGComponent
 
-export interface IconProps extends HTMLAttributes<SVGSVGElement> {
+export interface IconProps
+  extends Omit<HTMLAttributes<SVGSVGElement>, 'style'> {
   icon: IconData
   spin?: boolean
   size?: number | string

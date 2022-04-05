@@ -1,10 +1,10 @@
 import { getEnumsValue } from '../helpers/validator'
-import type { EmptyProps, EmptyType } from './types'
+import type { EmptyType } from './types'
 
 export const TYPE_NAMES: EmptyType[] = ['default', 'error', 'network', 'search']
 
-export const getImageUrl = (props: EmptyProps) => {
-  return images[getEnumsValue(TYPE_NAMES, props.type)]
+export const getImageUrl = (type?: EmptyType) => {
+  return images[getEnumsValue(TYPE_NAMES, type)]
 }
 
 const images: Record<EmptyType, string> = {

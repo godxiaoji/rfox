@@ -1,4 +1,4 @@
-import type { SizeType, StateType } from '../helpers/types'
+import type { Noop, SizeType, StateType } from '../helpers/types'
 
 export type PatternType = 'light' | 'dark' | 'plain'
 
@@ -9,4 +9,10 @@ export interface TagProps {
   closable?: boolean
   disabled?: boolean
   color?: string
+}
+
+export interface TagEmits {
+  onClick?: Noop
+  onClose?: Noop
+  onLongPress?: Noop
 }

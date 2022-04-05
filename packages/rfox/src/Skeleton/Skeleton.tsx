@@ -5,7 +5,7 @@ import type { FC, RenderProp } from '../helpers/types'
 import SkeletonAvatar from './SkeletonAvatar'
 import SkeletonTitle from './SkeletonTitle'
 import SkeletonParagraph from './SkeletonParagraph'
-import { getSkeletonClasses } from './util'
+import { getClasses } from './util'
 import { SkeletonContext } from './context'
 
 const FxSkeleton: FC<
@@ -13,25 +13,29 @@ const FxSkeleton: FC<
     renderLayout?: RenderProp
   }
 > = props => {
-  const classes = classNames(getSkeletonClasses(props), props.className)
+  const classes = classNames(getClasses(props.animated), props.className)
 
   return (
     <SkeletonContext.Provider value={props}>
       {props.loading ? (
         <div className={classes}>
-          <div className="fx-skeleton_layout">
-            {props.avatar ? (
-              <div className="fx-skeleton_layout-left">
-                <SkeletonAvatar />
+          {props.renderLayout ? (
+            props.renderLayout()
+          ) : (
+            <div className="fx-skeleton_layout">
+              {props.avatar ? (
+                <div className="fx-skeleton_layout-left">
+                  <SkeletonAvatar />
+                </div>
+              ) : (
+                <></>
+              )}
+              <div className="fx-skeleton_layout-right">
+                <SkeletonTitle />
+                <SkeletonParagraph />
               </div>
-            ) : (
-              <></>
-            )}
-            <div className="fx-skeleton_layout-right">
-              <SkeletonTitle />
-              <SkeletonParagraph />
             </div>
-          </div>
+          )}
         </div>
       ) : (
         props.children

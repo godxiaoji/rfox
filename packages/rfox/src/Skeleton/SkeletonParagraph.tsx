@@ -5,15 +5,15 @@ import { useContext } from 'react'
 import { SkeletonContext } from './context'
 import {
   getParagraphRowList,
-  getSkeletonParagraphClasses,
-  paragraphDefaultRow
+  getParagraphClasses,
+  PARAGRAPH_DEFAULT_ROW
 } from './util'
 import { skeletonDefaultProps } from './props'
 
 const FxSkeletonParagraph: VFC<SkeletonParagraphProps> = props => {
   const consumer = useContext(SkeletonContext)
   const classes = classNames(
-    getSkeletonParagraphClasses(props, consumer),
+    getParagraphClasses(props, consumer),
     props.className
   )
 
@@ -28,7 +28,7 @@ const FxSkeletonParagraph: VFC<SkeletonParagraphProps> = props => {
 
 FxSkeletonParagraph.defaultProps = {
   ...skeletonDefaultProps,
-  row: paragraphDefaultRow
+  row: PARAGRAPH_DEFAULT_ROW
 }
 
 export default FxSkeletonParagraph

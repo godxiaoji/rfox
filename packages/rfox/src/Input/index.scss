@@ -100,7 +100,7 @@
     }
   }
 
-  &.focus {
+  &:not(.readonly).focus {
     border-color: $primary-color;
   }
 

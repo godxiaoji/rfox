@@ -1,9 +1,9 @@
 import classNames from 'classnames'
 import type { InputEmits, InputProps } from './types'
 import type { CSSProperties, OnFocus, RenderProp, VFC } from '../helpers/types'
-import { getInputClasses, getInputMode, getMaxLength, getValue } from './util'
+import { getClasses, getInputMode, getMaxLength, getValue } from './util'
 import CloseCircleFilled from '../Icon/icons/CloseCircleFilled'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { MouseEventHandler } from 'react'
 import { Icon } from '../Icon'
 
@@ -18,21 +18,23 @@ const FxInput: VFC<
   type = 'text',
   value = '',
   disabled,
+  readonly,
   renderPrepend,
   renderAppend,
   ...props
 }) => {
   const [active, setActive] = useState(false)
   const [isShowClear, setIsShowClear] = useState(false)
-  const [valueCache, setValueCache] = useState('')
+  const [formValue, setFormValue] = useState('')
 
   const classes = classNames(
-    getInputClasses({
+    getClasses({
       type,
       prepend: !!renderPrepend,
       append: !!renderAppend,
       disabled: !!disabled,
-      active
+      active,
+      readonly: !!readonly
     }),
     props.className
   )
@@ -75,8 +77,8 @@ const FxInput: VFC<
       setInputValue(newValue)
     }
 
-    if (newValue !== valueCache) {
-      setValueCache(newValue)
+    if (newValue !== formValue) {
+      setFormValue(newValue)
       isChange = true
     }
 
@@ -118,14 +120,31 @@ const FxInput: VFC<
     props.onChange && props.onChange(getInputValue())
   }
 
-  const onClear: MouseEventHandler<SVGSVGElement> = e => {
-    e.stopPropagation()
-    updateInput('')
-    props.onChange && props.onChange(getInputValue())
-  }
+  const onClear: MouseEventHandler<SVGSVGElement> = useCallback(
+    e => {
+      e.stopPropagation()
+      updateInput('')
+      onChange()
+    },
+    [props.onChange, props.onInput]
+  )
+
+  const renderShowClear = useMemo(
+    () =>
+      props.showClear && isShowClear ? (
+        <Icon
+          className="fx-input_clear"
+          icon={CloseCircleFilled}
+          onMouseDown={onClear}
+        />
+      ) : (
+        <></>
+      ),
+    [props.showClear, isShowClear, onClear]
+  )
 
   useEffect(() => {
-    value != valueCache && updateValue(value ?? '')
+    value != formValue && updateValue(value ?? '')
   }, [value])
 
   useEffect(() => {
@@ -135,7 +154,7 @@ const FxInput: VFC<
   const showClearTimer = useRef<number>()
   useEffect(() => {
     clearTimeout(showClearTimer.current)
-    if (valueCache && active) {
+    if (formValue && active) {
       showClearTimer.current = window.setTimeout(
         () => setIsShowClear(true),
         200
@@ -143,7 +162,7 @@ const FxInput: VFC<
     } else {
       setIsShowClear(false)
     }
-  }, [valueCache, active])
+  }, [formValue, active])
 
   return (
     <label className={classes} style={props.style} onClick={props.onClick}>
@@ -158,7 +177,7 @@ const FxInput: VFC<
           name={props.name}
           disabled={disabled}
           placeholder={props.placeholder}
-          readOnly={props.readOnly}
+          readOnly={readonly}
           maxLength={maxLength}
           ref={textareaEl}
           onInput={onInput}
@@ -174,7 +193,7 @@ const FxInput: VFC<
           name={props.name}
           disabled={disabled}
           placeholder={props.placeholder}
-          readOnly={props.readOnly}
+          readOnly={readonly}
           maxLength={maxLength}
           ref={inputEl}
           onInput={onInput}
@@ -187,20 +206,12 @@ const FxInput: VFC<
       )}
       {props.showLimit && maxLength > 0 ? (
         <span className="fx-input_limit">
-          {valueCache.length}/{maxLength}
+          {formValue.length}/{maxLength}
         </span>
       ) : (
         <></>
       )}
-      {props.showClear && isShowClear ? (
-        <Icon
-          className="fx-input_clear"
-          icon={CloseCircleFilled}
-          onMouseDown={onClear}
-        />
-      ) : (
-        <></>
-      )}
+      {renderShowClear}
       {renderAppend ? (
         <div className="fx-input_append">{renderAppend()}</div>
       ) : (

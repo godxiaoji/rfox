@@ -3,7 +3,7 @@ import { getNumber, isNumeric } from '../helpers/util'
 import type { PriceProps } from './types'
 
 export const getPrice = (props: PriceProps) => {
-  const decimalDigits = getNumber(props.decimalDigits)
+  const decimalDigits = getNumber(props.decimalDigits, 2)
   let priceStr = Number(0).toFixed(decimalDigits)
 
   if (isNumeric(props.price)) {

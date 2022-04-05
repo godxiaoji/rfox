@@ -1,3 +1,4 @@
+import { useCallback, useRef } from 'react'
 import classNames from 'classnames'
 import type {
   CheckboxGroupEmits,
@@ -5,10 +6,9 @@ import type {
   ModelValue
 } from './types'
 import type { FC } from '../helpers/types'
-import { getCheckboxOrRadioGroupClasses } from './util'
+import { getCheckGroupClasses } from './util'
 import { isSameArray, isStringNumberMixArray } from '../helpers/util'
-import { useCheckboxOrRadioGroup } from './use-checkbox-radio'
-import { useCallback, useRef } from 'react'
+import { useCheckGroup } from './use-check'
 import Checkbox from './Checkbox'
 
 const FxCheckboxGroup: FC<CheckboxGroupProps & CheckboxGroupEmits> = ({
@@ -19,7 +19,7 @@ const FxCheckboxGroup: FC<CheckboxGroupProps & CheckboxGroupEmits> = ({
 }) => {
   const inputValue = useRef<ModelValue[]>([])
 
-  const { root, options2, GroupProvider } = useCheckboxOrRadioGroup(props, {
+  const { root, options2, GroupProvider } = useCheckGroup(props, {
     name: 'checkbox',
     updateValue({ isChange, children }) {
       const newVal: ModelValue[] = []
@@ -60,7 +60,7 @@ const FxCheckboxGroup: FC<CheckboxGroupProps & CheckboxGroupEmits> = ({
 
   const classes = classNames(
     'fx-checkbox-group',
-    getCheckboxOrRadioGroupClasses(inline, props.disabled),
+    getCheckGroupClasses({ inline, disabled: props.disabled }),
     props.className
   )
 

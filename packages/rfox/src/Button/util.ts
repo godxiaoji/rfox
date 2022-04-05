@@ -52,10 +52,11 @@ export const getButtonClasses = (
   getCommonClasses(groupProps || props)
 ]
 
-export const getButtonGroupClasses = (
-  props: ButtonGroupProps,
-  count: number
-) => ['fx-button-group', getCommonClasses(props), 'count--' + (count || 1)]
+export const getGroupClasses = (props: ButtonGroupProps, count: number) => [
+  'fx-button-group',
+  getCommonClasses(props),
+  'count--' + (count || 1)
+]
 
 export const getButtonStyles = (color?: string) => {
   const obj: CSSProperties = {}

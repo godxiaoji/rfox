@@ -5,7 +5,7 @@ import { getEnumsValue } from '../helpers/validator'
 import type { SafeAreaInsets } from '../hooks/types'
 import type { FixedProps } from './types'
 
-export const getFixedInnerClasses = (props: FixedProps, fixed: boolean) => {
+export const getInnerClasses = (props: FixedProps, fixed: boolean) => {
   return [
     'fx-fixed_inner',
     'placement--' + getEnumsValue(PLACEMENT_TYPES, props.placement),
@@ -13,7 +13,7 @@ export const getFixedInnerClasses = (props: FixedProps, fixed: boolean) => {
   ]
 }
 
-export const getFixedInnerStyles = (
+export const getInnerStyles = (
   props: FixedProps,
   safeAreaInsets: SafeAreaInsets
 ) => {
@@ -28,13 +28,19 @@ export const getFixedInnerStyles = (
         safeAreaInsets[placement] + 'px'
     }
 
-    styles.zIndex = props.zIndex?.toString()
+    styles.zIndex = props.zIndex
   }
 
   return styles
 }
 
-export const getFixedStyles = (width: number | null, height: number | null) => {
+export const getStyles = ({
+  width,
+  height
+}: {
+  width: number | null
+  height: number | null
+}) => {
   return {
     width: width == null ? null : width + 'px',
     height: height == null ? null : height + 'px'

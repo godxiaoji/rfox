@@ -1,15 +1,25 @@
 import classNames from 'classnames'
 import type { LoadMoreProps } from './types'
 import type { FC } from '../helpers/types'
-import { getLoadMoreClasses } from './util'
+import { getClasses } from './util'
 import { ActivityIndicator } from '../ActivityIndicator'
 
-const FxLoadMore: FC<LoadMoreProps> = props => {
-  const classes = classNames(getLoadMoreClasses(props), props.className)
+const FxLoadMore: FC<LoadMoreProps> = ({
+  loading = false,
+  vertical = false,
+  ...props
+}) => {
+  const classes = classNames(
+    getClasses({
+      vertical,
+      loading
+    }),
+    props.className
+  )
 
   return (
     <div className={classes}>
-      {props.loading ? (
+      {loading ? (
         <ActivityIndicator className="fx-load-more_icon" size="18" />
       ) : (
         <></>

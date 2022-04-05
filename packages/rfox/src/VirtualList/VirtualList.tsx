@@ -22,6 +22,7 @@ import { useScroll, useScrollTo } from '../hooks/use-scroll'
 import { useResizeObserver } from '../hooks/use-resize-observer'
 import {
   forwardRef,
+  useCallback,
   useEffect,
   useImperativeHandle,
   useLayoutEffect,
@@ -80,6 +81,7 @@ const FxVirtualList: FRFC<
 
   const list = useRef<ListItem[]>([])
   const [renderList, setRenderList] = useState<RenderItem[]>([])
+  const [renderPoolList, setRenderPoolList] = useState<RenderItem[]>([])
 
   const classes = classNames(getClasses(horizontal), className)
 
@@ -134,6 +136,7 @@ const FxVirtualList: FRFC<
     })
 
     list.current = newList
+    updatePoolList(newList)
 
     if (isChange) {
       resetCalc()
@@ -143,6 +146,21 @@ const FxVirtualList: FRFC<
       updateItems('dataChange')
     }
   }
+
+  const updatePoolList = useCallback(
+    (allList: ListItem[]) => {
+      const newList: RenderItem[] = []
+
+      allList.forEach(item => {
+        if (item.size === -1 && !renderList.some(v => v.id === item.id)) {
+          newList.push(item)
+        }
+      })
+
+      setRenderPoolList(newList)
+    },
+    [renderList]
+  )
 
   useEffect(() => {
     // 有死循环风险
@@ -397,6 +415,7 @@ const FxVirtualList: FRFC<
         }
 
         list.current = newList
+        updatePoolList(newList)
       }
     }
   }
@@ -541,18 +560,10 @@ const FxVirtualList: FRFC<
         {renderSeparator && renderSeparator({ index: item.index })}
       </li>
     ))
-  }, [list, renderList, render, renderSeparator])
+  }, [renderList, render, renderSeparator])
 
   const renderPoolItems = useMemo(() => {
-    const newList: RenderItem[] = []
-
-    list.current.forEach(item => {
-      if (item.size === -1 && !renderList.some(v => v.id === item.id)) {
-        newList.push(item)
-      }
-    })
-
-    return newList.map(item => (
+    return renderPoolList.map(item => (
       <li
         className="fx-virtual-list_item"
         key={item.id}
@@ -562,7 +573,7 @@ const FxVirtualList: FRFC<
         {renderSeparator && renderSeparator({ index: item.index })}
       </li>
     ))
-  }, [list.current, renderList, render, renderSeparator])
+  }, [renderPoolList, render, renderSeparator])
 
   function resetScrollContainer($el: HTMLElement) {
     if (scrollEl.current === $el) {

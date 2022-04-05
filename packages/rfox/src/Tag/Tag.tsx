@@ -1,26 +1,20 @@
 import classNames from 'classnames'
-import type { TagProps } from './types'
-import type { FC, Noop, OnSVGClick } from '../helpers/types'
-import { getTagClasses, getTagStyles } from './util'
+import { useRef } from 'react'
+import type { TagEmits, TagProps } from './types'
+import type { FC } from '../helpers/types'
+import { getClasses, getStyles } from './util'
 import CloseOutlined from '../Icon/icons/CloseOutlined'
 import { Icon } from '../Icon'
-import { useRef } from 'react'
 import { useStop, useLongPress } from '../hooks/use-event'
 
-const FxTag: FC<
-  TagProps & {
-    onClick?: Noop
-    onClose?: Noop
-    onLongPress?: Noop
-  }
-> = props => {
+const FxTag: FC<TagProps & TagEmits> = props => {
   const root = useRef<HTMLDivElement>(null)
   const closeEl = useRef<HTMLButtonElement>(null)
 
-  const classes = classNames(getTagClasses(props), props.className)
-  const styles = getTagStyles(props)
+  const classes = classNames(getClasses(props), props.className)
+  const styles = getStyles(props.color)
 
-  const onClose: OnSVGClick = () => {
+  const onClose = () => {
     if (!props.disabled) {
       props.onClose && props.onClose()
     }

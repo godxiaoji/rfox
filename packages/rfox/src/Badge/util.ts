@@ -22,7 +22,7 @@ export function handleBadge(badge?: BadgeOption): BadgeProps {
   }
 }
 
-export const getBadgeClasses = (props: BadgeProps) => {
+export const getClasses = (props: BadgeProps) => {
   return [
     'fx-badge',
     {
@@ -31,7 +31,7 @@ export const getBadgeClasses = (props: BadgeProps) => {
   ]
 }
 
-export const getBadgeBadgeClasses = (props: BadgeProps) => {
+export const getBadgeClasses = (props: BadgeProps) => {
   return [
     'fx-badge_badge',
     {
@@ -40,7 +40,7 @@ export const getBadgeBadgeClasses = (props: BadgeProps) => {
   ]
 }
 
-export const getBadgeBadgeStyles = (props: BadgeProps) => {
+export const getBadgeStyles = (props: BadgeProps) => {
   const offset = props.offset || [0, 0]
 
   const styles: CSSProperties = {
@@ -65,13 +65,17 @@ export const getBadgeBadgeStyles = (props: BadgeProps) => {
   return styles
 }
 
-export const defaultMaxCount = 99
+export const DEFAULT_MAX_COUNT = 99
 
 export const getDefaultContent = (props: BadgeProps) => {
   return isString(props.content)
     ? props.content
     : isNumber(props.content)
-    ? rangeInteger(props.content, 0, getNumber(props.maxCount, defaultMaxCount))
+    ? rangeInteger(
+        props.content,
+        0,
+        getNumber(props.maxCount, DEFAULT_MAX_COUNT)
+      )
     : 0
 }
 

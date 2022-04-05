@@ -1,35 +1,42 @@
 import { useRef, useState } from 'react'
 import classNames from 'classnames'
 import type { BackTopProps } from './types'
-import { getBackTopStyles } from './util'
+import { getStyles, DEFAULT_VISIBLE_HEIGHT } from './util'
 import type { FC, OnClick } from '../helpers/types'
 import { getScrollTop, scrollTo } from '../helpers/dom'
 import UpCircleOutlined from '../Icon/icons/UpCircleOutlined'
 import { useScroll } from '../hooks/use-scroll'
 import { useSafeAreaInsets } from '../hooks/use-safe-area-insets'
 import { Icon } from '../Icon'
+import { getNumber } from '../helpers/util'
 
 const FxBackTop: FC<
   BackTopProps & {
     onClick?: OnClick
   }
-> = props => {
+> = ({
+  animated = true,
+  enableSafeAreaInsets = true,
+  offset = 0,
+  visibleHeight = DEFAULT_VISIBLE_HEIGHT,
+  ...props
+}) => {
   const docEl = useRef(document.documentElement)
   const [isShow, setIsShow] = useState(false)
-  const { safeAreaInsets } = useSafeAreaInsets(props.enableSafeAreaInsets)
+  const { safeAreaInsets } = useSafeAreaInsets(enableSafeAreaInsets)
 
   const classes = classNames('fx-back-top', props.className)
-  const styles = getBackTopStyles(props.offset, isShow, safeAreaInsets)
+  const styles = getStyles(offset, isShow, safeAreaInsets)
 
   useScroll(docEl, e => {
     setIsShow(
       getScrollTop(e.currentTarget as HTMLElement) >=
-        (props.visibleHeight as number)
+        getNumber(visibleHeight, DEFAULT_VISIBLE_HEIGHT)
     )
   })
 
   function toTop() {
-    scrollTo(document, 0, props.animated)
+    scrollTo(document, 0, animated)
   }
 
   const onClick: OnClick = e => {
@@ -43,13 +50,6 @@ const FxBackTop: FC<
       {props.children || <Icon icon={UpCircleOutlined} />}
     </button>
   )
-}
-
-FxBackTop.defaultProps = {
-  visibleHeight: 200,
-  animated: true,
-  offset: 0,
-  enableSafeAreaInsets: true
 }
 
 export default FxBackTop

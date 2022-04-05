@@ -1,6 +1,6 @@
 import type { CSSProperties } from '../helpers/types'
 
-export const getCheckboxOrRadioStyles = (activeColor?: string) => {
+export const getCheckStyles = (activeColor?: string) => {
   const obj: CSSProperties = {}
 
   activeColor && (obj['--fx-active-color'] = activeColor)
@@ -11,12 +11,18 @@ export const getCheckboxOrRadioStyles = (activeColor?: string) => {
   return obj
 }
 
-export const getCheckboxOrRadioClasses = (disabled: boolean) => [
+export const getCheckClasses = (disabled?: boolean) => [
   'fx-horizontal-hairline',
-  { disabled }
+  { disabled: !!disabled }
 ]
 
-export const getCheckboxOrRadioGroupClasses = (
-  inline?: boolean,
+export const getCheckGroupClasses = ({
+  inline,
+  disabled
+}: {
+  inline?: boolean
   disabled?: boolean
-) => ({ vertical: !inline, disabled: !!disabled })
+}) => ({
+  vertical: !inline,
+  disabled: !!disabled
+})

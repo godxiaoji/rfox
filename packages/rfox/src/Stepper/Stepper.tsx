@@ -1,13 +1,12 @@
 import classNames from 'classnames'
 import type { StepperEmits, StepperProps } from './types'
-import type { FC } from '../helpers/types'
-import { formateNumber, getRangeNumber, getStepperClasses } from './util'
+import type { FC, OnClick } from '../helpers/types'
+import { formateNumber, getRangeNumber, getClasses } from './util'
 import { getNumber } from '../helpers/util'
 import { useInput } from '../Form/use-form'
 import { Button } from '../Button'
 import PlusOutlined from '../Icon/icons/PlusOutlined'
 import MinusOutlined from '../Icon/icons/MinusOutlined'
-import type { OnButtonClick } from '../Button/types'
 import { useEffect, useState } from 'react'
 
 const FxStepper: FC<StepperProps & StepperEmits> = ({
@@ -24,7 +23,7 @@ const FxStepper: FC<StepperProps & StepperEmits> = ({
 
   const { inputEl, setInputValue, getInputValue } = useInput()
 
-  const classes = classNames(getStepperClasses(disabled), props.className)
+  const classes = classNames(getClasses(disabled), props.className)
 
   function updateValue(val: number | string) {
     const newVal = getRangeNumber(
@@ -56,15 +55,17 @@ const FxStepper: FC<StepperProps & StepperEmits> = ({
     const val = formateNumber(getInputValue(), decimalLength)
 
     setInputValue(val)
+
+    props.onInput && props.onInput(val)
   }
 
-  const onMinusClick: OnButtonClick = e => {
+  const onMinusClick: OnClick = e => {
     updateValue(parseFloat(formValue) - step)
 
     props.onMinusClick && props.onMinusClick(e)
   }
 
-  const onPlusClick: OnButtonClick = e => {
+  const onPlusClick: OnClick = e => {
     updateValue(parseFloat(formValue) + step)
 
     props.onPlusClick && props.onPlusClick(e)

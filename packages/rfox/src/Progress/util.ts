@@ -1,25 +1,24 @@
 import type { CSSProperties } from '../helpers/types'
 import { rangeInteger } from '../helpers/util'
-import type { ProgressProps } from './types'
 
-export const getProgressClasses = (props: ProgressProps) => [
+export const getClasses = (fixedBar?: boolean) => [
   'fx-progress',
-  { 'fixed-bar': !!props.fixedBar }
+  { 'fixed-bar': !!fixedBar }
 ]
 
-export const getProgressTrackClasses = (props: ProgressProps) => [
+export const getTrackClasses = (animated?: boolean) => [
   'fx-progress_track',
-  { animated: !!props.animated }
+  { animated: !!animated }
 ]
 
-export const getProgressTrackStyles = (progress: string) => {
+export const getTrackStyles = (progress: string) => {
   return { width: progress } as CSSProperties
 }
 
-export const getProgressStyles = (props: ProgressProps) => {
+export const getStyles = (color?: string) => {
   const styles: CSSProperties = {}
 
-  props.color && (styles['--fx-color'] = props.color)
+  color && (styles['--fx-color'] = color)
 
   return styles
 }

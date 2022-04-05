@@ -22,7 +22,8 @@ export type OnLoad = (payload: {
   src: string
 }) => void
 
-export interface ImageProps extends HTMLAttributes<HTMLDivElement> {
+export interface ImageProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'onLoad' | 'onError'> {
   src?: string
   mode?: Mode
   lazyLoad?: boolean
@@ -34,8 +35,8 @@ export interface ImageProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export interface ImageEmits {
-  onLoaded?: OnLoad
-  onLoadError?: OnError
+  onLoad?: OnLoad
+  onError?: OnError
 }
 
 export interface LoadedResource {

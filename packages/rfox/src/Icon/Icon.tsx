@@ -2,10 +2,10 @@ import classNames from 'classnames'
 import type { IconProps } from './types'
 import { getIconStyles } from './util'
 import FxSpriteSVG from './SpriteSVG'
-import type { VFC } from '../helpers/types'
+import type { VFC, CSSProperties } from '../helpers/types'
 import { isString } from '../helpers/util'
 
-const FxIcon: VFC<IconProps> = ({
+const FxIcon: VFC<IconProps & { style?: CSSProperties }> = ({
   icon,
   width,
   height,
@@ -16,14 +16,14 @@ const FxIcon: VFC<IconProps> = ({
   className,
   ...attrs
 }) => {
-  const styles = getIconStyles(
-    {
+  const styles = Object.assign(
+    getIconStyles({
       width,
       height,
       size,
       color
-    },
-    style
+    }),
+    style ?? {}
   )
   const classes = classNames('fx-icon', { spin }, className)
 

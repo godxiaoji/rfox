@@ -5,7 +5,6 @@ import { getDuration } from './util'
 import { getNumber } from '../helpers/util'
 import {
   forwardRef,
-  useCallback,
   useEffect,
   useImperativeHandle,
   useRef,
@@ -19,7 +18,6 @@ const FxCountUp: FRVFC<CountUpRef, CountUpProps & CountUpEmits> = (
     initialNumber = 0,
     number = 0,
     speed = 'normal',
-    decimalDigits = 0,
     thousands = false,
     onCancel,
     onAnimated,
@@ -45,36 +43,33 @@ const FxCountUp: FRVFC<CountUpRef, CountUpProps & CountUpEmits> = (
     }
   }
 
-  const update = useCallback(
-    (newNumber: number) => {
-      cancel()
+  const update = (newNumber: number) => {
+    cancel()
 
-      const _decimalDigits = getNumber(decimalDigits, 0)
-      const carry = Math.pow(10, _decimalDigits)
-      const from = Math.round(numberCache.current * carry)
-      const to = Math.round(newNumber * carry)
+    const decimalDigits = getNumber(props.decimalDigits, 0)
+    const carry = Math.pow(10, decimalDigits)
+    const from = Math.round(numberCache.current * carry)
+    const to = Math.round(newNumber * carry)
 
-      frameStart({
-        from,
-        to,
-        duration: getDuration(newNumber - numberCache.current, speed),
-        progress: ({ current }) => {
-          numberCache.current = parseFloat(
-            (current / carry).toFixed(_decimalDigits)
-          )
-          setContent(
-            thousands
-              ? handleThousands(numberCache.current.toFixed(_decimalDigits))
-              : numberCache.current.toFixed(_decimalDigits)
-          )
-        },
-        complete: () => {
-          onAnimated && onAnimated({ number: numberCache.current })
-        }
-      })
-    },
-    [decimalDigits, thousands, speed, onAnimated]
-  )
+    frameStart({
+      from,
+      to,
+      duration: getDuration(newNumber - numberCache.current, speed),
+      progress: ({ current }) => {
+        numberCache.current = parseFloat(
+          (current / carry).toFixed(decimalDigits)
+        )
+        setContent(
+          thousands
+            ? handleThousands(numberCache.current.toFixed(decimalDigits))
+            : numberCache.current.toFixed(decimalDigits)
+        )
+      },
+      complete: () => {
+        onAnimated && onAnimated({ number: numberCache.current })
+      }
+    })
+  }
 
   useEffect(() => {
     if (number != null && getNumber(number) !== numberCache.current) {
@@ -87,7 +82,7 @@ const FxCountUp: FRVFC<CountUpRef, CountUpProps & CountUpEmits> = (
     () => ({
       cancel
     }),
-    []
+    [onCancel]
   )
 
   return <div className={classes}>{content}</div>

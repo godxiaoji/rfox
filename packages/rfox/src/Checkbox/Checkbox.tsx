@@ -1,9 +1,9 @@
 import classNames from 'classnames'
 import type { CheckboxEmits, CheckboxProps } from './types'
 import type { FC } from '../helpers/types'
-import { getCheckboxOrRadioClasses } from './util'
+import { getCheckClasses } from './util'
 import { Icon } from '../Icon'
-import { useCheckboxOrRadio } from './use-checkbox-radio'
+import { useCheck } from './use-check'
 import CircleOutlined from '../Icon/icons/CircleOutlined'
 import CheckCircleFilled from '../Icon/icons/CheckCircleFilled'
 import BorderOutlined from '../Icon/icons/BorderOutlined'
@@ -14,14 +14,14 @@ const FxCheckbox: FC<CheckboxProps & CheckboxEmits> = ({
   children,
   ...props
 }) => {
-  const { disabled2, name2, styles, onChange, inputEl } = useCheckboxOrRadio(
+  const { disabled2, name2, styles, onChange, inputEl } = useCheck(
     props,
     'checkbox'
   )
 
   const classes = classNames(
     'fx-checkbox',
-    getCheckboxOrRadioClasses(disabled2),
+    getCheckClasses(disabled2),
     props.className
   )
 

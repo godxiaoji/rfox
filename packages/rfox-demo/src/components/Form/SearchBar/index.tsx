@@ -56,7 +56,7 @@ export default function ExpSearchBar() {
         <FxSearchBar className="exp-searchBar-dark-style" showCancel ghost />
       </FxGroup>
       <FxGroup title="只读（readonly=true）">
-        <FxSearchBar readOnly placeholders={placeholders} />
+        <FxSearchBar readonly placeholders={placeholders} />
       </FxGroup>
       <FxGroup title="onInput/onFocus/onBlur/onCancelClick/onSearch">
         <FxSearchBar
@@ -71,9 +71,9 @@ export default function ExpSearchBar() {
           onSearch={onSearch}
         />
       </FxGroup>
-      <FxGroup title="onFieldClick & readOnly=true">
+      <FxGroup title="onFieldClick & readonly=true">
         <FxSearchBar
-          readOnly
+          readonly
           placeholders={placeholders}
           onFieldClick={onClick}
         />

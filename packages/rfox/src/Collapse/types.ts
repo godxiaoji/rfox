@@ -4,7 +4,7 @@ import { Noop } from '../helpers/types'
 
 export type ActiveName = string | number
 
-export type OnChange = (payload: ActiveName[]) => void
+export type OnChange = (activeNames: ActiveName[]) => void
 
 export type ItemOnToggle = (payload: {
   name: ActiveName

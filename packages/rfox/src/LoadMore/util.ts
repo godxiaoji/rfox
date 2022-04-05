@@ -1,6 +1,7 @@
-import type { LoadMoreProps } from './types'
-
-export const getLoadMoreClasses = (props: LoadMoreProps) => [
+export const getClasses = (props: {
+  loading?: boolean
+  vertical?: boolean
+}) => [
   'fx-load-more',
   'fx-horizontal-hairline',
   {

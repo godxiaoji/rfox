@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import type { RateProps, RateEmits } from './types'
 import type { VFC } from '../helpers/types'
-import { getMax, getRateClasses, getRateStyles, isIntegerOrHalf } from './util'
+import { getMax, getClasses, getStyles, isIntegerOrHalf } from './util'
 import { isInteger, rangeInteger } from '../helpers/util'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTouch } from '../hooks/use-touch'
@@ -30,7 +30,7 @@ const FxRate: VFC<RateProps & RateEmits> = ({
   const root = useRef<HTMLDivElement>(null)
   const [inputValue, setInputValue] = useState(0)
   const [max, setMax] = useState(getMax(count))
-  const isReadOnly = useRef(false)
+  const isReadonly = useRef(false)
 
   const change = (newVal: number, isHalf = false) => {
     newVal = rangeInteger(newVal, 0, max)
@@ -51,7 +51,7 @@ const FxRate: VFC<RateProps & RateEmits> = ({
   useTouch({
     el: root,
     onTouchStart(e) {
-      if (isReadOnly.current) {
+      if (isReadonly.current) {
         return
       }
 
@@ -147,11 +147,11 @@ const FxRate: VFC<RateProps & RateEmits> = ({
   }, [value])
 
   useEffect(() => {
-    isReadOnly.current = !!(props.disabled || props.readOnly)
-  }, [props.disabled, props.readOnly])
+    isReadonly.current = !!(props.disabled || props.readonly)
+  }, [props.disabled, props.readonly])
 
-  const classes = classNames(getRateClasses(props))
-  const styles = getRateStyles(props)
+  const classes = classNames(getClasses(props))
+  const styles = getStyles(props)
 
   const renderItems = useCallback(() => {
     const items: JSX.Element[] = []

@@ -24,7 +24,7 @@ import { FxRate } from 'rfox'
 | ----------- | ------------------- | -------------- | ---- | --------------------------------------- |
 | value       | number              |                | 否   |
 | name        | string              |                | 否   | 标识                                    |
-| count       | number              | 5              | 否   | 有 count 个星星，只支持 > 0 整数        |
+| count       | number \| string    | 5              | 否   | 有 count 个星星，只支持 1~20 整数       |
 | allowHalf   | boolean             | false          | 否   | 是否允许半选                            |
 | disabled    | boolean             | false          | 否   | 是否禁用                                |
 | readOnly    | boolean             | false          | 否   | 是否为只读状态                          |
@@ -32,10 +32,10 @@ import { FxRate } from 'rfox'
 | activeIcon  | string \| Component | 'StarFilled'   | 否   | 激活时图标，使用 [Icon](./Icon.md) 组件 |
 | color       | string              |                | 否   | 自定义默认态的图标颜色                  |
 | activeColor | string              |                | 否   | 自定义激活态的图标颜色                  |
-| size        | string \| number    |                | 否   | 自定义图标大小，单位 px                 |
+| size        | number \| string    |                | 否   | 自定义图标大小，单位 px                 |
 
 ## Events
 
-| 事件     | 描述                 | 回调函数参数  |
-| -------- | -------------------- | ------------- |
-| onChange | 点击星星时触发的事件 | value: number |
+| 事件     | 描述                 | 回调函数参数      |
+| -------- | -------------------- | ----------------- |
+| onChange | 点击星星时触发的事件 | ( value: number ) |

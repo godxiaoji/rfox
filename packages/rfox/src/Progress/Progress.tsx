@@ -3,10 +3,10 @@ import type { ProgressProps } from './types'
 import type { RenderChildren, VFC } from '../helpers/types'
 import {
   getProgress,
-  getProgressClasses,
-  getProgressStyles,
-  getProgressTrackClasses,
-  getProgressTrackStyles
+  getClasses,
+  getStyles,
+  getTrackClasses,
+  getTrackStyles
 } from './util'
 
 const FxProgress: VFC<
@@ -17,11 +17,10 @@ const FxProgress: VFC<
   }
 > = props => {
   const progress = getProgress(props.percentage)
-
-  const classes = classNames(getProgressClasses(props), props.className)
-  const trackClasses = classNames(getProgressTrackClasses(props))
-  const styles = getProgressStyles(props)
-  const trackStyles = getProgressTrackStyles(progress)
+  const classes = classNames(getClasses(props.fixedBar), props.className)
+  const trackClasses = classNames(getTrackClasses(props.animated))
+  const styles = getStyles(props.color)
+  const trackStyles = getTrackStyles(progress)
 
   const children =
     typeof props.children === 'function'

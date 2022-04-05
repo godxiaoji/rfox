@@ -1,4 +1,4 @@
-export const getCollapseItemClasses = (active: boolean) => [
+export const getItemClasses = (active: boolean) => [
   'fx-collapse-item',
   'fx-horizontal-hairline',
   { active }

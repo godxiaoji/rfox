@@ -3,49 +3,48 @@ import type { ActionSheetEmits, ActionSheetProps } from './types'
 import type { FRVFC } from '../helpers/types'
 import { getItemClasses, getOptions } from './util'
 import { Drawer } from '../Drawer'
-import { forwardRef, useCallback } from 'react'
+import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react'
 import { useLocale } from '../ConfigProvider/context'
 import type { PopupRef } from '../popup/types'
-import { usePopupRef } from '../popup/use-popup'
 
 const FxActionSheet: FRVFC<PopupRef, ActionSheetProps & ActionSheetEmits> = (
   props,
   ref
 ) => {
   const { locale } = useLocale()
-  const { popupRef } = usePopupRef(ref)
+  const popupRef = useRef<PopupRef>(null)
 
   const classes = classNames('fx-action-sheet', props.className)
 
-  const renderOptions = useCallback(
-    () =>
-      getOptions(props.options).map((item, index) => (
-        <li
-          className={classNames(getItemClasses(item))}
-          key={index}
-          onClick={() => onItemClick(index)}
-        >
-          <div className="fx-action-sheet_item-inner">
-            <span>{item.name}</span>
-            {item.description ? <small>{item.description}</small> : <></>}
-          </div>
-        </li>
-      )),
-    [props.options]
-  )
+  const renderOptions = useCallback(() => {
+    function onItemClick(index: number) {
+      popupRef.current?.customConfirm({
+        index,
+        item: {
+          name: props.options[index].name
+        }
+      })
+    }
 
-  function onItemClick(index: number) {
-    popupRef.current?.customConfirm({
-      index,
-      item: {
-        name: props.options[index].name
-      }
-    })
-  }
+    return getOptions(props.options).map((item, index) => (
+      <li
+        className={classNames(getItemClasses(item))}
+        key={index}
+        onClick={() => onItemClick(index)}
+      >
+        <div className="fx-action-sheet_item-inner">
+          <span>{item.name}</span>
+          {item.description ? <small>{item.description}</small> : <></>}
+        </div>
+      </li>
+    ))
+  }, [props.options, popupRef])
 
   function onCancelClick() {
     popupRef.current?.onCancelClick()
   }
+
+  useImperativeHandle(ref, () => popupRef.current as PopupRef, [])
 
   return (
     <Drawer

@@ -7,9 +7,9 @@ const FxEmpty: FC<
   EmptyProps & {
     renderImage?: RenderProp
   }
-> = props => {
+> = ({ description = '', ...props }) => {
   const classes = classNames('fx-empty', props.className)
-  const imageUrl = getImageUrl(props)
+  const imageUrl = getImageUrl(props.type)
 
   return (
     <div className={classes}>
@@ -19,18 +19,14 @@ const FxEmpty: FC<
         <img className="fx-empty_image" src={imageUrl} />
       )}
 
-      {props.description ? (
-        <p className="fx-empty_description">{props.description}</p>
+      {description ? (
+        <p className="fx-empty_description">{description}</p>
       ) : (
         <></>
       )}
       {props.children}
     </div>
   )
-}
-
-FxEmpty.defaultProps = {
-  description: ''
 }
 
 export default FxEmpty

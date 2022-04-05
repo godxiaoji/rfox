@@ -1,5 +1,5 @@
-import { getDefaultCountTime, getCountTime } from './util'
 import { useEffect, useRef, useState } from 'react'
+import { getDefaultCountTime, getCountTime } from './util'
 
 interface StepHandlers {
   update: (time: number) => void
@@ -8,10 +8,10 @@ interface StepHandlers {
 }
 
 export function useCountTime(onStep: (handlers: StepHandlers) => void) {
-  const [timeStr, setTimeStr] = useState(JSON.stringify(getDefaultCountTime()))
+  const [times, setTimes] = useState(getDefaultCountTime())
 
   function update(time: number) {
-    setTimeStr(JSON.stringify(getCountTime(time)))
+    setTimes(getCountTime(time))
   }
 
   const timer = useRef<number>(-1)
@@ -28,10 +28,10 @@ export function useCountTime(onStep: (handlers: StepHandlers) => void) {
     cancelAnimationFrame(timer.current)
   }
 
-  useEffect(() => stop, [])
+  useEffect(stop, [])
 
   return {
-    timeStr,
+    times,
     timeStart: start,
     timeStop: stop,
     timeUpdate: update

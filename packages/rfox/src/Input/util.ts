@@ -58,15 +58,17 @@ export const getMaxLength = (maxLength?: number | string) => {
   return Math.max(0, getNumber(maxLength, 140))
 }
 
-export const getInputClasses = ({
+export const getClasses = ({
   type,
+  readonly,
   prepend,
   append,
   active,
   disabled
 }: {
   type: string
-  disabled: boolean
+  readonly?: boolean
+  disabled?: boolean
   prepend: boolean
   append: boolean
   active: boolean
@@ -78,7 +80,8 @@ export const getInputClasses = ({
       'has--append': append,
       'fx-textarea': type === 'textarea',
       focus: active,
-      disabled: disabled
+      readonly: !!readonly,
+      disabled: !!disabled
     }
   ]
 }

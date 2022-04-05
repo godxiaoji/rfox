@@ -13,7 +13,12 @@ export default function ExpInput() {
         <FxInput type="text" placeholder="showLimit=true" showLimit showClear />
       </FxGroup>
       <FxGroup title="textarea">
-        <FxInput type="textarea" placeholder="showLimit=true" showLimit />
+        <FxInput
+          type="textarea"
+          placeholder="showLimit=true"
+          showLimit
+          maxlength={200}
+        />
       </FxGroup>
       <FxGroup title="Slot prepend/append">
         <FxInput
@@ -58,8 +63,8 @@ export default function ExpInput() {
         </FxCell>
       </FxGroup>
       <FxGroup title="其他">
-        <FxCell label="只读 readOnly">
-          <FxInput type="text" value="只读文本" readOnly />
+        <FxCell label="只读 readonly">
+          <FxInput type="text" value="只读文本" readonly />
         </FxCell>
         <FxCell label="禁用 disabled">
           <FxInput type="text" value="禁用文本" disabled />

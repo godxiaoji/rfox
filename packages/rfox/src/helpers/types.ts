@@ -1,7 +1,6 @@
-import React from 'react'
-export type { default as TypeException } from './exception'
-import type { default as TypeException } from './exception'
-
+/**
+ * Style
+ */
 interface FxCSS {
   '--fx-color'?: string
   '--fx-dark-color'?: string
@@ -15,48 +14,8 @@ interface FxCSS {
   '--fx-size'?: string
 }
 
-export type FC<T = Record<string, unknown>> = React.FC<
-  T & {
-    className?: string
-  }
->
-
-export type VFC<T = Record<string, unknown>> = React.VFC<
-  T & {
-    className?: string
-  }
->
-
-export type FRFC<
-  T,
-  P = Record<string, unknown>
-> = React.ForwardRefRenderFunction<
-  T,
-  P & {
-    className?: string
-    children?: React.ReactNode | undefined
-  }
->
-
-export type FRVFC<
-  T,
-  P = Record<string, unknown>
-> = React.ForwardRefRenderFunction<
-  T,
-  P & {
-    className?: string
-  }
->
-
-export type RenderProp<T = void> = T extends void
-  ? () => React.ReactNode
-  : (data: T) => React.ReactNode
-
-export type RenderChildren<T> =
-  | ((payload: T) => React.ReactNode)
-  | React.ReactNode
-
-export interface CSSProperties extends React.CSSProperties, FxCSS {}
+export type { default as TypeException } from './exception'
+import type { default as TypeException } from './exception'
 
 export type { Dayjs } from 'dayjs'
 
@@ -94,6 +53,50 @@ export type VoidFnToBooleanFn<VoidFn> = VoidFn extends (
   : never
 
 export type FnArgs<Fn> = Fn extends (...any: infer Args) => any ? Args : never
+
+/**
+ * React
+ */
+import * as React from 'react'
+
+export interface CSSProperties extends React.CSSProperties, FxCSS {}
+
+export type FC<T = Record<string, unknown>> = React.FC<
+  T & {
+    className?: string
+  }
+>
+export type VFC<T = Record<string, unknown>> = React.VFC<
+  T & {
+    className?: string
+  }
+>
+export type FRFC<
+  T,
+  P = Record<string, unknown>
+> = React.ForwardRefRenderFunction<
+  T,
+  P & {
+    className?: string
+    children?: React.ReactNode | undefined
+  }
+>
+export type FRVFC<
+  T,
+  P = Record<string, unknown>
+> = React.ForwardRefRenderFunction<
+  T,
+  P & {
+    className?: string
+  }
+>
+
+export type RenderProp<T = void> = T extends void
+  ? () => React.ReactNode
+  : (data: T) => React.ReactNode
+export type RenderChildren<T> =
+  | ((payload: T) => React.ReactNode)
+  | React.ReactNode
 
 export type OnError = (e: TypeException) => void
 export type OnClick<T extends HTMLElement = HTMLElement> =

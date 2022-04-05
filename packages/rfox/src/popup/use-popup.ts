@@ -216,10 +216,3 @@ export function usePopup(
     onStopBlur
   }
 }
-
-export function usePopupRef(ref: ForwardedRef<PopupRef>) {
-  const popupRef =
-    ref && typeof ref !== 'function' ? ref : useRef<PopupRef>(null)
-
-  return { popupRef }
-}

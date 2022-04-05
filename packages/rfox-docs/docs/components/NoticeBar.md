@@ -26,7 +26,6 @@ import type { NoticeBarMode } from 'rfox'
 
 | 属性      | 类型                | 默认值    | 必填 | 说明                                                                                            |
 | --------- | ------------------- | --------- | ---- | ----------------------------------------------------------------------------------------------- |
-| visible   | boolean             | false     | 是   | 是否显示                                                                                        |
 | mode      | NoticeBarMode       | 'default' | 否   | 通知栏模式                                                                                      |
 | leftIcon  | string \| Component |           | 否   | 设置左侧图标，使用 [Icon](./Icon.md) 组件                                                       |
 | rightIcon | string \| Component |           | 否   | 设置右侧图标，使用 [Icon](./Icon.md) 组件，设置后会覆盖指定 `mode` 模式下的图标                 |
@@ -35,17 +34,15 @@ import type { NoticeBarMode } from 'rfox'
 
 ### NoticeBarMode 的合法值
 
-| 值        | 说明                                              |
-| --------- | ------------------------------------------------- |
-| default   | 默认                                              |
-| clickable | 展示右箭头图标，表示可点击                        |
-| closable  | 展示关闭图标，点击可关闭，需要配合 `visible` 使用 |
+| 值        | 说明                       |
+| --------- | -------------------------- |
+| default   | 默认                       |
+| clickable | 展示右箭头图标，表示可点击 |
+| closable  | 展示关闭图标，点击可关闭   |
 
 ## Events
 
-| 事件            | 描述               | 回调函数参数              | TypeScript 函数 |
-| --------------- | ------------------ | ------------------------- | --------------- |
-| onCloseClick    | 关闭按钮点击时触发 |                           |                 |
-| onShow          | 展示时触发         |                           |                 |
-| onHide          | 隐藏时触发         |                           |                 |
-| onUpdateVisible | 展示隐藏时触发     | visible: boolean 是否显示 |                 |
+| 事件         | 描述                                  | 回调函数参数      | TypeScript 函数 |
+| ------------ | ------------------------------------- | ----------------- | --------------- |
+| onCloseClick | `closable` 模式下，关闭按钮点击时触发 | ( e: MouseEvent ) |                 |
+| onClick      | `closable` 模式下，通告栏点击时触发   | ( e: MouseEvent ) |                 |

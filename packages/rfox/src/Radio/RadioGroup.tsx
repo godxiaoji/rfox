@@ -1,11 +1,11 @@
+import { useCallback, useRef } from 'react'
 import classNames from 'classnames'
 import type { RadioGroupEmits, RadioGroupProps } from './types'
 import type { FC } from '../helpers/types'
-import { useCheckboxOrRadioGroup } from '../Checkbox/use-checkbox-radio'
-import { useCallback, useRef } from 'react'
+import { useCheckGroup } from '../Checkbox/use-check'
 import Radio from './Radio'
 import type { ModelValue } from '../Checkbox/types'
-import { getCheckboxOrRadioGroupClasses } from '../Checkbox/util'
+import { getCheckGroupClasses } from '../Checkbox/util'
 
 const FxRadioGroup: FC<RadioGroupProps & RadioGroupEmits> = ({
   inline = false,
@@ -15,7 +15,7 @@ const FxRadioGroup: FC<RadioGroupProps & RadioGroupEmits> = ({
 }) => {
   const inputValue = useRef<ModelValue>('')
 
-  const { root, options2, GroupProvider } = useCheckboxOrRadioGroup(props, {
+  const { root, options2, GroupProvider } = useCheckGroup(props, {
     name: 'radio',
     updateValue({ isChange, uid, children }) {
       let hasChecked = false
@@ -58,7 +58,7 @@ const FxRadioGroup: FC<RadioGroupProps & RadioGroupEmits> = ({
 
   const classes = classNames(
     'fx-radio-group',
-    getCheckboxOrRadioGroupClasses(inline, props.disabled),
+    getCheckGroupClasses({ inline, disabled: props.disabled }),
     props.className
   )
 

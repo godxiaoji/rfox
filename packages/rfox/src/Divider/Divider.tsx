@@ -1,10 +1,10 @@
 import classNames from 'classnames'
 import type { DividerProps } from './types'
 import type { VFC } from '../helpers/types'
-import { getDividerClasses } from './util'
+import { getClasses } from './util'
 
 const FxDivider: VFC<DividerProps> = props => {
-  const classes = classNames(getDividerClasses(props), props.className)
+  const classes = classNames(getClasses(props), props.className)
 
   return (
     <div className={classes}>

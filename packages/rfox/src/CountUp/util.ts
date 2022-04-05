@@ -1,7 +1,7 @@
 import { isNumber } from '../helpers/util'
 import type { Speed } from './types'
 
-const SpeedMap = new Map<Speed, number>([
+export const SpeedMap = new Map<Speed, number>([
   ['normal', 50],
   ['fast', 10],
   ['slow', 100]

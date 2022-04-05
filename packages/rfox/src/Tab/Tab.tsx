@@ -50,7 +50,7 @@ const FxTab: FRVFC<TabRef, TabProps & TabEmits> = (
         )}
       </li>
     ))
-  }, [options2, activeIndex])
+  }, [options2, activeIndex, onChange])
 
   return (
     <div className={classes} style={styles}>

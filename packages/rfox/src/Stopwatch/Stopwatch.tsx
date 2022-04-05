@@ -20,7 +20,7 @@ const FxStopwatch: FRVFC<
   const startTime = useRef(0)
   const laps = useRef<CountTime[]>([])
 
-  const { timeStr, timeStart, timeStop, timeUpdate } = useCountTime(
+  const { times, timeStart, timeStop, timeUpdate } = useCountTime(
     ({ update }) => {
       time.current = Date.now() - startTime.current
       update(time.current)
@@ -101,19 +101,16 @@ const FxStopwatch: FRVFC<
   )
 
   const renderChildren = useCallback(() => {
-    const countTime = JSON.parse(timeStr) as CountTime
-
     return render
-      ? render(cloneData(countTime))
+      ? render(cloneData(times))
       : `${
-          parseInt(countTime.fullHours) > 0
-            ? (thousands ? countTime.thousandsFullHours : countTime.fullHours) +
-              ':'
+          parseInt(times.fullHours) > 0
+            ? (thousands ? times.thousandsFullHours : times.fullHours) + ':'
             : ''
-        }${countTime.minutes}:${countTime.seconds}${
-          showMilliseconds ? '.' + countTime.milliseconds : ''
+        }${times.minutes}:${times.seconds}${
+          showMilliseconds ? '.' + times.milliseconds : ''
         }`
-  }, [timeStr, render, showMilliseconds])
+  }, [times, render, showMilliseconds])
 
   return <div className={classes}>{renderChildren()}</div>
 }

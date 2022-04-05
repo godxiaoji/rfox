@@ -29,5 +29,5 @@ export interface CountDownEmits {
 export interface CountDownRef {
   pause: Noop
   resume: Noop
-  reset: (timing: number) => void
+  reset: (timing: number, autoStart?: boolean) => void
 }

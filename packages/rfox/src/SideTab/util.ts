@@ -1,8 +1,4 @@
-export const getSideTabClasses = () => {
-  return ['fx-side-tab']
-}
-
-export const getSideTabItemClasses = (index: number, activeIndex: number) => {
+export const getItemClasses = (index: number, activeIndex: number) => {
   return [
     'fx-side-tab_item',
     {

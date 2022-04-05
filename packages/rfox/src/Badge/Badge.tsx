@@ -2,10 +2,10 @@ import classNames from 'classnames'
 import type { BadgeProps } from './types'
 import type { CSSProperties, FC, RenderProp } from '../helpers/types'
 import {
-  defaultMaxCount,
-  getBadgeBadgeClasses,
-  getBadgeBadgeStyles,
+  DEFAULT_MAX_COUNT,
   getBadgeClasses,
+  getBadgeStyles,
+  getClasses,
   getDefaultContent,
   getShowContent
 } from './util'
@@ -24,9 +24,9 @@ const FxBadge: FC<
   const [content2, setCoutent2] = useState(getDefaultContent(props))
   const { frameStart, frameStop } = useFrameTask()
 
-  const classes = classNames(getBadgeClasses(props), props.className)
-  const badgeStyles = getBadgeBadgeStyles(props)
-  const badgeClass = classNames(getBadgeBadgeClasses(props))
+  const classes = classNames(getClasses(props), props.className)
+  const badgeStyles = getBadgeStyles(props)
+  const badgeClass = classNames(getBadgeClasses(props))
   const showContent = getShowContent(props, content2)
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const FxBadge: FC<
       const to = rangeInteger(
         val,
         0,
-        getNumber(props.maxCount, defaultMaxCount)
+        getNumber(props.maxCount, DEFAULT_MAX_COUNT)
       )
 
       frameStart({
@@ -90,7 +90,7 @@ const FxBadge: FC<
 }
 
 FxBadge.defaultProps = {
-  maxCount: defaultMaxCount,
+  maxCount: DEFAULT_MAX_COUNT,
   dot: false,
   showZero: false,
   animated: false

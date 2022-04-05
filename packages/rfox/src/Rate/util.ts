@@ -1,5 +1,8 @@
 import { CSSProperties } from '../helpers/types'
-import { getNumber, isInteger, isNumeric } from '../helpers/util'
+import { getNumber, isInteger, isNumeric, rangeInteger } from '../helpers/util'
+
+export const DEFAULT_COUNT = 5
+export const MAX_COUNT = 20
 
 export const isIntegerOrHalf = (val?: number | string) => {
   if (isNumeric(val)) {
@@ -11,19 +14,19 @@ export const isIntegerOrHalf = (val?: number | string) => {
 }
 
 export const getMax = (count?: number | string) =>
-  getNumber(count) > 0 ? Math.round(getNumber(count)) : 5
+  rangeInteger(getNumber(count, DEFAULT_COUNT), 1, MAX_COUNT)
 
-export const getRateClasses = ({
+export const getClasses = ({
   disabled,
-  readOnly
+  readonly
 }: {
   disabled?: boolean
-  readOnly?: boolean
+  readonly?: boolean
 }) => {
-  return ['fx-rate', { disabled: !!disabled, readonly: !!readOnly }]
+  return ['fx-rate', { disabled: !!disabled, readonly: !!readonly }]
 }
 
-export const getRateStyles = ({
+export const getStyles = ({
   color,
   activeColor,
   size

@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { forwardRef, useMemo, useRef } from 'react'
+import { forwardRef, useImperativeHandle, useMemo, useRef } from 'react'
 import type {
   NumberKeyboardEmits,
   NumberKeyboardProps,
@@ -11,7 +11,6 @@ import { Drawer } from '../Drawer'
 import { Icon } from '../Icon'
 import { useLocale } from '../ConfigProvider/context'
 import type { OnCancel, OnVisibleStateChange, PopupRef } from '../popup/types'
-import { usePopupRef } from '../popup/use-popup'
 import type { NumberKeyboardItem } from './types'
 import BackspaceOutlined from '../Icon/icons/BackspaceOutlined'
 import KeyboardOutlined from '../Icon/icons/KeyboardOutlined'
@@ -28,7 +27,7 @@ const FxNumberKeyboard: FRVFC<
   NumberKeyboardProps & NumberKeyboardEmits
 > = ({ onUpdateValue, ...props }, ref) => {
   const { locale } = useLocale()
-  const { popupRef } = usePopupRef(ref)
+  const popupRef = useRef<PopupRef>(null)
   const valueCache = useRef('')
 
   const showHeaderConfirm = isShowHeaderConfirm({
@@ -176,6 +175,8 @@ const FxNumberKeyboard: FRVFC<
       </li>
     ))
   }, [props.customKey])
+
+  useImperativeHandle(ref, () => popupRef.current as PopupRef, [])
 
   return (
     <Drawer

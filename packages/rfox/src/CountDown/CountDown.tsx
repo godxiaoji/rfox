@@ -40,8 +40,9 @@ const FxCountDown: FRVFC<
   const startTime = useRef(0)
   const expiredTime = useRef(0)
   const remainTime = useRef(0)
+  const paused = useRef(false)
 
-  const { timeStr, timeStop, timeStart, timeUpdate } = useCountTime(
+  const { times, timeStop, timeStart, timeUpdate } = useCountTime(
     ({ update, stop }) => {
       remainTime.current = expiredTime.current - Date.now()
 
@@ -66,6 +67,12 @@ const FxCountDown: FRVFC<
   )
 
   function pause() {
+    if (paused.current) {
+      return
+    }
+
+    paused.current = true
+
     onPause &&
       onPause({
         remainTime: remainTime.current
@@ -75,6 +82,12 @@ const FxCountDown: FRVFC<
   }
 
   function resume() {
+    if (!paused.current) {
+      return
+    }
+
+    paused.current = false
+
     onResume &&
       onResume({
         remainTime: remainTime.current
@@ -85,13 +98,17 @@ const FxCountDown: FRVFC<
     timeStart()
   }
 
-  function reset(_timing: number) {
+  function reset(_timing: number, autoStart = true) {
+    timeStop()
+
+    paused.current = !autoStart
+
     startTime.current = Date.now()
     expiredTime.current = _timing + startTime.current
     remainTime.current = _timing
 
     timeUpdate(remainTime.current)
-    timeStart()
+    !paused.current && timeStart()
   }
 
   useImperativeHandle(
@@ -105,20 +122,18 @@ const FxCountDown: FRVFC<
   )
 
   useEffect(() => {
-    reset(initialTiming)
+    reset(initialTiming, !paused.current)
   }, [])
 
   const renderChildren = useCallback(() => {
-    const countDown = JSON.parse(timeStr) as CountTime
-
     return render
-      ? render(countDown)
+      ? render(times)
       : `${
           showDays
-            ? countDown.days + locale.countDownDayUnit + ' ' + countDown.hours
-            : countDown.fullHours
-        }:${countDown.minutes}:${countDown.seconds}`
-  }, [timeStr, render, showDays])
+            ? times.days + locale.countDownDayUnit + ' ' + times.hours
+            : times.fullHours
+        }:${times.minutes}:${times.seconds}`
+  }, [times, render, showDays, locale])
 
   return <div className={classes}>{renderChildren()}</div>
 }

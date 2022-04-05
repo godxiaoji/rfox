@@ -9,11 +9,18 @@ import type {
   ActiveValue,
   TabRef
 } from './types'
-import { useEffect, useImperativeHandle, useRef, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState
+} from 'react'
 import type { ForwardedRef } from 'react'
 import { useMounted } from '../hooks/use-life'
 import { getTabStyles } from './util'
 import { useFrameTask } from '../hooks/use-frame-task'
+import { useStableState } from '../hooks/use'
 
 interface UseOptions {
   tabName: string
@@ -29,12 +36,11 @@ export function useTab(
 
   const listEl = useRef<HTMLUListElement>(null)
   const underlineEl = useRef<HTMLSpanElement>(null)
-  const [options2, setOptions2] = useState<HandleOptionItem[]>([])
+  const [getOptions2, setOptions2] = useStableState<HandleOptionItem[]>([])
   const [activeIndex, setActiveIndex] = useState(-1)
   const [hasSub, setHasSub] = useState(false)
   const activeIndex2 = useRef(0)
   const activeValue2 = useRef(props.initialActiveValue)
-  const optionCache = useRef(options2)
 
   function switchTo(value: ActiveValue) {
     if (!updateActive(value)) {
@@ -49,8 +55,8 @@ export function useTab(
   }
 
   const switchToIndex = (index: number) => {
-    if (optionCache.current[index]) {
-      updateActive(optionCache.current[index].value)
+    if (getOptions2(true)[index]) {
+      updateActive(getOptions2(true)[index].value)
     } else {
       console.error(
         new Exception(
@@ -69,7 +75,7 @@ export function useTab(
 
     let hasValue = false
 
-    optionCache.current.forEach((option, index) => {
+    getOptions2(true).forEach((option, index) => {
       if (option.value === value) {
         hasValue = true
 
@@ -85,15 +91,18 @@ export function useTab(
     return hasValue
   }
 
-  function onChange(value: ActiveValue) {
-    if (value === activeValue2.current) {
-      return
-    }
+  const onChange = useCallback(
+    (value: ActiveValue) => {
+      if (value === activeValue2.current) {
+        return
+      }
 
-    const hasValue = updateActive(value)
+      const hasValue = updateActive(value)
 
-    hasValue && props.onChange && props.onChange(value, activeIndex2.current)
-  }
+      hasValue && props.onChange && props.onChange(value, activeIndex2.current)
+    },
+    [props.onChange]
+  )
 
   function updatePos() {
     if (tabName === 'TabBar') {
@@ -157,7 +166,7 @@ export function useTab(
 
   useEffect(() => {
     updatePos()
-  }, [options2])
+  }, [getOptions2()])
 
   useEffect(() => {
     const options: HandleOptionItem[] = []
@@ -226,7 +235,6 @@ export function useTab(
     }
 
     setOptions2(options)
-    optionCache.current = options
 
     // 如果没有激活，则切换到首个
     if (!hasActive && options[0]) {
@@ -256,7 +264,7 @@ export function useTab(
     underlineEl,
     activeIndex,
     hasSub,
-    options2,
+    options2: getOptions2(),
     switchTo,
     switchToIndex,
     onChange,

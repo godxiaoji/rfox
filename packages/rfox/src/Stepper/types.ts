@@ -1,5 +1,5 @@
-import type { OnButtonClick } from '../Button/types'
 import type { FocusEmits, FormItemCommonProps } from '../Form/types'
+import type { OnClick } from '../helpers/types'
 
 export interface StepperProps extends FormItemCommonProps {
   value?: number | string
@@ -14,7 +14,8 @@ export interface StepperProps extends FormItemCommonProps {
 }
 
 export interface StepperEmits extends FocusEmits {
-  onChange?: (checked: string) => void
-  onMinusClick?: OnButtonClick
-  onPlusClick?: OnButtonClick
+  onInput?: (value: string) => void
+  onChange?: (value: string) => void
+  onMinusClick?: OnClick
+  onPlusClick?: OnClick
 }

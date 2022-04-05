@@ -14,7 +14,7 @@ import { getColorObject } from '../helpers/color'
 import type { BadgeProps } from '../Badge/types'
 import { handleBadge } from '../Badge/util'
 
-const SIZE_TYPES: SizeType[] = ['middle', 'large', 'small']
+export const SIZE_TYPES: SizeType[] = ['middle', 'large', 'small']
 
 export const AVATAR_SHAPE_TYPES: ShapeType[] = ['circle', 'square']
 
@@ -22,29 +22,21 @@ export const GENDER_TYPES: Gender[] = ['woman', 'man']
 
 export const getAvatarSize = (
   props: AvatarProps,
-  parentProps: AvatarGroupProps
+  parentProps?: AvatarGroupProps
 ) => {
-  const size = parentProps.size ?? props.size
+  const size = parentProps?.size ?? props.size
   return isNumber(size) ? size : getEnumsValue(SIZE_TYPES, size)
 }
 
-export const getAvatarShape = (
-  props: AvatarProps,
-  parentProps: AvatarGroupProps & {
-    hasGroup: boolean
-  }
-) =>
-  getEnumsValue(
-    AVATAR_SHAPE_TYPES,
-    parentProps.hasGroup ? 'circle' : props.shape
-  )
+export const getAvatarShape = (props: AvatarProps, hasGroup?: boolean) =>
+  getEnumsValue(AVATAR_SHAPE_TYPES, hasGroup ? 'circle' : props.shape)
 
-export const getAvatarGroupClasses = (count: number) => [
+export const getGroupClasses = (count: number) => [
   'fx-avatar-group',
   'count--' + (count || 1)
 ]
 
-export const getAvatarGroupCountClasses = (showCount: string) => [
+export const getGroupCountClasses = (showCount: string) => [
   'fx-avatar-group_count-number',
   'size--' + showCount.length
 ]

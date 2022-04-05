@@ -1,11 +1,7 @@
 import classNames from 'classnames'
 import type { FixedProps } from './types'
 import type { FC } from '../helpers/types'
-import {
-  getFixedInnerClasses,
-  getFixedInnerStyles,
-  getFixedStyles
-} from './util'
+import { getInnerClasses, getInnerStyles, getStyles } from './util'
 import { useEffect, useRef, useState } from 'react'
 import { useSafeAreaInsets } from '../hooks/use-safe-area-insets'
 import { useResizeObserver } from '../hooks/use-resize-observer'
@@ -24,9 +20,9 @@ const FxFixed: FC<FixedProps> = props => {
   })
   const { safeAreaInsets } = useSafeAreaInsets(props.enableSafeAreaInsets)
 
-  const styles = getFixedStyles(rootStyle.width, rootStyle.height)
-  const innerClasses = classNames(getFixedInnerClasses(props, fixed2))
-  const innerStyles = getFixedInnerStyles(props, safeAreaInsets)
+  const styles = getStyles(rootStyle)
+  const innerClasses = classNames(getInnerClasses(props, fixed2))
+  const innerStyles = getInnerStyles(props, safeAreaInsets)
 
   function updateSize() {
     if (!(root.current && innerEl.current && contentEl.current)) {

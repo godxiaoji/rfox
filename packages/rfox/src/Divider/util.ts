@@ -1,6 +1,6 @@
 import type { DividerProps } from './types'
 
-export const getDividerClasses = (props: DividerProps) => {
+export const getClasses = (props: DividerProps) => {
   return [
     'fx-divider',
     'fx-horizontal-hairline',

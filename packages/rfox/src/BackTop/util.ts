@@ -2,7 +2,9 @@ import { isNumber, isNumberArray } from '../helpers/util'
 import type { CSSProperties } from '../helpers/types'
 import type { SafeAreaInsets } from '../hooks/types'
 
-export const getBackTopStyles = (
+export const DEFAULT_VISIBLE_HEIGHT = 200
+
+export const getStyles = (
   offset: number | number[] = 0,
   isShow: boolean,
   safeAreaInsets: SafeAreaInsets

@@ -1,10 +1,10 @@
 import type { CSSProperties } from '../helpers/types'
 
-export const getSwitchClasses = (disabled?: boolean) => {
+export const getClasses = (disabled?: boolean) => {
   return ['fx-switch', { disabled: !!disabled }]
 }
 
-export const getSwitchStyles = (props: {
+export const getStyles = (props: {
   color?: string
   activeColor?: string
   size?: number | string

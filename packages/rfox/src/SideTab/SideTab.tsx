@@ -5,7 +5,7 @@ import type { FRVFC } from '../helpers/types'
 import { useTab } from '../Tab/use-tab'
 import { Badge } from '../Badge'
 import { Icon } from '../Icon'
-import { getSideTabClasses, getSideTabItemClasses } from './util'
+import { getItemClasses } from './util'
 import type { TabRef } from '../Tab/types'
 
 const FxSideTab: FRVFC<TabRef, SideTabProps & SideTabEmits> = (
@@ -20,12 +20,12 @@ const FxSideTab: FRVFC<TabRef, SideTabProps & SideTabEmits> = (
     }
   )
 
-  const classes = classNames(getSideTabClasses(), className)
+  const classes = classNames('fx-side-tab', className)
 
   const renderItems = useCallback(() => {
     return options2.map((item, index) => (
       <li
-        className={classNames(getSideTabItemClasses(index, activeIndex))}
+        className={classNames(getItemClasses(index, activeIndex))}
         key={item.value}
         onClick={() => onChange(item.value)}
       >
@@ -39,7 +39,7 @@ const FxSideTab: FRVFC<TabRef, SideTabProps & SideTabEmits> = (
         </Badge>
       </li>
     ))
-  }, [options2, activeIndex])
+  }, [options2, activeIndex, onChange])
 
   return (
     <div className={classes} style={styles}>

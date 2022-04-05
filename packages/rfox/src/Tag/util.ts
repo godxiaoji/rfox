@@ -4,9 +4,9 @@ import type { CSSProperties } from '../helpers/types'
 import { getEnumsValue } from '../helpers/validator'
 import type { TagProps, PatternType } from './types'
 
-const TAG_PATTERN_TYPES: PatternType[] = ['light', 'dark', 'plain']
+export const TAG_PATTERN_TYPES: PatternType[] = ['light', 'dark', 'plain']
 
-export const getTagClasses = (props: TagProps) => {
+export const getClasses = (props: TagProps) => {
   const { hasColor, isDark } = getColorObject(props.color)
 
   return [
@@ -24,10 +24,10 @@ export const getTagClasses = (props: TagProps) => {
   ]
 }
 
-export const getTagStyles = (props: TagProps) => {
+export const getStyles = (color?: string) => {
   const styles: CSSProperties = {}
 
-  const colorObj = getColorObject(props.color)
+  const colorObj = getColorObject(color)
 
   if (colorObj.hasColor) {
     styles[`--fx-color`] = colorObj.varColor

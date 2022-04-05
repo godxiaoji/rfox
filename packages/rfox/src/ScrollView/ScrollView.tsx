@@ -82,14 +82,12 @@ const FxScrollView: FRFC<
   const [translateDuration, setTranslateDuration] = useState(0) // 不需要cache
   const [pullDirection, setPullDirection] = useState<PullDirectionOrDefault>('')
   const pullDirectionCache = useRef<PullDirectionOrDefault>('')
-  const [pullIndicatorSafeArea, setPullIndicatorSafeArea] = useState(
-    JSON.stringify({
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0
-    })
-  ) // 不需要cache
+  const [pullIndicatorSafeArea, setPullIndicatorSafeArea] = useState({
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0
+  }) // 不需要cache
 
   function loadComplete() {
     pullRefreshStateCache.current = PullRefreshState.Pulling
@@ -386,7 +384,7 @@ const FxScrollView: FRFC<
             $scroll.scrollHeight - $scroll.scrollTop - $scroll.clientHeight
         }
 
-        setPullIndicatorSafeArea(JSON.stringify(_pullIndicatorSafeArea))
+        setPullIndicatorSafeArea(_pullIndicatorSafeArea)
         coords.current.isSetSafeArea = true
       }
 
@@ -489,7 +487,7 @@ const FxScrollView: FRFC<
                 renderIndicator({
                   pullDirection,
                   pullRefreshState,
-                  pullIndicatorSafeArea: JSON.parse(pullIndicatorSafeArea)
+                  pullIndicatorSafeArea
                 })
               ) : (
                 <div className={loadMoreClasses} style={indicatorStyles}>

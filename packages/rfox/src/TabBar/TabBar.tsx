@@ -6,7 +6,7 @@ import { useTab } from '../Tab/use-tab'
 import { Badge } from '../Badge'
 import { Icon } from '../Icon'
 import { Image } from '../Image'
-import { getTabBarClasses, getTabBarItemClasses } from './util'
+import { getItemClasses } from './util'
 import type { TabRef } from '../Tab/types'
 
 const FxTabBar: FRVFC<TabRef, TabBarProps & TabBarEmits> = (
@@ -21,12 +21,12 @@ const FxTabBar: FRVFC<TabRef, TabBarProps & TabBarEmits> = (
     }
   )
 
-  const classes = classNames(getTabBarClasses(), className)
+  const classes = classNames('fx-tab-bar', 'fx-horizontal-hairline', className)
 
   const renderItems = useCallback(() => {
     return options2.map((item, index) => (
       <li
-        className={classNames(getTabBarItemClasses(index, activeIndex))}
+        className={classNames(getItemClasses(index, activeIndex))}
         key={item.value}
         onClick={() => onChange(item.value)}
       >
@@ -44,7 +44,7 @@ const FxTabBar: FRVFC<TabRef, TabBarProps & TabBarEmits> = (
         <span className="fx-tab-bar_item-text">{item.label}</span>
       </li>
     ))
-  }, [options2, activeIndex])
+  }, [options2, activeIndex, onChange])
 
   return (
     <div className={classes} style={styles}>

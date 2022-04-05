@@ -1,19 +1,18 @@
 import classNames from 'classnames'
 import type { DialogEmits, DialogProps } from './types'
 import type { FRFC } from '../helpers/types'
-import { forwardRef } from 'react'
+import { forwardRef, useImperativeHandle, useRef } from 'react'
 import { useLocale } from '../ConfigProvider/context'
 import type { PopupRef } from '../popup/types'
 import { Button, ButtonGroup } from '../Button'
 import { Modal } from '../Modal'
-import { usePopupRef } from '../popup/use-popup'
 
 const FxDialog: FRFC<PopupRef, DialogProps & DialogEmits> = (
   { showCancel = true, ...props },
   ref
 ) => {
   const { locale } = useLocale()
-  const { popupRef } = usePopupRef(ref)
+  const popupRef = useRef<PopupRef>(null)
 
   const classes = classNames('fx-dialog', props.className)
 
@@ -24,6 +23,8 @@ const FxDialog: FRFC<PopupRef, DialogProps & DialogEmits> = (
   function onCancelClick() {
     popupRef.current?.onCancelClick()
   }
+
+  useImperativeHandle(ref, () => popupRef.current as PopupRef, [])
 
   return (
     <Modal

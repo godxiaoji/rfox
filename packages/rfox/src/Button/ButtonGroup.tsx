@@ -1,7 +1,7 @@
 import type { ButtonGroupProps } from './types'
 import { GroupContext } from './context'
 import { createDefaultProps } from './props'
-import { getButtonGroupClasses } from './util'
+import { getGroupClasses } from './util'
 import classNames from 'classnames'
 import type { FC } from '../helpers/types'
 import { toArray } from '../helpers/react'
@@ -9,7 +9,7 @@ import { toArray } from '../helpers/react'
 const FxButtonGroup: FC<ButtonGroupProps> = props => {
   const childCount = toArray(props.children).length
   const classes = classNames(
-    getButtonGroupClasses(props, childCount),
+    getGroupClasses(props, childCount),
     props.className
   )
 

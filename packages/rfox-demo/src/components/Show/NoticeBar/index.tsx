@@ -1,13 +1,10 @@
 import { FxNoticeBar, FxGroup, showToast } from '@/index'
-import { useState } from 'react'
 
 const text1 = '简单不先于复杂，而是在复杂之后。'
 const text2 =
   '作为一个真正的程序员，首先应该尊重编程，热爱你所写下的程序，他是你的伙伴，而不是工具。'
 
 export default function ExpNoticeBar() {
-  const [visible, setVisible] = useState(true)
-
   return (
     <>
       <FxGroup title="基础用法">
@@ -28,17 +25,14 @@ export default function ExpNoticeBar() {
         <FxNoticeBar
           className="exp-noticeBar-item"
           mode="closable"
-          visible={visible}
           title={text1}
-          onCloseClick={() => {
-            setVisible(false)
-            showToast('点击了关闭按钮')
-          }}
+          onCloseClick={() => showToast('点击了关闭按钮')}
         />
         <FxNoticeBar
           className="exp-noticeBar-item"
           mode="clickable"
           title={text1}
+          onClick={() => showToast('点击了通告栏')}
         />
       </FxGroup>
       <FxGroup title="type=success/primary/danger">
