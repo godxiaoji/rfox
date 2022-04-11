@@ -5,7 +5,9 @@ export const template = 'YYYY年MM月DD日'
 
 export const formatter: CalendarValueFormatter = (valueArray, mode) => {
   const value =
-    mode === 'range'
+    valueArray.length === 0
+      ? ''
+      : mode === 'range'
       ? valueArray
           .map(date => {
             return dayjs(date).format(template)

@@ -18,7 +18,7 @@ import {
 } from 'react'
 import type { ForwardedRef } from 'react'
 import { useMounted } from '../hooks/use-life'
-import { getTabStyles } from './util'
+import { getStyles } from './util'
 import { useFrameTask } from '../hooks/use-frame-task'
 import { useStableState } from '../hooks/use'
 
@@ -40,7 +40,7 @@ export function useTab(
   const [activeIndex, setActiveIndex] = useState(-1)
   const [hasSub, setHasSub] = useState(false)
   const activeIndex2 = useRef(0)
-  const activeValue2 = useRef(props.initialActiveValue)
+  const activeValue2 = useRef<ActiveValue>()
 
   function switchTo(value: ActiveValue) {
     if (!updateActive(value)) {
@@ -238,15 +238,21 @@ export function useTab(
 
     // 如果没有激活，则切换到首个
     if (!hasActive && options[0]) {
-      // this.onChange(options[0].value)
-      setActiveIndex(0)
-      activeIndex2.current = 0
-      activeValue2.current = options[0].value
+      onChange(options[0].value)
     }
   }, [props.options])
 
+  useEffect(() => {
+    const newVal = props.activeValue
+
+    if (isStringNumberMix(newVal) && newVal !== activeValue2.current) {
+      // 如果设置了value，优先判断value
+      onChange(newVal)
+    }
+  }, [props.activeValue])
+
   const styles = Object.assign(
-    getTabStyles(props.color, props.activeColor),
+    getStyles(props.color, props.activeColor),
     props.style ?? {}
   )
 

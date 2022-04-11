@@ -1,2 +1,1 @@
-import '../../style/common/style/index'
-import '../../PickerPopup/style/index'
+import '../../DatePicker/style/index'

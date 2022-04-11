@@ -40,12 +40,7 @@ export default function ExpTabView() {
         </FxTabView>
       </FxGroup>
       <FxGroup title="垂直">
-        <FxTabView
-          className="exp-tabView"
-          initialVertical
-          scrollThreshold={1}
-          backUpperWhenChange
-        >
+        <FxTabView className="exp-tabView" initialVertical scrollThreshold={1}>
           <FxTabView.Item name="Tab 1">
             <FxScrollView
               className="exp-tabView-scroll-view"

@@ -1,3 +1,5 @@
+import { getEnumsValue } from '../helpers/validator'
+import { PLACEMENT_TYPES } from '../helpers/constants'
 import type { CSSProperties, PlacementType } from '../helpers/types'
 import { cloneData } from '../helpers/util'
 
@@ -27,7 +29,7 @@ export const getDefaultPos = () => cloneData(DEFAULT_POS)
 
 const padding = 8
 
-export const getPopoverInnerStyles = (isShow: boolean, showPos: PopoverPos) => {
+export const getInnerStyles = (isShow: boolean, showPos: PopoverPos) => {
   const { clientWidth: dw, clientHeight: dh } = document.documentElement
 
   const styles: CSSProperties = {
@@ -47,7 +49,7 @@ export const getPopoverInnerStyles = (isShow: boolean, showPos: PopoverPos) => {
   return styles
 }
 
-export const getPopoverArrowStyles = (isShow: boolean, showPos: PopoverPos) => {
+export const getArrowStyles = (isShow: boolean, showPos: PopoverPos) => {
   if (!isShow) {
     return { left: '200vw', top: '200vh' } as CSSProperties
   }
@@ -65,8 +67,9 @@ export const getPopoverArrowStyles = (isShow: boolean, showPos: PopoverPos) => {
 export const getShowPos = (
   container: HTMLElement,
   innerEl: HTMLDivElement,
-  placement: PlacementType
+  _placement?: PlacementType
 ) => {
+  const placement = getEnumsValue(PLACEMENT_TYPES, _placement)
   const rect = container.getBoundingClientRect()
   const { clientWidth: dw, clientHeight: dh } = document.documentElement
 

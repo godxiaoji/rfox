@@ -1,16 +1,17 @@
+import type { HTMLAttributes } from 'react'
 import classNames from 'classnames'
-import type { CellProps } from './types'
-import type { FC, OnClick } from '../helpers/types'
+import type { CellEmits, CellProps } from './types'
+import type { FC, OnClick, RenderProp } from '../helpers/types'
 import { getCellClasses, getCellArrowClasses } from './util'
 import { Icon } from '../Icon'
 import RightOutlined from '../Icon/icons/RightOutlined'
-import type { ReactNode } from 'react'
 
 const FxCell: FC<
-  CellProps & {
-    renderIcon?: () => ReactNode
-    onClick?: OnClick
-  }
+  Omit<HTMLAttributes<HTMLDivElement>, 'onClick'> &
+    CellProps &
+    CellEmits & {
+      renderIcon?: RenderProp
+    }
 > = ({
   icon,
   label,

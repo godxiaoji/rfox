@@ -1,6 +1,4 @@
-import type { HTMLAttributes } from 'react'
-
-export interface GroupProps extends HTMLAttributes<HTMLDivElement> {
+export interface GroupProps {
   title: string
   strongHeader?: boolean
 }

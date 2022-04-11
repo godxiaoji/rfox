@@ -1,6 +1,1 @@
-import '../../style/common/style/index'
-import '../../Empty/style/index'
-import '../../Icon/style/index'
-import '../../Tab/style/index'
-import '../../VirtualList/style/index'
-import '../index.scss'
+import '../../Cascader/style/index'

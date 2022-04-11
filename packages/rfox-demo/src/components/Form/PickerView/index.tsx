@@ -5,9 +5,12 @@ import {
   showToast,
   SelectorModelValue
 } from '@/index'
+import { useState } from 'react'
 import { cascadeOptions, multiOptions, options } from '../Picker/data'
 
 export default function ExpPickerView() {
+  const [simpleValue, setSimpleValue] = useState([2001])
+
   function onChange(res: SelectorModelValue) {
     console.log('change', res)
   }
@@ -25,7 +28,11 @@ export default function ExpPickerView() {
         title="基础展示参数可以参考 Picker"
       />
       <FxGroup title="单列">
-        <FxPicker.View options={options} onChange={onChange}></FxPicker.View>
+        <FxPicker.View
+          value={simpleValue}
+          options={options}
+          onChange={v => setSimpleValue(v as number[])}
+        ></FxPicker.View>
       </FxGroup>
       <FxGroup title="多列">
         <FxPicker.View

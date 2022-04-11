@@ -4,7 +4,7 @@ import type { ModalEmits, ModalProps } from './types'
 import type { FRFC } from '../helpers/types'
 import { usePopup } from '../popup/use-popup'
 import CloseCircleFilled from '../Icon/icons/CloseCircleFilled'
-import { getModalBoxStyles } from './util'
+import { getBoxStyles } from './util'
 import { Icon } from '../Icon'
 import type { PopupRef } from '../popup/types'
 import { forwardRef } from 'react'
@@ -17,7 +17,7 @@ const FxModal: FRFC<PopupRef, ModalProps & ModalEmits> = (props, ref) => {
   )
 
   const classes = classNames(['fx-modal', popupClasses, props.className])
-  const boxStyles = getModalBoxStyles(props)
+  const boxStyles = getBoxStyles(props.width)
 
   return createPortal(
     <div className={classes} style={popupStyles}>

@@ -22,27 +22,25 @@ import {
 import { rangeNumber, returnTrue } from '../helpers/util'
 import { withProvider } from '../hooks/with'
 import { PickerContext } from '../Picker/context'
+import { handleMinMaxDate } from './util'
 
 export function useHandlers(props: DatePickerCommonProps) {
   // 使用useRef保持生命周期一致
   const mode = useRef(getEnumsValue(MODE_NAMES, props.initialMode))
-  const defaultMinData = useRef(
+  const defaultMinDate = useRef(
     dayjs().startOf('day').subtract(9, 'year').toDate()
   )
-  const defaultMaxData = useRef(
+  const defaultMaxDate = useRef(
     dayjs().add(1, 'day').startOf('day').subtract(1, 'second').toDate()
   )
 
-  let minDate = props.minDate ?? defaultMinData.current
-  let maxDate = props.maxDate ?? defaultMaxData.current
-  if (minDate.getTime() > maxDate.getTime()) {
-    // 兼容min max搞反的问题
-    maxDate = [minDate, (minDate = maxDate)][0]
-  }
-
-  const filter = props.filter || returnTrue
-
   const optionsHandler: PickerOptionsHandler = (index, parent) => {
+    const { minDate, maxDate } = handleMinMaxDate(
+      props.minDate ?? defaultMinDate.current,
+      props.maxDate ?? defaultMaxDate.current
+    )
+    const filter = props.filter || returnTrue
+
     return parseRows(index, parent || null, {
       filter,
       minDate,
@@ -66,13 +64,18 @@ export function useHandlers(props: DatePickerCommonProps) {
       value !== '' &&
       typeof value === 'string'
     ) {
-      djs = dayjs(value as string, props.formatTemplate, true)
+      djs = dayjs(value, props.formatTemplate, true)
     }
 
     return day2Array(djs, mode.current)
   }
 
   const defaultValueGetter = () => {
+    const { minDate, maxDate } = handleMinMaxDate(
+      props.minDate ?? defaultMinDate.current,
+      props.maxDate ?? defaultMaxDate.current
+    )
+
     return parser(
       new Date(rangeNumber(Date.now(), minDate.getTime(), maxDate.getTime()))
     )
@@ -87,6 +90,14 @@ export function useHandlers(props: DatePickerCommonProps) {
   }
 
   const formatter: SelectorValueFormatter = (valueArray, labelArray) => {
+    if (valueArray.length === 0) {
+      // 如果是空数据value用空字符串替代
+      return {
+        value: '',
+        label: ''
+      }
+    }
+
     if (props.formatter) {
       return props.formatter(valueArray, labelArray)
     }

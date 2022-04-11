@@ -1,3 +1,5 @@
+export type UniqueID = number | string
+
 /**
  * Style
  */

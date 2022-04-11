@@ -1,6 +1,10 @@
 import { PopupEmits, PopupProps } from '../popup/types'
 
-export type OnChange = (url: string, index: number, fromIndex: number) => void
+export type OnChange = (
+  current: string,
+  index: number,
+  fromIndex: number
+) => void
 
 export interface ImageObject {
   src: string

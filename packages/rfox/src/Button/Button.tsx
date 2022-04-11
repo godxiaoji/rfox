@@ -1,3 +1,4 @@
+import type { HTMLAttributes } from 'react'
 import { useCallback, useContext } from 'react'
 import classNames from 'classnames'
 import type { ButtonEmits, ButtonProps } from './types'
@@ -9,7 +10,9 @@ import { Icon } from '../Icon'
 import LoadingOutlined from '../Icon/icons/LoadingOutlined'
 import type { FC } from '../helpers/types'
 
-const FxButton: FC<ButtonProps & ButtonEmits> = ({
+const FxButton: FC<
+  Omit<HTMLAttributes<HTMLButtonElement>, 'onClick'> & ButtonProps & ButtonEmits
+> = ({
   size,
   pattern,
   shape,

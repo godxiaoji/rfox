@@ -1,8 +1,9 @@
 import type { CalendarOriginalDetail, Mode } from './types'
 import Exception from '../helpers/exception'
 import { getNumber, isInNumberRange } from '../helpers/util'
+import dayjs from '../helpers/day'
 
-export const DEFAULT_MONTH_RANGE = 6
+const DEFAULT_MONTH_RANGE = 6
 export const MODE_NAMES: Mode[] = ['single', 'range']
 
 export function getDefaultDetail(): CalendarOriginalDetail {
@@ -23,3 +24,11 @@ export function getFirstDayOfWeek(firstDayOfWeek?: number | string) {
 
   return isInNumberRange(num, 0, 6) ? Math.round(num) : 0
 }
+
+export const getTimeByDate = (date: Date) =>
+  dayjs(date).startOf('day').valueOf()
+
+export const getMinTime = () => dayjs().startOf('day').valueOf()
+
+export const getMaxTime = (minTime: number) =>
+  dayjs(minTime).startOf('day').add(DEFAULT_MONTH_RANGE, 'month').valueOf()

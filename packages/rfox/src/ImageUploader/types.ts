@@ -1,6 +1,6 @@
-import { FormItemCommonProps } from '../Form/types'
-import { Mode as ImageMode } from '../Image/types'
-import { OnChange } from '../helpers/types'
+import type { FormItemCommonProps } from '../Form/types'
+import type { Mode as ImageMode } from '../Image/types'
+export type { Mode as ImageMode } from '../Image/types'
 
 interface BeforeUploadHandlers {
   formatSize(size: number): string
@@ -40,12 +40,6 @@ export interface FileItem {
   message: string
 }
 
-export interface AddButton {
-  id: number
-  isAdd: boolean
-  draggable: boolean
-}
-
 export interface ImageUploaderProps extends FormItemCommonProps {
   value?: string[]
   accept?: Accept | Accept[] // 允许上传的图片类型
@@ -62,17 +56,4 @@ export interface ImageUploaderProps extends FormItemCommonProps {
 export interface ImageUploaderEmits {
   onChange?: (value: string[]) => void
   onDelete?: OnDelete
-}
-
-export interface ImageUploaderItemProps {
-  item: FileItem
-  imageMode?: ImageMode
-  onClick: (item: FileItem) => void
-}
-
-export interface ImageUploaderAddProps {
-  accept: string
-  disabled?: boolean
-  multiple?: boolean
-  onAddFiles: OnChange
 }

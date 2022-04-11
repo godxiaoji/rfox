@@ -1,13 +1,16 @@
 import type { CSSProperties } from '../helpers/types'
 
-export const getSlideClasses = (disabled?: boolean) => ({
-  disabled: !!disabled
-})
+export const getSlideClasses = (disabled?: boolean) => [
+  'fx-slider',
+  {
+    disabled: !!disabled
+  }
+]
 
 export const getSlideStyles = (color?: string) => {
-  const obj: CSSProperties = {}
+  const styles: CSSProperties = {}
 
-  color && (obj['--fx-color'] = color)
+  color && (styles['--fx-color'] = color)
 
-  return obj
+  return styles
 }

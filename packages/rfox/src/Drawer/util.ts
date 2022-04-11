@@ -1,32 +1,35 @@
 import { PLACEMENT_TYPES } from '../helpers/constants'
-import type { CSSProperties } from '../helpers/types'
+import type { CSSProperties, PlacementType } from '../helpers/types'
 import { getEnumsValue } from '../helpers/validator'
 import type { SafeAreaInsets } from '../hooks/types'
 import type { DrawerProps } from './types'
 
-export const getDrawerClass = (showMask: boolean) => [
+export const getClasses = (showMask?: boolean) => [
   'fx-drawer',
   { 'no--mask': !showMask }
 ]
 
-export const getDrawerInnerStyles = (
-  props: DrawerProps,
+export const getInnerStyles = ({
+  placement,
+  safeAreaInsets
+}: {
+  placement?: PlacementType
   safeAreaInsets: SafeAreaInsets
-) => {
-  const placement = getEnumsValue(PLACEMENT_TYPES, props.placement)
+}) => {
+  const _placement = getEnumsValue(PLACEMENT_TYPES, placement)
 
   let left = safeAreaInsets.left
   let top = safeAreaInsets.top
   let right = safeAreaInsets.right
   let bottom = safeAreaInsets.bottom
 
-  if (placement === 'top') {
+  if (_placement === 'top') {
     bottom = 0
-  } else if (placement === 'bottom') {
+  } else if (_placement === 'bottom') {
     top = 0
-  } else if (placement === 'left') {
+  } else if (_placement === 'left') {
     right = 0
-  } else if (placement === 'right') {
+  } else if (_placement === 'right') {
     left = 0
   }
 
@@ -35,13 +38,16 @@ export const getDrawerInnerStyles = (
   } as CSSProperties
 }
 
-export const getDrawerInnerClasses = (
-  props: DrawerProps,
+export const getInnerClasses = ({
+  placement,
+  hasHeader
+}: {
+  placement?: PlacementType
   hasHeader: boolean
-) => [
+}) => [
   'fx-drawer_inner',
   'fx-horizontal-hairline',
-  'placement--' + getEnumsValue(PLACEMENT_TYPES, props.placement),
+  'placement--' + getEnumsValue(PLACEMENT_TYPES, placement),
   {
     'has--header': hasHeader
   }

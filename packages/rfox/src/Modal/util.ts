@@ -1,8 +1,7 @@
 import type { CSSProperties } from '../helpers/types'
-import type { ModalProps } from './types'
 
-export const getModalBoxStyles = (props: ModalProps) => {
+export const getBoxStyles = (width?: string) => {
   return {
-    width: props.width
+    width
   } as CSSProperties
 }

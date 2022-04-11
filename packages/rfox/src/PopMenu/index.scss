@@ -49,8 +49,10 @@
         flex-shrink: 1;
         overflow: hidden;
       }
+    }
 
-      &.has--icon {
+    &.has--icon {
+      .fx-pop-menu_item-inner {
         justify-content: flex-start;
         padding: 0 20px;
       }

@@ -14,7 +14,7 @@ import type { OnCancel, OnVisibleStateChange, PopupRef } from '../popup/types'
 import type { NumberKeyboardItem } from './types'
 import BackspaceOutlined from '../Icon/icons/BackspaceOutlined'
 import KeyboardOutlined from '../Icon/icons/KeyboardOutlined'
-import { stringMix2StringArray } from '../helpers/util'
+import { isString, stringMix2StringArray } from '../helpers/util'
 
 const backspaceItem: NumberKeyboardItem = {
   text: 'backspace',
@@ -43,8 +43,7 @@ const FxNumberKeyboard: FRVFC<
     props.onVisibleStateChange && props.onVisibleStateChange(e)
 
     if (e.state === 'show') {
-      valueCache.current =
-        (typeof props.value === 'string' && props.value) || ''
+      valueCache.current = (isString(props.value) && props.value) || ''
     }
   }
 

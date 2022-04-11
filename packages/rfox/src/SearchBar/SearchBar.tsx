@@ -32,7 +32,7 @@ const FxSearchBar: VFC<SearchBarProps & SearchBarEmits> = ({
 }) => {
   const { locale } = useLocale()
 
-  const innerRef = useRef<HTMLFormElement>(null)
+  const innerEl = useRef<HTMLFormElement>(null)
 
   const [placeholder, setPlaceholder] = useState('')
   const [getSearchText, setSearchText] = useStableState('')
@@ -212,7 +212,7 @@ const FxSearchBar: VFC<SearchBarProps & SearchBarEmits> = ({
   return (
     <div className={classes}>
       <form
-        ref={innerRef}
+        ref={innerEl}
         className={innerClasses}
         style={innerStyles}
         onSubmit={onSearch}
@@ -252,7 +252,7 @@ const FxSearchBar: VFC<SearchBarProps & SearchBarEmits> = ({
       </form>
       {initDropdown ? (
         <Dropdown
-          selector={innerRef.current ?? undefined}
+          selector={innerEl.current ?? undefined}
           visible={suggestVisible}
           render={({ height }) => (
             <div

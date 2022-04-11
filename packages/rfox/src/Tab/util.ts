@@ -1,7 +1,7 @@
 import type { CSSProperties } from '../helpers/types'
 import type { HandleOptionItem } from './types'
 
-export const getTabStyles = (color?: string, activeColor?: string) => {
+export const getStyles = (color?: string, activeColor?: string) => {
   const obj: CSSProperties = {}
 
   color && (obj['--fx-color'] = color)
@@ -10,7 +10,7 @@ export const getTabStyles = (color?: string, activeColor?: string) => {
   return obj
 }
 
-export const getTabClasses = (
+export const getClasses = (
   scrollThreshold: number,
   options2: HandleOptionItem[],
   hasSub: boolean
@@ -24,7 +24,7 @@ export const getTabClasses = (
   ]
 }
 
-export const getTabItemClasses = (index: number, activeIndex: number) => {
+export const getItemClasses = (index: number, activeIndex: number) => {
   return [
     'fx-tab_item',
     'fx-vertical-hairline',

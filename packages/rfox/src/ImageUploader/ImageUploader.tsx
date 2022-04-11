@@ -6,7 +6,7 @@ import type {
   BeforeUploadReturn,
   FileItem
 } from './types'
-import type { OnChange, VFC } from '../helpers/types'
+import type { OnChange, UniqueID, VFC } from '../helpers/types'
 import { Button } from '../Button'
 import { Order } from '../Order'
 import { ImagePreview } from '../ImagePreview'
@@ -32,6 +32,8 @@ import { getAccepts, getNewUid, urlId } from './util'
 import { useStableState } from '../hooks/use'
 import UploaderAdd from './ImageUploaderAdd'
 import UploaderItem from './ImageUploaderItem'
+
+const addButtonID = -1
 
 const FxImageUploader: VFC<ImageUploaderProps & ImageUploaderEmits> = ({
   uploadReady = noop,
@@ -136,7 +138,7 @@ const FxImageUploader: VFC<ImageUploaderProps & ImageUploaderEmits> = ({
     return Promise.resolve(res instanceof File ? res : true)
   }
 
-  function getFileItemById(id: number | string) {
+  function getFileItemById(id: UniqueID) {
     return fileItems.current[id as number] || null
   }
 
@@ -208,6 +210,11 @@ const FxImageUploader: VFC<ImageUploaderProps & ImageUploaderEmits> = ({
     const newVal: string[] = []
 
     getOrderItems(true).forEach(({ id }) => {
+      if (id === addButtonID) {
+        // 忽略上传按钮
+        return
+      }
+
       const fileItem = getFileItemById(id)
 
       if (fileItem && fileItem.status === 'uploaded' && fileItem.url) {
@@ -232,7 +239,7 @@ const FxImageUploader: VFC<ImageUploaderProps & ImageUploaderEmits> = ({
       return false
     }
 
-    return items[items.length - 1].draggable === false
+    return items[items.length - 1].id === addButtonID
   }
 
   function updateUploadButton() {
@@ -246,7 +253,7 @@ const FxImageUploader: VFC<ImageUploaderProps & ImageUploaderEmits> = ({
     } else {
       if (newItems.length < maxCount) {
         newItems.push({
-          id: -1,
+          id: addButtonID,
           draggable: false
         })
       }
@@ -335,8 +342,7 @@ const FxImageUploader: VFC<ImageUploaderProps & ImageUploaderEmits> = ({
     updateValue()
   }
 
-  function onItemClick(item: { id: number }) {
-    const fileItem = getFileItemById(item.id)
+  function onItemClick(fileItem: FileItem) {
     const newOrderItems = getNewOrderItems()
 
     if (fileItem) {
@@ -417,7 +423,7 @@ const FxImageUploader: VFC<ImageUploaderProps & ImageUploaderEmits> = ({
 
   const renderItem = useCallback(
     ({ id }) =>
-      id === -1 ? (
+      id === addButtonID ? (
         <UploaderAdd
           accept={accept2}
           multiple={props.multiple}

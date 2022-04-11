@@ -1,3 +1,4 @@
+import { isEmpty } from './../helpers/util'
 import type { AnyObject } from '../helpers/types'
 import type {
   UserFieldNames,
@@ -32,21 +33,18 @@ export const getDefaultFieldNames: () => FieldNames = () => {
   return { label: 'label', value: 'value', children: 'children' }
 }
 
-export const labelFormatter = (labelArray: string[]) => {
+const labelFormatter = (labelArray: string[]) => {
   return labelArray.join('/')
 }
 
-export const defaultFormatter: SelectorValueFormatter = (
-  valueArray,
-  labelArray
-) => {
+const defaultFormatter: SelectorValueFormatter = (valueArray, labelArray) => {
   return {
     value: valueArray,
     label: labelFormatter(labelArray)
   }
 }
 
-export const defaultParser: SelectorValueParser = value => {
+const defaultParser: SelectorValueParser = value => {
   if (isNumber(value)) {
     return [value as number]
   } else if (typeof value === 'string' && value) {
@@ -99,7 +97,7 @@ export function getColRows(options: OptionItem[], indexes: number[]) {
   return rows
 }
 
-export function parseOptions(
+function parseOptions(
   options: UserOptionItem[] | UserOptionItem[][],
   fieldNames: FieldNames
 ) {
@@ -433,4 +431,8 @@ export function cloneDetail<T extends SelectorDetail>(detail: T) {
   return newDetail
 }
 
-export const defaultItemHeight = 48
+export const DEFAULT_ITEM_HEIGHT = 48
+
+export function isValidValue(value: unknown): value is SelectorModelValue {
+  return !isEmpty(value) || value === 0
+}

@@ -1,3 +1,1 @@
-import '../../style/common/style/index'
-import '../../Toast/style/index'
-import '../index.scss'
+import '../../Calendar/style/index'

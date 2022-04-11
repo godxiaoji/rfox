@@ -99,15 +99,9 @@ const FxTabView: FRFC<
     <div className={classes} style={props.style}>
       <div className="fx-tab-view_header fx-horizontal-hairline">
         {vertical ? (
-          <SideTab
-            initialActiveValue={0}
-            options={tabList}
-            onChange={onChange}
-            ref={tabRef}
-          />
+          <SideTab options={tabList} onChange={onChange} ref={tabRef} />
         ) : (
           <Tab
-            initialActiveValue={0}
             options={tabList}
             scrollThreshold={props.scrollThreshold}
             onChange={onChange}

@@ -10,7 +10,7 @@ import type { PickerViewEmits, PickerViewProps, PickerViewRef } from './types'
 import type { FRVFC } from '../helpers/types'
 import { Empty } from '../Empty'
 import { frameTo } from '../helpers/animation'
-import { mergeHandlers, defaultItemHeight } from './util'
+import { mergeHandlers, DEFAULT_ITEM_HEIGHT } from './util'
 import { usePickerView } from './use-picker'
 import { useLocale } from '../ConfigProvider/context'
 import ViewCol from './PickerViewCol'
@@ -36,7 +36,6 @@ const FxPickerView: FRVFC<PickerViewRef, PickerViewProps & PickerViewEmits> = (
     update,
     updateColSelected,
     getValuesByRow,
-    updateValue,
     onChange
   } = usePickerView(props, {
     name: 'picker',
@@ -73,7 +72,7 @@ const FxPickerView: FRVFC<PickerViewRef, PickerViewProps & PickerViewEmits> = (
 
           // 这时候dom节点还未做更新，处理一下
           requestAnimationFrame(() => {
-            $list.scrollTop = defaultItemHeight * selectIndex
+            $list.scrollTop = DEFAULT_ITEM_HEIGHT * selectIndex
           })
         }
       })
@@ -87,7 +86,7 @@ const FxPickerView: FRVFC<PickerViewRef, PickerViewProps & PickerViewEmits> = (
 
     clearTimeout($list.scrollTimer)
 
-    const itemHeight = defaultItemHeight
+    const itemHeight = DEFAULT_ITEM_HEIGHT
     const list = cols[colIndex].rows
     let current = Math.round($list.scrollTop / itemHeight)
     let oldSelectIndex = 0
@@ -162,7 +161,6 @@ const FxPickerView: FRVFC<PickerViewRef, PickerViewProps & PickerViewEmits> = (
   useImperativeHandle(
     ref,
     () => ({
-      updateValue,
       getDetail,
       resize: updatePos
     }),

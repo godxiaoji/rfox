@@ -1,4 +1,3 @@
-import type { HTMLAttributes } from 'react'
 import type { OnClick, SizeType, StateType } from '../helpers/types'
 import type { IconData } from '../Icon/types'
 
@@ -19,9 +18,7 @@ export interface ButtonGroupProps {
   pattern?: PatternType
 }
 
-export interface ButtonProps
-  extends ButtonGroupProps,
-    HTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends ButtonGroupProps {
   type?: StateType
   icon?: IconData
   loading?: boolean

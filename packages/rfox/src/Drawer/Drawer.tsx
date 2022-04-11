@@ -3,11 +3,7 @@ import classNames from 'classnames'
 import type { DrawerEmits, DrawerProps } from './types'
 import type { FRFC, RenderProp } from '../helpers/types'
 import { usePopup } from '../popup/use-popup'
-import {
-  getDrawerClass,
-  getDrawerInnerClasses,
-  getDrawerInnerStyles
-} from './util'
+import { getClasses, getInnerClasses, getInnerStyles } from './util'
 import { NavBar } from '../NavBar'
 import { useSafeAreaInsets } from '../hooks/use-safe-area-insets'
 import CloseOutlined from '../Icon/icons/CloseOutlined'
@@ -34,12 +30,17 @@ const FxDrawer: FRFC<
   const hasHeader = !!(props.title || props.showClose || props.renderHeader)
 
   const classes = classNames([
-    getDrawerClass(showMask),
+    getClasses(showMask),
     popupClasses,
     props.className
   ])
-  const innerClasses = classNames(getDrawerInnerClasses(props, hasHeader))
-  const innerStyles = getDrawerInnerStyles(props, safeAreaInsets)
+  const innerClasses = classNames(
+    getInnerClasses({ placement: props.placement, hasHeader })
+  )
+  const innerStyles = getInnerStyles({
+    placement: props.placement,
+    safeAreaInsets
+  })
 
   useEffect(() => {
     setEnableBlurCancel(!showMask)

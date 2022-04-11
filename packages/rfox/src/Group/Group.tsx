@@ -1,12 +1,14 @@
 import classNames from 'classnames'
+import type { HTMLAttributes } from 'react'
 import type { GroupProps } from './types'
 import { getClasses } from './util'
 import type { FC, RenderProp } from '../helpers/types'
 
 const FxGroup: FC<
-  GroupProps & {
-    renderHeader?: RenderProp
-  }
+  HTMLAttributes<HTMLDivElement> &
+    GroupProps & {
+      renderHeader?: RenderProp
+    }
 > = ({
   renderHeader,
   children,

@@ -5,14 +5,14 @@ import {
   useRef,
   useState
 } from 'react'
-import { cloneData, isSameArray, isEmpty } from '../helpers/util'
+import { cloneData, isSameArray } from '../helpers/util'
 import type {
   ColRow,
   OptionItem,
   PickerOptionsHandler,
   PickerHandlers,
   PickerCommonProps,
-  PickerValueEmits,
+  PickerCommonEmits,
   PickerPopupProps,
   PickerPopupEmits,
   PickerViewRef,
@@ -20,7 +20,8 @@ import type {
   PickerEmits,
   PickerPopupRef,
   PickerViewAfterUpdate,
-  Col
+  Col,
+  UserOptionItem
 } from './types'
 import type {
   SelectorValue,
@@ -31,10 +32,11 @@ import {
   cloneDetail,
   isSameDetail,
   isSameValue,
-  getDefaultDetail,
   validateValues,
   getColRows,
-  getFormatOptions
+  getFormatOptions,
+  isValidValue,
+  getDefaultFieldNames
 } from './util'
 import type {
   PopupCustomConfirm,
@@ -42,14 +44,19 @@ import type {
   PopupRef
 } from '../popup/types'
 
-interface UseOptions {
-  name: string
-  handlers: PickerHandlers
+function getDefaultDetail(handlers: PickerHandlers) {
+  return formatter([], [], handlers)
 }
 
 export function usePicker(
   props: PickerProps & PickerEmits,
-  { name, handlers }: UseOptions
+  {
+    name,
+    handlers
+  }: {
+    name: string
+    handlers: PickerHandlers
+  }
 ) {
   const [isInitPopup, setIsInitPopup] = useState(false)
   const [popupVisible, setPopupVisible] = useState(true)
@@ -57,20 +64,17 @@ export function usePicker(
   const [fieldLabel, setFieldLabel] = useState('')
   const popupRef = useRef<PickerPopupRef>(null)
 
-  const detail = useRef(getDefaultDetail())
+  const detail = useRef(getDefaultDetail(handlers))
 
   function updateValue(val: unknown) {
     if (val == null) {
       // 解决 formily 强制null的问题
-      return getDetail()
+      return
     }
 
-    if (isEmpty(val) && val !== 0) {
-      return updateDetail(getDefaultDetail())
-    }
-
-    if (popupRef.current) {
-      return updateDetail(popupRef.current.updateValue(val))
+    if (!isValidValue(val)) {
+      updateDetail(getDefaultDetail(handlers))
+      return
     }
 
     if (!isSameValue(val, detail.current.value)) {
@@ -90,11 +94,9 @@ export function usePicker(
       )
 
       if (valid) {
-        return updateDetail(formatter(value, label, handlers))
+        updateDetail(formatter(value, label, handlers))
       }
     }
-
-    return getDetail()
   }
 
   function updateDetail(newDetail: SelectorDetail) {
@@ -102,8 +104,6 @@ export function usePicker(
 
     setFieldLabel(newDetail.label)
     setFieldValue(newDetail.value != null ? newDetail.value.toString() : '')
-
-    return getDetail()
   }
 
   function onFieldClick() {
@@ -124,16 +124,12 @@ export function usePicker(
     return cloneDetail(detail.current)
   }
 
-  function onChange() {
-    popupRef.current && updateDetail(popupRef.current.getDetail())
+  function onConfirm(newDetail: SelectorDetail) {
+    if (!isSameDetail(newDetail, detail.current)) {
+      updateDetail(newDetail)
 
-    props.onChange && props.onChange(getDetail().value)
-  }
-
-  function onConfirm(_detail: SelectorDetail) {
-    updateDetail(_detail)
-
-    props.onChange && props.onChange(getDetail().value)
+      props.onChange && props.onChange(getDetail().value)
+    }
   }
 
   useEffect(() => {
@@ -154,26 +150,28 @@ export function usePicker(
     popupVisible,
     fieldValue,
     fieldLabel,
-    updateValue,
     onFieldClick,
-    onChange,
     onConfirm,
     onUpdateVisible
   }
 }
 
 export function usePickerPopup(
-  { value, ...props }: PickerPopupProps & PickerPopupEmits,
-  ref: ForwardedRef<PickerPopupRef>
+  props: PickerPopupProps & PickerPopupEmits,
+  ref: ForwardedRef<PickerPopupRef>,
+  {
+    handlers
+  }: {
+    handlers: PickerHandlers
+  }
 ) {
   const popupRef = useRef<PopupRef>(null)
   const viewRef = useRef<PickerViewRef>(null)
 
-  const detail = useRef(getDefaultDetail())
+  const detail = useRef(getDefaultDetail(handlers))
 
   function beforeConfirm() {
-    const newDetail =
-      (viewRef.current?.getDetail() as SelectorDetail) || getDefaultDetail()
+    const newDetail = getViewDetail()
 
     if (!isSameDetail(newDetail, detail.current)) {
       detail.current = newDetail
@@ -205,17 +203,18 @@ export function usePickerPopup(
     return cloneDetail(detail.current)
   }
 
-  function updateValue(val: unknown) {
-    viewRef.current && (detail.current = viewRef.current.updateValue(val))
-
-    return getDetail()
+  function getViewDetail() {
+    return viewRef.current?.getDetail() || getDefaultDetail(handlers)
   }
 
   useEffect(() => {
-    if (!isEmpty(value) || value) {
-      updateValue(value)
+    if (isValidValue(props.value)) {
+      detail.current = getViewDetail()
+    } else {
+      // 主要是针对 pickerView 强制要求值得问题
+      detail.current = getDefaultDetail(handlers)
     }
-  }, [value])
+  }, [props.value])
 
   useImperativeHandle(
     ref,
@@ -223,8 +222,7 @@ export function usePickerPopup(
       customConfirm,
       customCancel,
       onCancelClick,
-      getDetail,
-      updateValue
+      getDetail
     }),
     []
   )
@@ -232,7 +230,6 @@ export function usePickerPopup(
   return {
     popupRef,
     viewRef,
-    updateValue,
     getDetail,
     onCancelClick,
     onConfirmClick
@@ -245,12 +242,15 @@ interface ViewUseOptions {
   handlers: PickerHandlers
 }
 
+const defaultOptions: UserOptionItem[] = []
+const defaultFieldNames = getDefaultFieldNames()
+
 export function usePickerView(
   {
-    options = [],
-    fieldNames = {},
+    options = defaultOptions,
+    fieldNames = defaultFieldNames,
     ...props
-  }: PickerCommonProps & PickerValueEmits,
+  }: PickerCommonProps & PickerCommonEmits,
   { name, afterUpdate, handlers }: ViewUseOptions
 ) {
   const [cols, setCols] = useState<Col[]>([])
@@ -677,17 +677,30 @@ export function usePickerView(
   }
 
   useEffect(() => {
+    // 需要防范options fieldNames 的详情值没变，但是新造的
+    const oldJson = JSON.stringify(options2.current)
     updateOptions()
-    // updateOriginalValue(currentValues.current, true)
+
+    if (JSON.stringify(options2.current) !== oldJson) {
+      updateOriginalValue(currentValues.current, true)
+    }
   }, [options, fieldNames])
 
   useEffect(() => {
     updateValue(props.value, true)
   }, [props.value])
 
-  // useEffect(() => {
-  //   onChange()
-  // }, [])
+  useEffect(() => {
+    // picker 要默认数据
+    if (
+      isPicker &&
+      (!isValidValue(props.value) ||
+        !isSameValue(props.value, currentValues.current))
+    ) {
+      // 如果传入的数据
+      onChange()
+    }
+  }, [])
 
   return {
     cols,
@@ -698,7 +711,6 @@ export function usePickerView(
     update,
     updateColSelected,
     getValuesByRow,
-    updateValue,
     updateOriginalValue,
     onChange
   }
@@ -719,7 +731,7 @@ const formatter: PickerFormatter = (valueArray, labelArray, handlers) => {
   const defaultLabel = handlers.labelFormatter(labelArray)
   const ret = handlers.formatter(valueArray, labelArray)
 
-  if ((ret as SelectorDetail)?.value) {
+  if ((ret as SelectorDetail)?.value != null) {
     return {
       value: (ret as SelectorDetail).value,
       label: (ret as SelectorDetail).label ?? ''

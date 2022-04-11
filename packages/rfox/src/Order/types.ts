@@ -1,7 +1,7 @@
-export type ID = string | number
+import type { UniqueID } from '../helpers/types'
 
 export type Item = {
-  id: ID
+  id: UniqueID
   draggable?: boolean
 }
 
@@ -9,7 +9,7 @@ export type OnDelete = (payload: {
   type: string
   index: number
   item: {
-    id: ID
+    id: UniqueID
   }
 }) => void
 
@@ -26,7 +26,7 @@ export interface OrderEmits {
 }
 
 export interface Position {
-  id: ID
+  id: UniqueID
   draggable: boolean
   top: number
   left: number

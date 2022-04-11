@@ -12,4 +12,4 @@ export const getStepClasses = ({
 }: {
   active: boolean
   finish: boolean
-}) => ['fx-step', 'fx-horizontal-hairline', { active, finish }]
+}) => ['fx-step', 'fx-steps-item', 'fx-horizontal-hairline', { active, finish }]

@@ -1,12 +1,14 @@
+import type { Selector } from '../helpers/types'
+
 export interface StickyProps {
-  containSelector?: HTMLElement
+  containSelector?: Selector
   offsetTop?: number | string
   offsetBottom?: number | string
   disabled?: boolean
 }
 
 export interface ResetContainer {
-  (selector?: HTMLElement): void
+  (selector?: Selector): void
 }
 
 export interface StickyRef {

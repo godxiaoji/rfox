@@ -1,6 +1,18 @@
 import type { StateType, ToastProps } from './types'
 
-const STATE_TYPES: StateType[] = ['default', 'success', 'loading', 'fail']
+export const STATE_TYPES: StateType[] = [
+  'default',
+  'success',
+  'loading',
+  'fail'
+]
 
-export const hasIcon = (props: ToastProps) =>
-  !!(props.icon || (props.type && STATE_TYPES.indexOf(props.type) > 0))
+export const getBoxClasses = (props: ToastProps) => [
+  'fx-toast_box',
+  {
+    'has--icon': !!(
+      props.icon ||
+      (props.type && STATE_TYPES.indexOf(props.type) > 0)
+    )
+  }
+]

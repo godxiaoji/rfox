@@ -24,11 +24,10 @@ import type { TabViewOnChange, TabViewOnAnimated } from 'rfox'
 
 ## TabView Props
 
-| 属性                | 类型    | 默认值 | 必填 | 说明                                            |
-| ------------------- | ------- | ------ | ---- | ----------------------------------------------- |
-| initialVertical     | boolean | false  | 否   | 初始化是否侧边菜单展示方式                      |
-| scrollThreshold     | number  | 4      | 否   | 超过 `scrollThreshold` 个 Tab 使用滚动形式      |
-| backUpperWhenChange | boolean | false  | 否   | 切换面板时，如果是旧面板，是否返回顶部/左侧位置 |
+| 属性            | 类型    | 默认值 | 必填 | 说明                                       |
+| --------------- | ------- | ------ | ---- | ------------------------------------------ |
+| initialVertical | boolean | false  | 否   | 初始化是否侧边菜单展示方式                 |
+| scrollThreshold | number  | 4      | 否   | 超过 `scrollThreshold` 个 Tab 使用滚动形式 |
 
 ## TabView Events
 

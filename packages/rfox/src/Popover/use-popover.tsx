@@ -1,20 +1,18 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import classNames from 'classnames'
 import type { ForwardedRef } from 'react'
-import { getEnumsValue } from '../helpers/validator'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { querySelector } from '../helpers/dom'
-import { PLACEMENT_TYPES } from '../helpers/constants'
 import { usePopup } from '../popup/use-popup'
 import {
   getDefaultPos,
-  getPopoverArrowStyles,
-  getPopoverInnerStyles,
+  getArrowStyles,
+  getInnerStyles,
   getShowPos
 } from './util'
 import type { PopoverProps } from './types'
 import type { PopupRef } from '../popup/types'
 import { useResizeObserver } from '../hooks/use-resize-observer'
 import type { FC } from '../helpers/types'
-import classNames from 'classnames'
 
 export function usePopover(
   {
@@ -39,11 +37,7 @@ export function usePopover(
       }
 
       setShowPos(
-        getShowPos(
-          container.current,
-          innerEl.current,
-          getEnumsValue(PLACEMENT_TYPES, props.placement)
-        )
+        getShowPos(container.current, innerEl.current, props.placement)
       )
     },
     [props.placement]
@@ -63,11 +57,11 @@ export function usePopover(
   })
 
   const arrowStyles = useMemo(
-    () => getPopoverArrowStyles(isShow.current, showPos),
+    () => getArrowStyles(isShow.current, showPos),
     [showPos]
   )
   const innerStyles = useMemo(
-    () => getPopoverInnerStyles(isShow.current, showPos),
+    () => getInnerStyles(isShow.current, showPos),
     [showPos]
   )
 

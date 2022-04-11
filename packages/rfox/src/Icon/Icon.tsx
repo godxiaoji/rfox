@@ -4,8 +4,12 @@ import { getIconStyles } from './util'
 import FxSpriteSVG from './SpriteSVG'
 import type { VFC, CSSProperties } from '../helpers/types'
 import { isString } from '../helpers/util'
+import type { SVGAttributes } from 'react'
 
-const FxIcon: VFC<IconProps & { style?: CSSProperties }> = ({
+const FxIcon: VFC<
+  Omit<SVGAttributes<SVGSVGElement>, 'style'> &
+    IconProps & { style?: CSSProperties }
+> = ({
   icon,
   width,
   height,

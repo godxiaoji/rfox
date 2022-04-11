@@ -61,7 +61,7 @@ const FxSlider: VFC<SliderProps & SliderEmits> = ({
 
   useEffect(() => updateValue(getInputValue(true)), [props.min, props.max])
 
-  const classes = classNames('fx-slider', slideClasses, props.className)
+  const classes = classNames(slideClasses, props.className)
 
   return (
     <div className={classes} style={slideStyles}>

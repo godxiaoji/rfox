@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import { forwardRef, useCallback } from 'react'
 import type { TabProps, TabEmits, TabRef } from './types'
 import type { FRVFC } from '../helpers/types'
-import { getTabItemClasses, getTabClasses } from './util'
+import { getItemClasses, getClasses } from './util'
 import { useTab } from './use-tab'
 import { Badge } from '../Badge'
 import { Icon } from '../Icon'
@@ -24,14 +24,14 @@ const FxTab: FRVFC<TabRef, TabProps & TabEmits> = (
   })
 
   const classes = classNames(
-    getTabClasses(scrollThreshold, options2, hasSub),
+    getClasses(scrollThreshold, options2, hasSub),
     className
   )
 
   const renderItems = useCallback(() => {
     return options2.map((item, index) => (
       <li
-        className={classNames(getTabItemClasses(index, activeIndex))}
+        className={classNames(getItemClasses(index, activeIndex))}
         key={item.value}
         onClick={() => onChange(item.value)}
       >

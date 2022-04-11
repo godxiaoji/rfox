@@ -22,5 +22,5 @@ export interface PopMenuProps extends PopoverProps {
 }
 
 export interface PopMenuEmits extends PopupEmits {
-  onConfirm?: (payload: Detail) => void
+  onConfirm?: OnConfirm
 }

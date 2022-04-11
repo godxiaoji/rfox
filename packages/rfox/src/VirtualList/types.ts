@@ -1,8 +1,8 @@
-import { HTMLAttributes } from 'react'
 import type {
   CSSProperties,
   FnArgs,
   Noop,
+  UniqueID,
   ViewPosition
 } from '../helpers/types'
 
@@ -49,21 +49,21 @@ export type OnVisibleItemsChange = (payload: {
 export type OnVisibleItemsChangePayload = FnArgs<OnVisibleItemsChange>[0]
 
 export type ListItem = {
-  id: number | string
+  id: UniqueID
   index: number
   style?: CSSProperties
   size: number
 }
 
 export type RenderItem = {
-  id: number | string
+  id: UniqueID
   index: number
   style?: CSSProperties
   size: number
 }
 
-export interface VirtualListProps extends HTMLAttributes<HTMLDivElement> {
-  ids: (string | number)[]
+export interface VirtualListProps {
+  ids: UniqueID[]
   itemSize?: number | ((index: number) => number)
   initialHorizontal?: boolean
   preLoad?: number

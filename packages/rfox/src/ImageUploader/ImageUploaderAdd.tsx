@@ -1,15 +1,14 @@
-import type { ImageUploaderAddProps } from './types'
-import type { VFC } from '../helpers/types'
+import type { OnChange, VFC } from '../helpers/types'
 import { Icon } from '../Icon'
 import PlusOutlined from '../Icon/icons/PlusOutlined'
 import classNames from 'classnames'
 
-const FxImageUploaderAdd: VFC<ImageUploaderAddProps> = ({
-  accept,
-  disabled,
-  multiple,
-  onAddFiles
-}) => {
+const FxImageUploaderAdd: VFC<{
+  accept: string
+  disabled?: boolean
+  multiple?: boolean
+  onAddFiles: OnChange
+}> = ({ accept, disabled, multiple, onAddFiles }) => {
   const classes = classNames('fx-image-uploader_upload-button', {
     disabled: !!disabled
   })

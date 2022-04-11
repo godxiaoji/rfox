@@ -1,15 +1,15 @@
-import type { ImageUploaderItemProps } from './types'
 import type { VFC } from '../helpers/types'
 import { Image } from '../Image'
 import { Icon } from '../Icon'
 import { ActivityIndicator } from '../ActivityIndicator'
 import DeleteOutlined from '../Icon/icons/DeleteOutlined'
+import { FileItem, ImageMode } from './types'
 
-const FxImageUploaderItem: VFC<ImageUploaderItemProps> = ({
-  item,
-  imageMode,
-  onClick
-}) => {
+const FxImageUploaderItem: VFC<{
+  item: FileItem
+  imageMode?: ImageMode
+  onClick: (item: FileItem) => void
+}> = ({ item, imageMode, onClick }) => {
   return (
     <div
       className="fx-image-uploader_item"

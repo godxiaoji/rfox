@@ -1,6 +1,6 @@
 import classNames from 'classnames'
-import type { OrderProps, ID, Position, OrderEmits } from './types'
-import type { FC, RenderProp } from '../helpers/types'
+import type { OrderProps, Position, OrderEmits } from './types'
+import type { FC, RenderProp, UniqueID } from '../helpers/types'
 import {
   getClasses,
   getItemClasses,
@@ -20,7 +20,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useStableState } from '../hooks/use'
 
 interface TargetObject {
-  id: ID
+  id: UniqueID
   index: number
   startX: number
   startY: number
@@ -36,7 +36,7 @@ const FxOrder: FC<
   OrderProps &
     OrderEmits & {
       render?: RenderProp<{
-        id: ID
+        id: UniqueID
         index: number
       }>
     }
@@ -269,7 +269,6 @@ const FxOrder: FC<
       const position = Object.assign(
         {
           id: v.id,
-          data: v,
           deleted: false,
           draggable: !(v.draggable === false)
         },

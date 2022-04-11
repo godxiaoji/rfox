@@ -119,11 +119,7 @@ const FxRange: VFC<RangeProps & RangeEmits> = ({
     [props.min, props.max]
   )
 
-  const classes = classNames(
-    ['fx-slider', 'fx-range'],
-    slideClasses,
-    props.className
-  )
+  const classes = classNames('fx-range', slideClasses, props.className)
 
   return (
     <div className={classes} style={slideStyles}>

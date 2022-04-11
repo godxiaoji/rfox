@@ -11,8 +11,8 @@ import type { SwiperEmits, SwiperProps, SwiperRef, SwipeTo } from './types'
 import {
   getPaginationItemClasses,
   getPaginationItemStyles,
-  getSwiperClasses,
-  getSwiperIndicatorsClasses
+  getClasses,
+  getIndicatorsClasses
 } from './util'
 import type { FRFC, OnClick } from '../helpers/types'
 import { useTouch } from '../hooks/use-touch'
@@ -79,10 +79,7 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
       : []
   }
 
-  const classes = classNames(
-    getSwiperClasses(direction.current),
-    props.className
-  )
+  const classes = classNames(getClasses(direction.current), props.className)
 
   /**
    * 切换到
@@ -567,7 +564,7 @@ const FxSwiper: FRFC<SwiperRef, SwiperProps & SwiperEmits> = (
    */
   const renderPagination = useMemo(() => {
     const indicatorsClasses = classNames(
-      getSwiperIndicatorsClasses(direction.current)
+      getIndicatorsClasses(direction.current)
     )
 
     return indicatorDots ? (

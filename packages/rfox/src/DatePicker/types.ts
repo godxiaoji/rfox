@@ -4,14 +4,9 @@ import type {
   SelectorValueFormatter,
   SelectorValueParser
 } from '../SelectorField/types'
-import type {
-  ColRow,
-  PickerEmits,
-  PickerPopupEmits,
-  PickerViewEmits
-} from '../Picker/types'
-import type { PopupProps } from '../popup/types'
-import type { FormItemCommonProps } from '../Form/types'
+import type { ColRow, PickerCommonEmits } from '../Picker/types'
+import type { PopupEmits, PopupProps } from '../popup/types'
+import type { FocusWithoutEventEmits, FormItemCommonProps } from '../Form/types'
 
 export type ColName = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second'
 export type Mode =
@@ -71,18 +66,22 @@ export interface DatePickerCommonProps {
 }
 
 export type DatePickerViewProps = DatePickerCommonProps
-export type DatePickerViewEmits = PickerViewEmits
+export type DatePickerViewEmits = PickerCommonEmits
 
 export interface DatePickerPopupProps
   extends PopupProps,
     DatePickerCommonProps {
   title?: string
 }
-export type DatePickerPopupEmits = PickerPopupEmits
+export interface DatePickerPopupEmits extends PopupEmits, PickerCommonEmits {
+  onConfirm?: OnConfirm
+}
 
 export interface DatePickerProps
   extends FormItemCommonProps,
     DatePickerCommonProps {
   placeholder?: string
 }
-export type DatePickerEmits = PickerEmits
+export interface DatePickerEmits
+  extends FocusWithoutEventEmits,
+    PickerCommonEmits {}

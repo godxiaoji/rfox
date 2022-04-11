@@ -1,9 +1,9 @@
+import { useRef } from 'react'
 import dayjs from '../helpers/day'
-import { DEFAULT_MONTH_RANGE, getDefaultDetail, MODE_NAMES } from './util'
+import { getDefaultDetail, MODE_NAMES } from './util'
 import type { Mode, CalendarDetail, CalendarCommonProps } from './types'
 import type { SelectorModelValue, SelectorDetail } from '../SelectorField/types'
 import { getEnumsValue } from '../helpers/validator'
-import { useRef } from 'react'
 
 function valueParser(val: unknown, mode: Mode) {
   const values: number[] = []
@@ -80,17 +80,6 @@ function detailFormatter(timeArray: number[], mode: Mode) {
 
 export function useHandlers(props: CalendarCommonProps) {
   const mode = useRef(getEnumsValue(MODE_NAMES, props.initialMode))
-  const defaultMinData = useRef(dayjs().startOf('day').toDate())
-  const defaultMaxData = useRef(
-    dayjs().startOf('day').add(DEFAULT_MONTH_RANGE, 'month').toDate()
-  )
-
-  let minDate = props.minDate ?? defaultMinData.current
-  let maxDate = props.maxDate ?? defaultMaxData.current
-  if (minDate.getTime() > maxDate.getTime()) {
-    // 兼容min max搞反的问题
-    maxDate = [minDate, (minDate = maxDate)][0]
-  }
 
   const parser = function (val: unknown) {
     if (props.parser) {
@@ -123,9 +112,8 @@ export function useHandlers(props: CalendarCommonProps) {
 
   return {
     mode: mode.current,
-    minDate,
-    maxDate,
     parser,
-    formatter
+    formatter,
+    getDefaultDetail: () => formatter([])
   }
 }

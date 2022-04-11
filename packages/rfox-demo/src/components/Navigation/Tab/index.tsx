@@ -21,7 +21,7 @@ export default function ExpTab() {
       </FxGroup>
       <FxGroup title="Mix">
         <div className="exp-tab-box">
-          <FxTab options={mixTabList} initialActiveValue={2} />
+          <FxTab options={mixTabList} activeValue={2} />
         </div>
       </FxGroup>
       <FxGroup title="带副标签">

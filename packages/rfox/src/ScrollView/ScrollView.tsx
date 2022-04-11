@@ -1,3 +1,4 @@
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import classNames from 'classnames'
 import type {
   PullDirection,
@@ -13,12 +14,11 @@ import {
   getIndicatorStyles,
   getLoadMoreClasses,
   getPullRefreshClasses,
-  getScrollViewClasses,
+  getClasses,
   PullRefreshState,
   ScrollState
 } from './util'
 import { stringMix2StringArray } from '../helpers/util'
-import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { useTouch } from '../hooks/use-touch'
 import { useScrollTo } from '../hooks/use-scroll'
 import { useLocale } from '../ConfigProvider/context'
@@ -449,7 +449,7 @@ const FxScrollView: FRFC<
   })
 
   const classes = classNames(
-    getScrollViewClasses({
+    getClasses({
       scrollX,
       scrollY,
       scrollAnimated

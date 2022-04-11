@@ -41,7 +41,6 @@ const FxCascaderView: FRVFC<
     cols,
     update,
     getValuesByRow,
-    updateValue,
     onChange,
     updateOriginalValue
   } = usePickerView(props, {
@@ -146,7 +145,6 @@ const FxCascaderView: FRVFC<
   useImperativeHandle(
     ref,
     () => ({
-      updateValue,
       getDetail,
       resize: noop
     }),

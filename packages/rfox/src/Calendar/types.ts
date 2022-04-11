@@ -1,6 +1,5 @@
 import type { FocusWithoutEventEmits, FormItemCommonProps } from '../Form/types'
-import type { OnClick } from '../helpers/types'
-import type { PickerValueEmits } from '../Picker/types'
+import type { PickerCommonEmits } from '../Picker/types'
 import type { PopupEmits, PopupProps, PopupRef } from '../popup/types'
 import type {
   SelectorValue,
@@ -80,26 +79,17 @@ export interface CalendarCommonProps {
   parser?: ValueParser
 }
 
-export type CalendarCommonEmits = PickerValueEmits
-
 /**
  * CalendarView
  */
 export type CalendarViewProps = CalendarCommonProps
 
-export interface CalendarViewEmits extends CalendarCommonEmits {
+export interface CalendarViewEmits extends PickerCommonEmits {
   onSelect?: OnSelect
 }
 
 export interface CalendarViewRef {
   getDetail: () => CalendarDetail
-}
-
-export interface CalendarViewMonthProps {
-  mode: Mode
-  month: Month
-  monthIndex: number
-  onDaysClick: OnClick
 }
 
 /**
@@ -111,7 +101,7 @@ export interface CalendarPopupProps extends PopupProps, CalendarCommonProps {
   showClose?: boolean
 }
 
-export interface CalendarPopupEmits extends PopupEmits, CalendarCommonEmits {
+export interface CalendarPopupEmits extends PopupEmits, PickerCommonEmits {
   onConfirm?: OnConfirm
 }
 
@@ -130,4 +120,4 @@ export interface CalendarProps
 
 export interface CalendarEmits
   extends FocusWithoutEventEmits,
-    CalendarCommonEmits {}
+    PickerCommonEmits {}

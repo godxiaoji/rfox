@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 import type {
   CalendarEmits,
@@ -9,42 +10,35 @@ import type { VFC } from '../helpers/types'
 import { SelectorField } from '../SelectorField'
 import CalendarPopup from './CalendarPopup'
 import { useHandlers } from './use-calendar'
-import { useEffect, useRef, useState } from 'react'
-import { getDefaultDetail } from './util'
 import { cloneDetail, isSameValue } from '../Picker/util'
-import type { SelectorModelValue } from '../SelectorField/types'
 
 const FxCalendar: VFC<CalendarProps & CalendarEmits> = props => {
+  const { formatter, parser, getDefaultDetail } = useHandlers(props)
   const [isInitPopup, setIsInitPopup] = useState(false)
   const [popupVisible, setPopupVisible] = useState(true)
   const [fieldValue, setFieldValue] = useState('')
   const [fieldLabel, setFieldLabel] = useState('')
   const popupRef = useRef<CalendarPopupRef>(null)
   const detail = useRef<CalendarDetail>(getDefaultDetail())
-  const changeValue = useRef<SelectorModelValue | null>(null)
-
-  const { formatter, parser } = useHandlers(props)
 
   function updateValue(val: unknown) {
-    if (popupRef.current) {
-      // value 已经通过props传下去了
-      return updateDetail(popupRef.current.getDetail())
-    } else {
-      return updateDetail(formatter(parser(val)))
+    if (val == null) {
+      // 解决 formily 强制null的问题
+      return
     }
+
+    updateDetail(formatter(parser(val)))
   }
 
-  function updateDetail(_detail: CalendarDetail) {
-    detail.current = _detail
+  function updateDetail(newDetail: CalendarDetail) {
+    detail.current = newDetail
 
-    setFieldLabel(_detail.label)
+    setFieldLabel(newDetail.label)
     setFieldValue(
-      _detail.value != null
-        ? _detail.valueArray.map(v => v.join('-')).join(',')
+      newDetail.value != null
+        ? newDetail.valueArray.map(v => v.join('-')).join(',')
         : ''
     )
-
-    return getDetail()
   }
 
   function onFieldClick() {
@@ -61,14 +55,12 @@ const FxCalendar: VFC<CalendarProps & CalendarEmits> = props => {
     return cloneDetail(detail.current)
   }
 
-  function onConfirm(_detail: CalendarDetail) {
-    if (isSameValue(detail.current.value, _detail.value)) {
+  function onConfirm(newDetail: CalendarDetail) {
+    if (isSameValue(detail.current.value, newDetail.value)) {
       return
     }
 
-    updateDetail(_detail)
-
-    changeValue.current = getDetail().value
+    updateDetail(newDetail)
 
     props.onChange && props.onChange(getDetail().value)
   }
@@ -77,18 +69,7 @@ const FxCalendar: VFC<CalendarProps & CalendarEmits> = props => {
     setPopupVisible(v)
   }
 
-  useEffect(() => {
-    if (
-      !(
-        changeValue.current != null &&
-        isSameValue(props.value, changeValue.current)
-      )
-    ) {
-      updateValue(props.value)
-    }
-
-    changeValue.current = null
-  }, [props.value])
+  useEffect(() => updateValue(props.value), [props.value])
 
   useEffect(() => {
     if (isInitPopup && popupVisible) {

@@ -1,21 +1,8 @@
-import type { IconData } from '../Icon/types'
+import type { EmptyObject } from '../helpers/types'
 import type { PopoverProps } from '../Popover/types'
 import type { PopupEmits } from '../popup/types'
 
-export interface Option {
-  name: string
-  icon?: IconData
-  disabled?: boolean
-}
-
-export interface Detail {
-  item: {
-    name: string
-  }
-  index: number
-}
-
-export type OnConfirm = (payload: Detail) => void
+export type OnConfirm = (payload: EmptyObject) => void
 
 export interface PopDialogProps extends PopoverProps {
   showCancel?: boolean
@@ -24,5 +11,5 @@ export interface PopDialogProps extends PopoverProps {
 }
 
 export interface PopDialogEmits extends PopupEmits {
-  onConfirm?: (payload: Detail) => void
+  onConfirm?: OnConfirm
 }

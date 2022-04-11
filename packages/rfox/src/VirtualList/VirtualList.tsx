@@ -1,3 +1,14 @@
+import type { HTMLAttributes } from 'react'
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react'
 import classNames from 'classnames'
 import type {
   ScrollTo,
@@ -7,7 +18,7 @@ import type {
   VirtualListProps,
   VirtualListRef
 } from './types'
-import type { FRFC, RenderProp } from '../helpers/types'
+import type { FRFC, RenderProp, UniqueID } from '../helpers/types'
 import {
   cloneData,
   getSameValueArray,
@@ -20,16 +31,6 @@ import type { ViewPosition } from '../helpers/types'
 import type { OnVisibleItemsChangePayload, ListItem, RenderItem } from './types'
 import { useScroll, useScrollTo } from '../hooks/use-scroll'
 import { useResizeObserver } from '../hooks/use-resize-observer'
-import {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react'
 import { getClasses, getItemStyles, getListStyles } from './util'
 import type { ScrollToOffsetOptions } from '../hooks/types'
 
@@ -38,7 +39,8 @@ const calcGroupCount = 50
 
 const FxVirtualList: FRFC<
   VirtualListRef,
-  VirtualListProps &
+  HTMLAttributes<HTMLDivElement> &
+    VirtualListProps &
     VirtualListEmits & {
       render: RenderProp<{
         index: number
@@ -111,7 +113,7 @@ const FxVirtualList: FRFC<
 
   const [isDataChange, setIsDataChange] = useState(false)
 
-  function dataToList(_ids: (string | number)[]) {
+  function dataToList(_ids: UniqueID[]) {
     const newList: ListItem[] = []
 
     let isChange = _ids.length !== list.current.length

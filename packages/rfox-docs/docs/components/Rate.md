@@ -27,7 +27,7 @@ import { FxRate } from 'rfox'
 | count       | number \| string    | 5              | 否   | 有 count 个星星，只支持 1~20 整数       |
 | allowHalf   | boolean             | false          | 否   | 是否允许半选                            |
 | disabled    | boolean             | false          | 否   | 是否禁用                                |
-| readOnly    | boolean             | false          | 否   | 是否为只读状态                          |
+| readonly    | boolean             | false          | 否   | 是否为只读状态                          |
 | icon        | string \| Component | 'StarOutlined' | 否   | 默认图标，使用 [Icon](./Icon.md) 组件   |
 | activeIcon  | string \| Component | 'StarFilled'   | 否   | 激活时图标，使用 [Icon](./Icon.md) 组件 |
 | color       | string              |                | 否   | 自定义默认态的图标颜色                  |

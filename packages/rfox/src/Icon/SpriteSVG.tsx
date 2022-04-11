@@ -1,7 +1,12 @@
-import type { VFC } from '../helpers/types'
-import type { SpriteSVGProps } from './types'
+import type { SVGAttributes } from 'react'
+import type { CSSProperties, VFC } from '../helpers/types'
 
-const FxSpriteSVG: VFC<SpriteSVGProps> = ({ iconName, ...props }) => {
+const FxSpriteSVG: VFC<
+  Omit<SVGAttributes<SVGSVGElement>, 'style'> & {
+    iconName: string
+    style?: CSSProperties
+  }
+> = ({ iconName, ...props }) => {
   return (
     <svg {...props}>
       <use xlinkHref={'#' + iconName}></use>

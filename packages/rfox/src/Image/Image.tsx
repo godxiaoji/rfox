@@ -1,4 +1,4 @@
-import type { DragEventHandler } from 'react'
+import type { DragEventHandler, HTMLAttributes } from 'react'
 import { useRef, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import type { ImageEmits, ImageProps, LoadedResource } from './types'
@@ -14,7 +14,11 @@ import ImageOutlined from '../Icon/icons/ImageOutlined'
 import ImageBreakOutlined from '../Icon/icons/ImageBreakOutlined'
 import { Icon } from '../Icon'
 
-const FxImage: VFC<ImageProps & ImageEmits> = ({
+const FxImage: VFC<
+  Omit<HTMLAttributes<HTMLDivElement>, 'onLoad' | 'onError'> &
+    ImageProps &
+    ImageEmits
+> = ({
   loadingIcon = ImageOutlined,
   errorIcon = ImageBreakOutlined,
   lazyLoad = false,

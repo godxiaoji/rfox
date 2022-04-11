@@ -3,7 +3,7 @@ import type {
   ColRow,
   PickerCommonProps,
   PickerPopupRef,
-  PickerValueEmits,
+  PickerCommonEmits,
   UserFieldNames,
   UserOptionItem,
   PickerViewRef
@@ -25,25 +25,18 @@ export type OnConfirm = (payload: SelectorDetail) => void
  */
 export type CascaderViewProps = PickerCommonProps
 
-export interface CascaderViewEmits extends PickerValueEmits {
+export interface CascaderViewEmits extends PickerCommonEmits {
   onSelect?: OnSelect
 }
 
 export type CascaderViewRef = PickerViewRef
-
-export interface CascaderViewGroupProps {
-  tabIndex: number
-  list: ColRow[]
-  listIndex: number
-  onItemClick: (item: ColRow) => void
-}
 
 /**
  * CascaderPopup
  */
 export interface CascaderPopupProps extends PopupProps, PickerCommonProps {}
 
-export interface CascaderPopupEmits extends PopupEmits, PickerValueEmits {
+export interface CascaderPopupEmits extends PopupEmits, PickerCommonEmits {
   onConfirm?: OnConfirm
 }
 
@@ -58,4 +51,4 @@ export interface CascaderProps extends FormItemCommonProps, PickerCommonProps {
 
 export interface CascaderEmits
   extends FocusWithoutEventEmits,
-    PickerValueEmits {}
+    PickerCommonEmits {}

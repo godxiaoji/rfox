@@ -9,7 +9,13 @@ import type { OnClick, Dayjs, FRVFC } from '../helpers/types'
 import dayjs from '../helpers/day'
 import { cloneData, getNumber, isSameArray } from '../helpers/util'
 import { showToast } from '../Toast'
-import { DEFAULT_MONTH_RANGE, getFirstDayOfWeek, printError } from './util'
+import {
+  getFirstDayOfWeek,
+  getMaxTime,
+  getMinTime,
+  getTimeByDate,
+  printError
+} from './util'
 import { useHandlers } from './use-calendar'
 import { useLocale } from '../ConfigProvider/context'
 import {
@@ -56,7 +62,7 @@ const FxCalendarView: FRVFC<
   CalendarViewProps & CalendarViewEmits
 > = (props, ref) => {
   const { locale } = useLocale()
-  const { formatter, parser, mode, minDate, maxDate } = useHandlers(props)
+  const { formatter, parser, mode } = useHandlers(props)
   const [weekDays, setWeekDays] = useState<WeekDay[]>([])
   const [getMonths, setMonths] = useStableState<Month[]>([])
   const start = useRef(getDefaultSelectDay())
@@ -93,6 +99,10 @@ const FxCalendarView: FRVFC<
   }
 
   function updateOriginalValue(timeArr: number[]) {
+    if (timeArr.length === 1) {
+      timeArr.push(0)
+    }
+
     if (
       !isSameArray(timeArr, [start.current.timestamp, end.current.timestamp])
     ) {
@@ -250,29 +260,26 @@ const FxCalendarView: FRVFC<
 
   const minTimestamp = useRef(0)
   const maxTimestamp = useRef(0)
+  const defaultMixTime = useRef(getMinTime())
 
   function updateOptions() {
-    if (minDate instanceof Date) {
-      minTimestamp.current = dayjs(minDate).startOf('day').valueOf()
+    if (props.minDate instanceof Date) {
+      minTimestamp.current = getTimeByDate(props.minDate)
     } else {
-      minTimestamp.current = dayjs().startOf('day').valueOf()
+      minTimestamp.current = defaultMixTime.current
     }
 
-    if (maxDate instanceof Date) {
-      if (maxDate.getTime() < minTimestamp.current) {
+    if (props.maxDate instanceof Date) {
+      if (props.maxDate.getTime() < minTimestamp.current) {
         printError(
           'The value of "maxDate" cannot be less than the value of "minDate".'
         )
-        maxTimestamp.current = dayjs(minTimestamp.current)
-          .add(DEFAULT_MONTH_RANGE, 'month')
-          .valueOf()
+        maxTimestamp.current = getMaxTime(minTimestamp.current)
       } else {
-        maxTimestamp.current = dayjs(maxDate).startOf('day').valueOf()
+        maxTimestamp.current = getTimeByDate(props.maxDate)
       }
     } else {
-      maxTimestamp.current = dayjs(minTimestamp.current)
-        .add(DEFAULT_MONTH_RANGE, 'month')
-        .valueOf()
+      maxTimestamp.current = getMaxTime(minTimestamp.current)
     }
 
     updateWeekDays()
@@ -362,6 +369,8 @@ const FxCalendarView: FRVFC<
       return
     }
 
+    const newDay = dayInfo2SelectDay(day, monthIndex, dayIndex)
+
     if (mode === 'range') {
       // 范围
       if (
@@ -389,7 +398,7 @@ const FxCalendarView: FRVFC<
                 )
               )
             } else {
-              setSelected('end', dayInfo2SelectDay(day, monthIndex, dayIndex))
+              setSelected('end', newDay)
               // this.rangeCount = rangeCount
               updateStates()
               onSelect()
@@ -400,15 +409,15 @@ const FxCalendarView: FRVFC<
       }
     } else {
       // 单选
-      setSelected('start', dayInfo2SelectDay(day, monthIndex, dayIndex))
+      setSelected('start', newDay)
       // this.rangeCount = 1
       updateStates()
       onSelect()
       return
     }
 
-    // 设置开始时间
-    setSelected('start', dayInfo2SelectDay(day, monthIndex, dayIndex))
+    // range 设置开始时间
+    setSelected('start', newDay)
     updateStates()
   }
 
@@ -434,8 +443,24 @@ const FxCalendarView: FRVFC<
     setMonths(_months)
   }
 
-  function onSelect() {
+  const timeValue = useRef([start.current.timestamp, end.current.timestamp])
+
+  function onChange() {
+    if (
+      isSameArray(
+        [start.current.timestamp, end.current.timestamp],
+        timeValue.current
+      )
+    ) {
+      return
+    }
+
+    timeValue.current = [start.current.timestamp, end.current.timestamp]
     props.onChange && props.onChange(getDetail().value)
+  }
+
+  function onSelect() {
+    onChange()
     props.onSelect && props.onSelect(getDetail())
   }
 
@@ -487,7 +512,7 @@ const FxCalendarView: FRVFC<
   useEffect(() => {
     updateOptions()
     updateValue(props.value)
-  }, [locale, minDate, maxDate])
+  }, [props.minDate, props.maxDate, locale])
 
   useEffect(() => {
     updateValue(props.value)

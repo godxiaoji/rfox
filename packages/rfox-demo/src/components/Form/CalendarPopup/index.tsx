@@ -79,8 +79,8 @@ export default function ExpCalendarPopup() {
   }
 
   function onChange(res: SelectorModelValue) {
+    console.log('onChange', res)
     if (changeEvent.current) {
-      console.log('onChange', res)
       showToast(`值改为 ${res}`)
     }
 

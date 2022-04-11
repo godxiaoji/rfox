@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import { useMemo, useRef, useState } from 'react'
 import type { ButtonOption, SwipeCellEmits, SwipeCellProps } from './types'
 import type { FC } from '../helpers/types'
-import { getButtons, getSwipeCellInnerStyles } from './util'
+import { getButtons, getInnerStyles } from './util'
 import { cloneData, getSameValueArray, rangeNumber } from '../helpers/util'
 import { getStretchOffset } from '../helpers/animation'
 import { useBlur } from '../hooks/use-event'
@@ -156,7 +156,7 @@ const FxSwipeCell: FC<SwipeCellProps & SwipeCellEmits> = props => {
     <div className={classes} ref={root}>
       <div
         className="fx-swipe-cell_inner"
-        style={getSwipeCellInnerStyles({ duration, translateX })}
+        style={getInnerStyles({ duration, translateX })}
       >
         {props.children}
         <div className="fx-swipe-cell_buttons" ref={buttonsEl}>

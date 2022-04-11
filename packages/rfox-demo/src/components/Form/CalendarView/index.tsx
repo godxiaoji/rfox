@@ -10,7 +10,7 @@ import { useState } from 'react'
 import { formatter, parser } from '../Calendar/utils'
 
 export default function ExpCalendarView() {
-  const [viewValue, setViewValue] = useState('2022年03月31日')
+  const [viewValue, setViewValue] = useState('')
   const [viewRangeValue, setViewRangeValue] = useState('')
 
   const onSelect: CalendarOnSelect = res => {

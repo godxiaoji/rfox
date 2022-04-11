@@ -1,6 +1,4 @@
-import { SwiperProps } from './types'
-
-export const getSwiperClasses = (direction: string) => {
+export const getClasses = (direction: string) => {
   return [
     'fx-swiper',
     {
@@ -9,7 +7,7 @@ export const getSwiperClasses = (direction: string) => {
   ]
 }
 
-export const getSwiperIndicatorsClasses = (direction: string) => {
+export const getIndicatorsClasses = (direction: string) => {
   return [
     'fx-swiper_indicators',
     {
@@ -31,7 +29,10 @@ export const getPaginationItemClasses = (
 }
 
 export const getPaginationItemStyles = (
-  { indicatorActiveColor, indicatorColor }: SwiperProps,
+  {
+    indicatorActiveColor,
+    indicatorColor
+  }: { indicatorActiveColor?: string; indicatorColor?: string },
   pageIndex: number,
   activeIndex: number
 ) => {

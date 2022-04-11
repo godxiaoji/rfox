@@ -1,16 +1,16 @@
 import classNames from 'classnames'
-import type { CascaderViewGroupProps } from './types'
 import type { VFC } from '../helpers/types'
 import { VirtualList } from '../VirtualList'
 import { Icon } from '../Icon'
 import CheckOutlined from '../Icon/icons/CheckOutlined'
+import type { ColRow } from '../Picker/types'
 
-const FxCascaderViewGroup: VFC<CascaderViewGroupProps> = ({
-  tabIndex,
-  list,
-  listIndex,
-  onItemClick
-}) => {
+const FxCascaderViewGroup: VFC<{
+  tabIndex: number
+  list: ColRow[]
+  listIndex: number
+  onItemClick: (item: ColRow) => void
+}> = ({ tabIndex, list, listIndex, onItemClick }) => {
   return (
     <div
       className="fx-cascader-view_group fx-vertical-hairline"

@@ -30,18 +30,15 @@ export const getContentStyles = ({
   } as CSSProperties
 }
 
-export const getIndicatorStyles = (pullIndicatorSafeArea: {
-  top: number
-  right: number
-  bottom: number
-  left: number
-}) => {
+export const getIndicatorStyles = (
+  pullIndicatorSafeArea: PullIndicatorSafeArea
+) => {
   return {
     padding: `${pullIndicatorSafeArea.top}px ${pullIndicatorSafeArea.right}px ${pullIndicatorSafeArea.bottom}px ${pullIndicatorSafeArea.left}px`
   }
 }
 
-export const getScrollViewClasses = ({
+export const getClasses = ({
   scrollX,
   scrollY,
   scrollAnimated

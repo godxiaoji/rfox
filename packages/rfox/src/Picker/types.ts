@@ -81,7 +81,7 @@ export interface PickerCommonProps {
   parser?: SelectorValueParser
 }
 
-export interface PickerValueEmits {
+export interface PickerCommonEmits {
   onChange?: SelectorOnChange
 }
 
@@ -90,18 +90,11 @@ export interface PickerValueEmits {
  */
 export type PickerViewProps = PickerCommonProps
 
-export type PickerViewEmits = PickerValueEmits
+export type PickerViewEmits = PickerCommonEmits
 
 export interface PickerViewRef {
   getDetail: () => SelectorDetail
-  updateValue: (value: unknown) => SelectorDetail
   resize: Noop
-}
-
-export interface PickerViewColProps {
-  list: ColRow[]
-  listIndex: number
-  onListScroll: ($el: HTMLElement, index: number) => void
 }
 
 /**
@@ -111,13 +104,12 @@ export interface PickerPopupProps extends PopupProps, PickerCommonProps {
   title?: string
 }
 
-export interface PickerPopupEmits extends PopupEmits, PickerValueEmits {
+export interface PickerPopupEmits extends PopupEmits, PickerCommonEmits {
   onConfirm?: OnConfirm
 }
 
 export interface PickerPopupRef extends PopupRef {
   getDetail: () => SelectorDetail
-  updateValue: (value: unknown) => SelectorDetail
 }
 
 /**
@@ -127,7 +119,9 @@ export interface PickerProps extends FormItemCommonProps, PickerCommonProps {
   placeholder?: string
 }
 
-export interface PickerEmits extends FocusWithoutEventEmits, PickerValueEmits {}
+export interface PickerEmits
+  extends FocusWithoutEventEmits,
+    PickerCommonEmits {}
 
 export interface ScrollElement extends HTMLElement {
   scrolling?: boolean

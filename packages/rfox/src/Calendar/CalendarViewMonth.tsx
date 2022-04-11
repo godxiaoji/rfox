@@ -1,13 +1,13 @@
 import classNames from 'classnames'
-import type { CalendarViewMonthProps } from './types'
-import type { VFC } from '../helpers/types'
+import type { OnClick, VFC } from '../helpers/types'
+import type { Mode, Month } from './types'
 
-const FxCalendarViewMonth: VFC<CalendarViewMonthProps> = ({
-  mode,
-  month,
-  monthIndex,
-  onDaysClick
-}) => {
+const FxCalendarViewMonth: VFC<{
+  mode: Mode
+  month: Month
+  monthIndex: number
+  onDaysClick: OnClick
+}> = ({ mode, month, monthIndex, onDaysClick }) => {
   const renderDays = () =>
     month.days.map((day, dayIndex) => {
       const dayClasses = classNames('fx-calendar-view_day', {

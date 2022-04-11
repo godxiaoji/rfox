@@ -24,7 +24,7 @@ export const getItemClasses = (
 export const getItemStyles = (item: Position, colNum: number) => ({
   left: item.left + 'px',
   top: item.top + 'px',
-  width: ((1 / colNum) * 100).toFixed(2) + '%'
+  width: (1 / colNum) * 100 + '%'
 })
 
 export const getItemRatioStyles = (aspectRatio?: number | string) => ({

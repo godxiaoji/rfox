@@ -27,7 +27,7 @@ import { FxInput } from 'rfox'
 | type        | string           | 'text' | 否   | 类型               |
 | placeholder | string           |        | 否   | 输入框为空时占位符 |
 | disabled    | boolean          | false  | 否   | 是否禁用           |
-| readOnly    | boolean          | false  | 否   | 是否只读           |
+| readonly    | boolean          | false  | 否   | 是否只读           |
 | maxlength   | string \| number | 140    | 否   | 最大长度           |
 | focus       | boolean          | false  | 否   | 是否获取焦点       |
 | showClear   | boolean          | false  | 否   | 是否展示清除图标   |

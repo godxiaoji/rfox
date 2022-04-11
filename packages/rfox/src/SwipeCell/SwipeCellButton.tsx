@@ -1,16 +1,16 @@
 import classNames from 'classnames'
 import { useRef } from 'react'
-import type { SwiperCellButtonProps } from './types'
-import { getSwipeCellButtonStyles } from './util'
+import type { ButtonOption } from './types'
+import { getButtonStyles } from './util'
 import type { OnClick, VFC } from '../helpers/types'
 
-const FxSwipeCellButton: VFC<SwiperCellButtonProps> = ({
-  item,
-  index,
-  buttonTranslateXs,
-  duration,
-  onButtonClick
-}) => {
+const FxSwipeCellButton: VFC<{
+  item: Required<ButtonOption>
+  index: number
+  buttonTranslateXs: number[]
+  duration: number
+  onButtonClick: (item: Required<ButtonOption>, index: number) => void
+}> = ({ item, index, buttonTranslateXs, duration, onButtonClick }) => {
   const buttonEl = useRef<HTMLButtonElement>(null)
 
   const onClick: OnClick<HTMLButtonElement> = e => {
@@ -21,7 +21,7 @@ const FxSwipeCellButton: VFC<SwiperCellButtonProps> = ({
   return (
     <button
       className={classNames(['fx-swipe-cell_button', 'type--' + item.type])}
-      style={getSwipeCellButtonStyles({
+      style={getButtonStyles({
         buttonTranslateXs,
         duration,
         index

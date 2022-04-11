@@ -24,12 +24,13 @@ import type {
 } from '../popup/types'
 import { cloneDetail, isSameDetail } from '../Picker/util'
 import { useLocale } from '../ConfigProvider/context'
-import { getDefaultDetail } from './util'
+import { useHandlers } from './use-calendar'
 
 const FxCalendarPopup: FRVFC<
   CalendarPopupRef,
   CalendarPopupProps & CalendarPopupEmits
 > = (props, ref) => {
+  const { getDefaultDetail } = useHandlers(props)
   const { locale } = useLocale()
   const popupRef = useRef<PopupRef>(null)
   const viewRef = useRef<CalendarViewRef>(null)
@@ -48,13 +49,11 @@ const FxCalendarPopup: FRVFC<
     popupRef.current?.customCancel(key, focus)
   }
 
-  function onViewSelect() {
+  function onViewSelect(newDetail: CalendarDetail) {
     if (!props.showConfirm) {
       confirm()
-    } else if (viewRef.current) {
+    } else {
       // 判断下是否可以confirm
-
-      const newDetail = viewRef.current.getDetail()
       setValueSize(newDetail.valueArray.length)
     }
   }
@@ -64,16 +63,15 @@ const FxCalendarPopup: FRVFC<
   }
 
   function confirm() {
-    if (!viewRef.current) {
-      return
+    const newDetail = getViewDetail()
+
+    if (!isSameDetail(newDetail, detail.current)) {
+      updateDetail(newDetail)
+
+      props.onChange && props.onChange(getDetail().value)
+    } else {
+      updateDetail(newDetail)
     }
-
-    const newDetail = viewRef.current.getDetail()
-    const isChange = !isSameDetail(newDetail, detail.current)
-
-    updateDetail(newDetail)
-
-    isChange && props.onChange && props.onChange(getDetail().value)
 
     customConfirm(getDetail())
   }
@@ -82,14 +80,18 @@ const FxCalendarPopup: FRVFC<
     return cloneDetail(detail.current)
   }
 
-  function updateDetail(_detail: CalendarDetail) {
-    detail.current = _detail
+  function updateDetail(newDetail: CalendarDetail) {
+    detail.current = newDetail
     setValueSize(detail.current.valueArray.length)
   }
 
+  function getViewDetail() {
+    return viewRef.current?.getDetail() || getDefaultDetail()
+  }
+
   useEffect(() => {
-    viewRef.current && updateDetail(viewRef.current.getDetail())
-  }, [])
+    detail.current = getViewDetail()
+  }, [props.value])
 
   const classes = classNames('fx-calendar-popup', props.className)
 

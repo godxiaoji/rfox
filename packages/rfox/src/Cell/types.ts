@@ -1,9 +1,9 @@
-import type { HTMLAttributes } from 'react'
+import type { OnClick } from '../helpers/types'
 import type { IconData } from '../Icon/types'
 
 export type ArrowDirection = 'right' | 'up' | 'down' | 'left'
 
-export interface CellProps extends HTMLAttributes<HTMLDivElement> {
+export interface CellProps {
   icon?: IconData
   label?: string
   description?: string
@@ -13,4 +13,8 @@ export interface CellProps extends HTMLAttributes<HTMLDivElement> {
   isLink?: boolean
   disabled?: boolean
   arrowDirection?: ArrowDirection
+}
+
+export interface CellEmits {
+  onClick?: OnClick
 }

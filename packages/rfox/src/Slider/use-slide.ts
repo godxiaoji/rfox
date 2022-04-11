@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { getNumber, rangeNumber } from '../helpers/util'
 import { useTouch } from '../hooks/use-touch'
 import {
@@ -5,8 +6,7 @@ import {
   getRelativeOffset,
   removeClassName
 } from '../helpers/dom'
-import { useRef } from 'react'
-import { SlideCommonProps } from './types'
+import type { SlideCommonProps } from './types'
 import { getSlideClasses, getSlideStyles } from './util'
 
 interface Coords {

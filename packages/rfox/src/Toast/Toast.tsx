@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import { forwardRef } from 'react'
 import { createPortal } from 'react-dom'
 import type { ToastEmits, ToastProps } from './types'
-import { hasIcon } from './util'
+import { getBoxClasses } from './util'
 import type { FRVFC } from '../helpers/types'
 import { usePopup } from '../popup/use-popup'
 import { ActivityIndicator } from '../ActivityIndicator'
@@ -29,10 +29,7 @@ const FxToast: FRVFC<PopupRef, ToastProps & ToastEmits> = (props, ref) => {
     popupClasses
   ])
 
-  const boxClasses = classNames([
-    'fx-toast_box',
-    { 'has--icon': hasIcon(props) }
-  ])
+  const boxClasses = classNames(getBoxClasses(props))
 
   function renderIcon() {
     let icon = <></>

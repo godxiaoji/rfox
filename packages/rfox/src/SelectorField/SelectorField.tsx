@@ -7,7 +7,7 @@ import { getClasses, getInputClasses } from './util'
 
 const FxSelectorField: VFC<SelectorFieldProps & SelectorFieldEmits> = props => {
   const classes = classNames(getClasses(props), props.className)
-  const inputClasses = classNames(getInputClasses(props))
+  const inputClasses = classNames(getInputClasses(props.label))
 
   function onFieldClick() {
     props.onFieldClick && props.onFieldClick()

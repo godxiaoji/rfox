@@ -10,19 +10,31 @@ import { Drawer } from '../Drawer'
 import { NavBar } from '../NavBar'
 import { usePickerPopup } from './use-picker'
 import { useLocale } from '../ConfigProvider/context'
-import { forwardRef } from 'react'
+import { forwardRef, useContext } from 'react'
 import { OnVisibleStateChange } from '../popup/types'
+import { mergeHandlers } from './util'
+import { PickerContext } from './context'
 
 const FxPickerPopup: FRVFC<
   PickerPopupRef,
   PickerPopupProps & PickerPopupEmits
 > = (props, ref) => {
   const { locale } = useLocale()
+  const handlers = useContext(PickerContext)
   const classes = classNames('fx-picker-popup', props.className)
 
   const { popupRef, viewRef, onCancelClick, onConfirmClick } = usePickerPopup(
     props,
-    ref
+    ref,
+    {
+      handlers: mergeHandlers(
+        {
+          formatter: props.formatter,
+          parser: props.parser
+        },
+        handlers
+      )
+    }
   )
 
   const onVisibleStateChange: OnVisibleStateChange = res => {
@@ -56,6 +68,7 @@ const FxPickerPopup: FRVFC<
     >
       <PickerView
         ref={viewRef}
+        value={props.value}
         options={props.options}
         fieldNames={props.fieldNames}
         formatter={props.formatter}

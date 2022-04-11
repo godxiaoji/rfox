@@ -19,7 +19,7 @@ export const getButtons = (buttons?: ButtonOption[]) => {
   return _buttons
 }
 
-export const getSwipeCellInnerStyles = ({
+export const getInnerStyles = ({
   translateX,
   duration
 }: {
@@ -30,7 +30,7 @@ export const getSwipeCellInnerStyles = ({
   transitionDuration: duration + 's'
 })
 
-export const getSwipeCellButtonStyles = ({
+export const getButtonStyles = ({
   buttonTranslateXs,
   duration,
   index
