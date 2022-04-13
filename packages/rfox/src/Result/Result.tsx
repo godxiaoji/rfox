@@ -1,6 +1,6 @@
 import classNames from 'classnames'
-import type { ResultType, ResultProps } from './types'
-import type { FC, OnClick } from '../helpers/types'
+import type { ResultType, ResultProps, ResultEmits } from './types'
+import type { FC } from '../helpers/types'
 import { getType, getTypeClass } from './util'
 import InfoCircleFilled from '../Icon/icons/InfoCircleFilled'
 import WarningFilled from '../Icon/icons/WarningFilled'
@@ -18,12 +18,7 @@ const iconMap = new Map<ResultType, IconData>([
   ['fail', CloseCircleFilled]
 ])
 
-const FxResult: FC<
-  ResultProps & {
-    onConfirm?: OnClick
-    onBack?: OnClick
-  }
-> = props => {
+const FxResult: FC<ResultProps & ResultEmits> = props => {
   const typeClass = getTypeClass(props.type)
   const classes = classNames('fx-result', typeClass, props.className)
   const iconClasses = classNames('fx-result_icon', typeClass)

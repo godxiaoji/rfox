@@ -21,8 +21,10 @@ export interface CheckboxGroupProps extends CheckGroupCommonProps {
   value?: ModelValue[]
 }
 
+export type OnChange = (value: ModelValue[]) => void
+
 export interface CheckboxGroupEmits {
-  onChange?: (value: ModelValue[]) => void
+  onChange?: OnChange
 }
 
 export interface CheckCommonProps extends FormItemCommonProps {

@@ -45,11 +45,10 @@ import type { VisibleState, PopupOnVisibleStateChange } from 'rfox'
 
 ## Events
 
-| 事件                 | 描述               | 回调函数参数                                                        | TypeScript 函数           |
-| -------------------- | ------------------ | ------------------------------------------------------------------- | ------------------------- |
-| onCloseClick         | 关闭按钮点击时触发 |                                                                     |                           |
-| onVisibleStateChange | 展示隐藏时触发     | payload: { state: [VisibleState](./Notify.md#visiblestate-值说明) } | PopupOnVisibleStateChange |
-| onUpdateVisible      | 展示隐藏时触发     | visible: boolean 是否显示                                           |                           |
+| 事件                 | 描述           | 回调函数参数                                                        | TypeScript 函数           |
+| -------------------- | -------------- | ------------------------------------------------------------------- | ------------------------- |
+| onVisibleStateChange | 展示隐藏时触发 | payload: { state: [VisibleState](./Notify.md#visiblestate-值说明) } | PopupOnVisibleStateChange |
+| onUpdateVisible      | 展示隐藏时触发 | visible: boolean 是否显示                                           |                           |
 
 ### VisibleState 值说明
 

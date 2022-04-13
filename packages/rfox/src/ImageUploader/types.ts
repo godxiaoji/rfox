@@ -40,6 +40,8 @@ export interface FileItem {
   message: string
 }
 
+type OnChange = (value: string[]) => void
+
 export interface ImageUploaderProps extends FormItemCommonProps {
   value?: string[]
   accept?: Accept | Accept[] // 允许上传的图片类型
@@ -54,6 +56,6 @@ export interface ImageUploaderProps extends FormItemCommonProps {
 }
 
 export interface ImageUploaderEmits {
-  onChange?: (value: string[]) => void
+  onChange?: OnChange
   onDelete?: OnDelete
 }

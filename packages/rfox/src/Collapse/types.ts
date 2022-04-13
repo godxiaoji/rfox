@@ -17,7 +17,7 @@ export interface CollapseProps {
 }
 
 export interface CollapseEmits {
-  onChange?: (activeNames: ActiveName[]) => void
+  onChange?: OnChange
 }
 
 export interface CollapseItemProps {

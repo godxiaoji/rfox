@@ -1,6 +1,8 @@
 import type { FocusEmits, FormItemCommonProps } from '../Form/types'
 import type { OnClick } from '../helpers/types'
 
+type OnChange = (value: string) => void
+
 export interface StepperProps extends FormItemCommonProps {
   value?: number | string
   disabledMinus?: boolean
@@ -14,8 +16,8 @@ export interface StepperProps extends FormItemCommonProps {
 }
 
 export interface StepperEmits extends FocusEmits {
-  onInput?: (value: string) => void
-  onChange?: (value: string) => void
+  onInput?: OnChange
+  onChange?: OnChange
   onMinusClick?: OnClick
   onPlusClick?: OnClick
 }

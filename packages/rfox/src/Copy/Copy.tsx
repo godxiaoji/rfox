@@ -1,17 +1,12 @@
 import classNames from 'classnames'
-import type { CopyProps } from './types'
-import type { FC, OnError } from '../helpers/types'
+import type { CopyEmits, CopyProps } from './types'
+import type { FC } from '../helpers/types'
 import { copy } from './util'
 import { useRef } from 'react'
 import Exception from '../helpers/exception'
 import { useLocale } from '../ConfigProvider/context'
 
-const FxCopy: FC<
-  CopyProps & {
-    onSuccess?: (payload: string) => void
-    onError?: OnError
-  }
-> = props => {
+const FxCopy: FC<CopyProps & CopyEmits> = props => {
   const inputEl = useRef<HTMLInputElement>(null)
 
   const { locale } = useLocale()

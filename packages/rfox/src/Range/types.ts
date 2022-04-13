@@ -5,7 +5,9 @@ export interface RangeProps extends SlideCommonProps {
   allowSameValue?: boolean
 }
 
+type OnChange = (value: number[]) => void
+
 export interface RangeEmits {
-  onInput?: (value: number[]) => void
-  onChange?: (value: number[]) => void
+  onInput?: OnChange
+  onChange?: OnChange
 }

@@ -188,7 +188,7 @@ export function usePopup(
   useEffect(() => clearVisibleTimer, [])
 
   useBlur(() => {
-    if (enableBlurCancel.current) {
+    if (enableBlurCancel.current && isShow) {
       customCancel('blur')
     }
   })

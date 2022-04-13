@@ -1,3 +1,5 @@
+import type { OnClick } from '../helpers/types'
+
 export type ResultType = 'info' | 'warning' | 'success' | 'fail'
 
 export interface ResultProps {
@@ -7,4 +9,9 @@ export interface ResultProps {
   backText?: string
   confirmText?: string
   showBack?: boolean
+}
+
+export interface ResultEmits {
+  onConfirm?: OnClick
+  onBack?: OnClick
 }

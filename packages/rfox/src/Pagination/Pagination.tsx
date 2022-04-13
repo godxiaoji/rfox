@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
-import type { OnChange, PaginationProps } from './types'
+import type { OnChange, PaginationEmits, PaginationProps } from './types'
 import type {
   CSSProperties,
   RenderChildren,
@@ -14,16 +14,16 @@ import RightOutlined from '../Icon/icons/RightOutlined'
 import { getTotal } from './util'
 
 const FxPagination: VFC<
-  PaginationProps & {
-    onChange?: OnChange
-    children?: RenderChildren<{
-      current: number
-      total: number
-    }>
-    renderPrev?: RenderProp
-    renderNext?: RenderProp
-    style?: CSSProperties
-  }
+  PaginationProps &
+    PaginationEmits & {
+      children?: RenderChildren<{
+        current: number
+        total: number
+      }>
+      renderPrev?: RenderProp
+      renderNext?: RenderProp
+      style?: CSSProperties
+    }
 > = ({ current, onChange, ...props }) => {
   const classes = classNames('fx-pagination', props.className)
   const [pageNum, setPageNum] = useState(-1)
