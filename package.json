@@ -1,6 +1,6 @@
 {
   "name": "@fox2/rfox",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "React components include form, toast, modal, etc.",
   "main": "lib/index.js",
   "module": "es/index.js",
