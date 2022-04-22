@@ -10,3 +10,5 @@ export const getFixedStyles = (titleY: number | null) => ({
     titleY == null ? '-100%' : titleY + 'px'
   }, 0px)`
 })
+
+export const FIXED_HEIGHT = 28

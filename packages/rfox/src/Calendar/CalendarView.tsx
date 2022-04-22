@@ -1,3 +1,12 @@
+import type { UIEventHandler } from 'react'
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState
+} from 'react'
 import classNames from 'classnames'
 import type {
   CalendarViewEmits,
@@ -14,20 +23,16 @@ import {
   getMaxTime,
   getMinTime,
   getTimeByDate,
+  getViewBodyTitleStyles,
   printError
 } from './util'
 import { useHandlers } from './use-calendar'
 import { useLocale } from '../ConfigProvider/context'
-import {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState
-} from 'react'
+
 import ViewMonth from './CalendarViewMonth'
 import { useStableState } from '../hooks/use'
+import { CSSProperties2CssText, getScrollTop } from '../helpers/dom'
+import VirtualList from '../VirtualList'
 
 type WeekDay = '0' | '1' | '2' | '3' | '4' | '5' | '6'
 
@@ -67,6 +72,8 @@ const FxCalendarView: FRVFC<
   const [getMonths, setMonths] = useStableState<Month[]>([])
   const start = useRef(getDefaultSelectDay())
   const end = useRef(getDefaultSelectDay())
+  const bodyEl = useRef<HTMLDivElement>(null)
+  const bodyTitleEl = useRef<HTMLDivElement>(null)
 
   const maxRange = getNumber(props.maxRange, Infinity)
   const firstDayOfWeek = getFirstDayOfWeek(props.firstDayOfWeek)
@@ -329,6 +336,8 @@ const FxCalendarView: FRVFC<
     _months.push(month)
 
     setMonths(_months)
+
+    updateBodyFixed(bodyScrollTop.current)
   }
 
   function dayInfo2SelectDay(
@@ -509,6 +518,100 @@ const FxCalendarView: FRVFC<
     }
   }
 
+  const monthActiveIndex = useRef(0)
+  const bodyScrollTop = useRef(0)
+
+  const onScroll: UIEventHandler<HTMLDivElement> = e => {
+    bodyScrollTop.current = getScrollTop(e.currentTarget as HTMLDivElement)
+
+    updateBodyFixed(bodyScrollTop.current)
+  }
+
+  function updateBodyTitle(t: string, tY: number | null) {
+    if (!bodyTitleEl.current) {
+      return
+    }
+
+    bodyTitleEl.current.textContent = t
+    bodyTitleEl.current.style.cssText = CSSProperties2CssText(
+      getViewBodyTitleStyles(tY)
+    )
+  }
+
+  function updateBodyFixed(scrollTop: number) {
+    const h = 28
+    const $items: HTMLDivElement[] = bodyEl.current
+      ? [].slice.call(
+          bodyEl.current.querySelectorAll('.fx-virtual-list_item'),
+          0
+        )
+      : []
+
+    function getItemName(_index: number) {
+      const realIndex = $items[_index]
+        ? parseInt($items[_index].dataset.index as string)
+        : -1
+
+      return realIndex === -1 ? '' : getMonths()[realIndex].caption
+    }
+
+    if ($items.length === 0) {
+      updateBodyTitle('', null)
+      return
+    }
+
+    const _index = monthActiveIndex.current
+    const nextIndex = _index + 1
+    const offsetTops = $items.map($el => {
+      const matches = $el.style.cssText.match(
+        /translate3d\(\w+,\s*(\d+)px,\s*\w+\)/
+      )
+
+      return matches && matches[1] ? parseFloat(matches[1]) : -1
+    })
+
+    const current = offsetTops[_index]
+    const next =
+      offsetTops[nextIndex] != null ? offsetTops[nextIndex] : Infinity
+    const first = offsetTops[0]
+
+    if (scrollTop < first) {
+      updateBodyTitle('', null)
+    } else if (scrollTop >= current) {
+      if (scrollTop >= next) {
+        monthActiveIndex.current = nextIndex
+        updateBodyTitle(getItemName(nextIndex), 0)
+
+        if (
+          offsetTops[nextIndex + 1] &&
+          scrollTop >= offsetTops[nextIndex + 1]
+        ) {
+          // 超过了
+          updateBodyFixed(scrollTop)
+        }
+      } else if (next - scrollTop < h) {
+        updateBodyTitle(getItemName(_index), next - scrollTop - h)
+      } else {
+        updateBodyTitle(getItemName(_index), 0)
+      }
+    } else {
+      if (current - scrollTop < h) {
+        updateBodyTitle(getItemName(_index - 1), current - scrollTop - h)
+      } else {
+        monthActiveIndex.current = _index - 1
+        updateBodyTitle(getItemName(_index - 1), 0)
+
+        if (offsetTops[_index - 1] && offsetTops[_index - 1] > scrollTop) {
+          updateBodyFixed(scrollTop)
+        }
+      }
+    }
+  }
+
+  function getItemSize(index: number) {
+    return Math.ceil((getMonths()[index]?.days.length ?? 0) / 7) * 64 + 28
+  }
+
   useEffect(() => {
     updateOptions()
     updateValue(props.value)
@@ -533,17 +636,28 @@ const FxCalendarView: FRVFC<
     [locale, weekDays]
   )
 
-  const renderMonths = useMemo(() => {
-    return getMonths().map((month, monthIndex) => (
-      <ViewMonth
-        key={month.caption}
-        month={month}
-        monthIndex={monthIndex}
-        onDaysClick={onDaysClick}
-        mode={mode}
+  const renderMonths = useMemo(
+    () => (
+      <VirtualList
+        onScroll={onScroll}
+        ids={getMonths().map(v => v.caption)}
+        itemSize={getItemSize}
+        render={({ index }) => {
+          const month = getMonths()[index]
+
+          return (
+            <ViewMonth
+              month={month}
+              monthIndex={index}
+              onDaysClick={onDaysClick}
+              mode={mode}
+            />
+          )
+        }}
       />
-    ))
-  }, [getMonths(), onDaysClick])
+    ),
+    [getMonths(), onDaysClick]
+  )
 
   const classes = classNames('fx-calendar-view', props.className)
 
@@ -560,7 +674,13 @@ const FxCalendarView: FRVFC<
       <div className="fx-calendar-view_header">
         <div className="fx-calendar-view_weekdays">{renderWeekdays}</div>
       </div>
-      <div className="fx-calendar-view_body">{renderMonths}</div>
+      <div className="fx-calendar-view_body" ref={bodyEl}>
+        {renderMonths}
+        <div
+          className="fx-calendar-view_month-caption fixed"
+          ref={bodyTitleEl}
+        ></div>
+      </div>
     </div>
   )
 }

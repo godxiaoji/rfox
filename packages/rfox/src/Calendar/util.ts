@@ -32,3 +32,9 @@ export const getMinTime = () => dayjs().startOf('day').valueOf()
 
 export const getMaxTime = (minTime: number) =>
   dayjs(minTime).startOf('day').add(DEFAULT_MONTH_RANGE, 'month').valueOf()
+
+export const getViewBodyTitleStyles = (titleY: number | null) => ({
+  transform: `translate3d(0px, ${
+    titleY == null ? '-100%' : titleY + 'px'
+  }, 0px)`
+})

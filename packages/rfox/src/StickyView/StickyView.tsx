@@ -1,3 +1,10 @@
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState
+} from 'react'
 import classNames from 'classnames'
 import type {
   ScrollTo,
@@ -7,14 +14,7 @@ import type {
   StickyViewRef
 } from './types'
 import type { FRFC } from '../helpers/types'
-import { getClasses, getFixedStyles } from './util'
-import {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState
-} from 'react'
+import { getClasses, getFixedStyles, FIXED_HEIGHT } from './util'
 import { Sticky } from '../Sticky'
 import {
   CSSProperties2CssText,
@@ -45,14 +45,12 @@ const FxStickyView: FRFC<StickyViewRef, StickyViewProps & StickyViewEmits> = (
   const itemNames = useRef<string[]>([])
 
   function updateTitle(t: string, tY: number | null) {
-    if (!(fixedEl.current && fixedEl.current.firstElementChild)) {
+    if (!fixedEl.current) {
       return
     }
 
-    const $inner = fixedEl.current.firstElementChild as HTMLDivElement
-
-    $inner.textContent = t
-    $inner.style.cssText = CSSProperties2CssText(getFixedStyles(tY))
+    fixedEl.current.textContent = t
+    fixedEl.current.style.cssText = CSSProperties2CssText(getFixedStyles(tY))
   }
 
   function getItems(): HTMLDivElement[] {
@@ -71,11 +69,9 @@ const FxStickyView: FRFC<StickyViewRef, StickyViewProps & StickyViewEmits> = (
   }
 
   function updateFixed(ss?: number) {
-    if (!fixedEl.current || !container.current) {
+    if (!container.current) {
       return
     }
-
-    const h = fixedEl.current.clientHeight
 
     if (itemNames.current.length === 0) {
       updateTitle('', null)
@@ -113,14 +109,14 @@ const FxStickyView: FRFC<StickyViewRef, StickyViewProps & StickyViewEmits> = (
 
           onChange && onChange(_activeIndex.current)
         }
-      } else if (next - scrollTop < h) {
-        updateTitle(getItemName(_index), next - scrollTop - h)
+      } else if (next - scrollTop < FIXED_HEIGHT) {
+        updateTitle(getItemName(_index), next - scrollTop - FIXED_HEIGHT)
       } else {
         updateTitle(getItemName(_index), 0)
       }
     } else {
-      if (current - scrollTop < h) {
-        updateTitle(getItemName(_index - 1), current - scrollTop - h)
+      if (current - scrollTop < FIXED_HEIGHT) {
+        updateTitle(getItemName(_index - 1), current - scrollTop - FIXED_HEIGHT)
       } else {
         _activeIndex.current = _index - 1
         updateTitle(getItemName(_index - 1), 0)
@@ -260,8 +256,8 @@ const FxStickyView: FRFC<StickyViewRef, StickyViewProps & StickyViewEmits> = (
         className="fx-sticky-view_top"
         ref={stickyRef}
       >
-        <div className="fx-sticky-view_fixed" ref={fixedEl}>
-          <div className="fx-sticky-view_fixed-inner"></div>
+        <div className="fx-sticky-view_fixed">
+          <div className="fx-sticky-view_fixed-inner" ref={fixedEl}></div>
         </div>
       </Sticky>
     </div>

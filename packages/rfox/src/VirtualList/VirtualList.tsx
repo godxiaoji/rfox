@@ -44,6 +44,7 @@ const FxVirtualList: FRFC<
     VirtualListEmits & {
       render: RenderProp<{
         index: number
+        id: UniqueID
       }>
       renderSeparator?: RenderProp<{
         index: number
@@ -558,7 +559,7 @@ const FxVirtualList: FRFC<
         data-index={item.index}
         style={item.style}
       >
-        {render({ index: item.index })}
+        {render({ index: item.index, id: item.id })}
         {renderSeparator && renderSeparator({ index: item.index })}
       </li>
     ))
@@ -571,7 +572,7 @@ const FxVirtualList: FRFC<
         key={item.id}
         data-index={item.index}
       >
-        {render({ index: item.index })}
+        {render({ index: item.index, id: item.id })}
         {renderSeparator && renderSeparator({ index: item.index })}
       </li>
     ))
